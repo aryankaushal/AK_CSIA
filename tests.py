@@ -20,10 +20,11 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QPixmap, QColor
 from PyQt5.QtCore import pyqtSignal, Qt
 from email.mime.text import MIMEText
-from random import randint, sample
+import random
 from UI import LearnUI, TestUI, HomeUI
 import time, datetime
 from login import AuthHandler
+import csv
 
 
 # *********************************** Test Page --> Quizzes ***********************************
@@ -45,16 +46,16 @@ class TestPage(QDialog):
         layout.addWidget(self.global_button)
 
         self.air_button.clicked.connect(
-            lambda: self.initiate_test("Air Pollution", "air_questions.txt")
+            lambda: self.initiate_test("Air Pollution", "Text Files/air_quiz.csv")
         )
         self.water_button.clicked.connect(
-            lambda: self.initiate_test("Water Pollution", "water_questions.txt")
+            lambda: self.initiate_test("Water Pollution", "Text Files/water_quiz.csv")
         )
         self.land_button.clicked.connect(
-            lambda: self.initiate_test("Land Pollution", "land_questions.txt")
+            lambda: self.initiate_test("Land Pollution", "Text Files/land_quiz.csv")
         )
         self.global_button.clicked.connect(
-            lambda: self.initiate_test("Global Warming", "global_questions.txt")
+            lambda: self.initiate_test("Global Warming", "Text Files/global_quiz.csv")
         )
 
         self.setLayout(layout)
@@ -97,19 +98,20 @@ class TestDialog(QDialog):
 
         try:
             with open(file_path, "r", encoding="utf-8") as file:
-                lines = file.readlines()
+                reader = csv.DictReader(file)
+                all_questions = list(reader)
 
-                # Randomly select 5 questions
-                selected_questions = sample(lines, 5)
+                # Randomly select 5 indices
+                selected_indices = random.sample(range(1, 20), 5)
 
-                for line in selected_questions:
-                    data = line.strip().split(";")
-                    question = {
-                        "question": data[0],
-                        "options": data[1:5],
-                        "correct": int(data[5]),
-                    }
-                    questions.append(question)
+                for data in all_questions:
+                    if int(data["index"]) in selected_indices:
+                        question = {
+                            "question": data["question"],
+                            "options": [data[f"option{i}"] for i in range(1, 5)],
+                            "correct": data["correct"],
+                        }
+                        questions.append(question)
 
         except FileNotFoundError:
             QMessageBox.critical(
@@ -165,22 +167,17 @@ class TestDialog(QDialog):
 
 class AirQuiz(TestPage):
     def __init__(self):
-        super().__init__("Air Pollution Quiz", "air_quiz.txt")
-
+        super().__init__("Air Pollution Quiz", "Text Files/air_quiz.csv")
 
 class WaterQuiz(TestPage):
     def __init__(self):
-        super().__init__("Water Pollution Quiz", "water_quiz.txt")
-
+        super().__init__("Water Pollution Quiz", "Text Files/water_quiz.csv")
 
 class LandQuiz(TestPage):
     def __init__(self):
-        super().__init__("Land Pollution Quiz", "land_quiz.txt")
-
+        super().__init__("Land Pollution Quiz", "Text Files/land_quiz.csv")
 
 class GlobalQuiz(TestPage):
     def __init__(self):
-        super().__init__("Global Warming Quiz", "global_quiz.txt")
-
-
+        super().__init__("Global Warming Quiz", "Text Files/global_quiz.csv")
 # *********************************************************************************************

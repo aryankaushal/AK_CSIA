@@ -119,7 +119,7 @@ class CausePage(QDialog):
         self.close()
 
 
-class AirCauses(QWidget):
+class AirCauses(QDialog):
     def __init__(self):
         super().__init__()
 
@@ -128,7 +128,7 @@ class AirCauses(QWidget):
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
 
-        self.info_label = QLabel(self.read_info_from_file("air_causes.txt"))
+        self.info_label = QLabel(self.read_info_from_file("Text Files/air_causes.txt"))
 
         layout = QVBoxLayout()
         layout.addWidget(self.back_button)
@@ -153,7 +153,7 @@ class AirCauses(QWidget):
             return "Information not available."
 
 
-class LandCauses(QWidget):
+class LandCauses(QDialog):
     def __init__(self):
         super().__init__()
 
@@ -162,7 +162,7 @@ class LandCauses(QWidget):
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
 
-        self.info_label = QLabel(self.read_info_from_file("land_causes.txt"))
+        self.info_label = QLabel(self.read_info_from_file("Text Files/land_causes.txt"))
 
         layout = QVBoxLayout()
         layout.addWidget(self.back_button)
@@ -187,7 +187,7 @@ class LandCauses(QWidget):
             return "Information not available."
 
 
-class WaterCauses(QWidget):
+class WaterCauses(QDialog):
     def __init__(self):
         super().__init__()
 
@@ -196,7 +196,9 @@ class WaterCauses(QWidget):
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
 
-        self.info_label = QLabel(self.read_info_from_file("water_causes.txt"))
+        self.info_label = QLabel(
+            self.read_info_from_file("Text Files/water_causes.txt")
+        )
 
         layout = QVBoxLayout()
         layout.addWidget(self.back_button)
@@ -221,7 +223,7 @@ class WaterCauses(QWidget):
             return "Information not available."
 
 
-class GlobalCauses(QWidget):
+class GlobalCauses(QDialog):
     def __init__(self):
         super().__init__()
 
@@ -230,7 +232,9 @@ class GlobalCauses(QWidget):
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
 
-        self.info_label = QLabel(self.read_info_from_file("global_causes.txt"))
+        self.info_label = QLabel(
+            self.read_info_from_file("Text Files/global_causes.txt")
+        )
 
         layout = QVBoxLayout()
         layout.addWidget(self.back_button)
@@ -260,12 +264,8 @@ class GlobalCauses(QWidget):
 
 # ******************************* Learn Page --> Effects Pages *******************************
 class EffectsPage(QDialog):
-    def __init__(self, effect_name):
+    def __init__(self):
         super().__init__()
-
-        self.effects_label = QLabel(
-            "Which phenomenon's effects do you want to learn about?"
-        )
 
         self.airE_button = QPushButton("Air Pollution")
         self.waterE_button = QPushButton("Water Pollution")
@@ -277,15 +277,40 @@ class EffectsPage(QDialog):
         layout.addWidget(self.waterE_button)
         layout.addWidget(self.landE_button)
         layout.addWidget(self.globalE_button)
-        layout.addWidget(self.learn_label)
+        # layout.addWidget(self.learn_label)
+
+        self.airE_button.clicked.connect(self.show_airE)
+        self.waterE_button.clicked.connect(self.show_waterE)
+        self.landE_button.clicked.connect(self.show_landE)
+        self.globalE_button.clicked.connect(self.show_globalE)
 
         self.setLayout(layout)
+
+    def show_airE(self):
+        page = AirEffects()
+        page.exec_()
+        # self.stacked_widget.setCurrentIndex(0)
+
+    def show_waterE(self):
+        page = WaterEffects()
+        page.exec_()
+        # self.stacked_widget.setCurrentIndex(1)
+
+    def show_landE(self):
+        page = LandEffects()
+        page.exec_()
+        # self.stacked_widget.setCurrentIndex(0)
+
+    def show_globalE(self):
+        page = GlobalEffects()
+        page.exec_()
+        # self.stacked_widget.setCurrentIndex(1)
 
     def go_back(self):
         self.close()
 
 
-class AirEffects(QWidget):
+class AirEffects(QDialog):
     def __init__(self):
         super().__init__()
 
@@ -294,15 +319,15 @@ class AirEffects(QWidget):
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
 
-        self.info_label = QLabel(self.read_info_from_file("air_effects.txt"))
+        self.info_label = QLabel(self.read_info_from_file("Text Files/air_effects.txt"))
 
         layout = QVBoxLayout()
         layout.addWidget(self.back_button)
         layout.addWidget(self.info_label)
-        layout.addWidget(self.test_button)
+        # layout.addWidget(self.test_button)
 
-        self.test_button = QPushButton("Let's Test")
-        self.test_button.clicked.connect(self.show_test_page)
+        # self.test_button = QPushButton("Let's Test")
+        # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
 
@@ -319,7 +344,7 @@ class AirEffects(QWidget):
             return "Information not available."
 
 
-class LandEffects(QWidget):
+class LandEffects(QDialog):
     def __init__(self):
         super().__init__()
 
@@ -328,15 +353,17 @@ class LandEffects(QWidget):
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
 
-        self.info_label = QLabel(self.read_info_from_file("land_effects.txt"))
+        self.info_label = QLabel(
+            self.read_info_from_file("Text Files/land_effects.txt")
+        )
 
         layout = QVBoxLayout()
         layout.addWidget(self.back_button)
         layout.addWidget(self.info_label)
-        layout.addWidget(self.test_button)
+        # layout.addWidget(self.test_button)
 
-        self.test_button = QPushButton("Let's Test")
-        self.test_button.clicked.connect(self.show_test_page)
+        # self.test_button = QPushButton("Let's Test")
+        # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
 
@@ -353,7 +380,7 @@ class LandEffects(QWidget):
             return "Information not available."
 
 
-class WaterEffects(QWidget):
+class WaterEffects(QDialog):
     def __init__(self):
         super().__init__()
 
@@ -362,15 +389,17 @@ class WaterEffects(QWidget):
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
 
-        self.info_label = QLabel(self.read_info_from_file("water_effects.txt"))
+        self.info_label = QLabel(
+            self.read_info_from_file("Text Files/water_effects.txt")
+        )
 
         layout = QVBoxLayout()
         layout.addWidget(self.back_button)
         layout.addWidget(self.info_label)
-        layout.addWidget(self.test_button)
+        # layout.addWidget(self.test_button)
 
-        self.test_button = QPushButton("Let's Test")
-        self.test_button.clicked.connect(self.show_test_page)
+        # self.test_button = QPushButton("Let's Test")
+        # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
 
@@ -387,7 +416,7 @@ class WaterEffects(QWidget):
             return "Information not available."
 
 
-class GlobalEffects(QWidget):
+class GlobalEffects(QDialog):
     def __init__(self):
         super().__init__()
 
@@ -396,15 +425,17 @@ class GlobalEffects(QWidget):
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
 
-        self.info_label = QLabel(self.read_info_from_file("global_effects.txt"))
+        self.info_label = QLabel(
+            self.read_info_from_file("Text Files/global_effects.txt")
+        )
 
         layout = QVBoxLayout()
         layout.addWidget(self.back_button)
         layout.addWidget(self.info_label)
-        layout.addWidget(self.test_button)
+        # layout.addWidget(self.test_button)
 
-        self.test_button = QPushButton("Let's Test")
-        self.test_button.clicked.connect(self.show_test_page)
+        # self.test_button = QPushButton("Let's Test")
+        # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
 
@@ -426,12 +457,8 @@ class GlobalEffects(QWidget):
 
 # ****************************** Learn Page --> Solutions Pages *******************************
 class SolutionsPage(QDialog):
-    def __init__(self, solution_name):
+    def __init__(self):
         super().__init__()
-
-        self.sol_label = QLabel(
-            "Which phenomenon's solutions do you want to learn about?"
-        )
 
         self.airS_button = QPushButton("Air Pollution")
         self.waterS_button = QPushButton("Water Pollution")
@@ -443,15 +470,40 @@ class SolutionsPage(QDialog):
         layout.addWidget(self.waterS_button)
         layout.addWidget(self.landS_button)
         layout.addWidget(self.globalS_button)
-        layout.addWidget(self.learn_label)
+        # layout.addWidget(self.learn_label)
+
+        self.airS_button.clicked.connect(self.show_airS)
+        self.waterS_button.clicked.connect(self.show_waterS)
+        self.landS_button.clicked.connect(self.show_landS)
+        self.globalS_button.clicked.connect(self.show_globalS)
 
         self.setLayout(layout)
+
+    def show_airS(self):
+        page = AirSol()
+        page.exec_()
+        # self.stacked_widget.setCurrentIndex(0)
+
+    def show_waterS(self):
+        page = WaterSol()
+        page.exec_()
+        # self.stacked_widget.setCurrentIndex(1)
+
+    def show_landS(self):
+        page = LandSol()
+        page.exec_()
+        # self.stacked_widget.setCurrentIndex(0)
+
+    def show_globalS(self):
+        page = GlobalSol()
+        page.exec_()
+        # self.stacked_widget.setCurrentIndex(1)
 
     def go_back(self):
         self.close()
 
 
-class AirSol(QWidget):
+class AirSol(QDialog):
     def __init__(self):
         super().__init__()
 
@@ -460,7 +512,7 @@ class AirSol(QWidget):
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
 
-        self.info_label = QLabel(self.read_info_from_file("air_sol.txt"))
+        self.info_label = QLabel(self.read_info_from_file("Text Files/air_sol.txt"))
 
         layout = QVBoxLayout()
         layout.addWidget(self.back_button)
@@ -481,7 +533,7 @@ class AirSol(QWidget):
             return "Information not available."
 
 
-class LandSol(QWidget):
+class LandSol(QDialog):
     def __init__(self):
         super().__init__()
 
@@ -490,7 +542,7 @@ class LandSol(QWidget):
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
 
-        self.info_label = QLabel(self.read_info_from_file("land_sol.txt"))
+        self.info_label = QLabel(self.read_info_from_file("Text Files/land_sol.txt"))
 
         layout = QVBoxLayout()
         layout.addWidget(self.back_button)
@@ -511,7 +563,7 @@ class LandSol(QWidget):
             return "Information not available."
 
 
-class WaterSol(QWidget):
+class WaterSol(QDialog):
     def __init__(self):
         super().__init__()
 
@@ -520,7 +572,7 @@ class WaterSol(QWidget):
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
 
-        self.info_label = QLabel(self.read_info_from_file("water_sol.txt"))
+        self.info_label = QLabel(self.read_info_from_file("Text Files/water_sol.txt"))
 
         layout = QVBoxLayout()
         layout.addWidget(self.back_button)
@@ -541,7 +593,7 @@ class WaterSol(QWidget):
             return "Information not available."
 
 
-class GlobalSol(QWidget):
+class GlobalSol(QDialog):
     def __init__(self):
         super().__init__()
 
@@ -550,7 +602,7 @@ class GlobalSol(QWidget):
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
 
-        self.info_label = QLabel(self.read_info_from_file("global_sol.txt"))
+        self.info_label = QLabel(self.read_info_from_file("Text Files/global_sol.txt"))
 
         layout = QVBoxLayout()
         layout.addWidget(self.back_button)
