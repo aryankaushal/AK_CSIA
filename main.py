@@ -62,13 +62,13 @@ class MainWindow(QWidget):
 
         self.stacked_widget = QStackedWidget()
         # self.learn_page = LearnUI()
-        self.test_page = TestUI()
-        self.home_page = HomeUI()
+        # self.test_page = TestUI()
+        # self.home_page = HomeUI()
 
         # self.stacked_widget.addWidget(self.learn_page)
         # self.stacked_widget.addWidget(self.auth_handler.sign_in_page)
-        self.stacked_widget.addWidget(self.test_page)
-        self.stacked_widget.addWidget(self.home_page)
+        # self.stacked_widget.addWidget(self.test_page)
+        # self.stacked_widget.addWidget(self.home_page)
 
         # self.auth_handler.registration_page.sign_in_button.clicked.connect(
         #     self.show_sign_in_page
@@ -111,15 +111,15 @@ class MainWindow(QWidget):
         test_page.exec_()  # Show the TestPage
         self.stacked_widget.setCurrentIndex(3)
 
-    def show_registration_page(self):
-        self.stacked_widget.addWidget(self.registration_page)
-        self.stacked_widget.setCurrentWidget(self.registration_page)
-        self.stacked_widget.setCurrentIndex(0)
+    # def show_registration_page(self):
+    #     self.stacked_widget.addWidget(self.registration_page)
+    #     self.stacked_widget.setCurrentWidget(self.registration_page)
+    #     self.stacked_widget.setCurrentIndex(0)
 
-    def show_sign_in_page(self):
-        self.stacked_widget.addWidget(self.sign_in_page)
-        self.stacked_widget.setCurrentWidget(self.sign_in_page)
-        self.stacked_widget.setCurrentIndex(1)
+    # def show_sign_in_page(self):
+    #     self.stacked_widget.addWidget(self.sign_in_page)
+    #     self.stacked_widget.setCurrentWidget(self.sign_in_page)
+    #     self.stacked_widget.setCurrentIndex(1)
 
     def show_home_page(self):
         self.home_page.learn_button.clicked.connect(self.show_learn_page)
