@@ -24,7 +24,6 @@ from random import randint, sample
 from UI import LearnUI, TestUI, HomeUI
 import time, datetime
 from login import AuthHandler
-
 import learn, tests
 
 # *************************************** Home Page ***************************************
@@ -55,11 +54,11 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.database_conn = sqlite3.connect("user_data.db")
-        self.create_tables()
-        self.create_default_user()
+        # self.database_conn = sqlite3.connect("user_data.db")
+        # self.create_tables()
+        # self.create_default_user()
 
-        self.auth_handler = AuthHandler(self.database_conn)
+        # self.auth_handler = AuthHandler(self.database_conn)
 
         self.stacked_widget = QStackedWidget()
         # self.learn_page = LearnUI()
@@ -67,14 +66,13 @@ class MainWindow(QWidget):
         self.home_page = HomeUI()
 
         # self.stacked_widget.addWidget(self.learn_page)
-        self.stacked_widget.addWidget(self.auth_handler.sign_in_page)
+        # self.stacked_widget.addWidget(self.auth_handler.sign_in_page)
         self.stacked_widget.addWidget(self.test_page)
         self.stacked_widget.addWidget(self.home_page)
-        self.stacked_widget.addWidget(self.auth_handler.sign_in_page)
 
-        self.auth_handler.registration_page.sign_in_button.clicked.connect(
-            self.show_sign_in_page
-        )
+        # self.auth_handler.registration_page.sign_in_button.clicked.connect(
+        #     self.show_sign_in_page
+        # )
 
         layout = QVBoxLayout()
         layout.addWidget(self.stacked_widget)
@@ -148,37 +146,37 @@ class MainWindow(QWidget):
         self.stacked_widget.addWidget(global_warming_page)
         self.stacked_widget.setCurrentWidget(global_warming_page)
 
-    def create_tables(self):
-        cursor = self.database_conn.cursor()
-        cursor.execute(
-            """CREATE TABLE IF NOT EXISTS users 
-                          (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                           email TEXT NOT NULL,
-                           password TEXT NOT NULL)"""
-        )
-        cursor.execute(
-            """CREATE TABLE IF NOT EXISTS scores 
-                          (user_id INTEGER,
-                           topic TEXT NOT NULL,
-                           score INTEGER,
-                           FOREIGN KEY (user_id) REFERENCES users(id))"""
-        )
-        self.database_conn.commit()
+    # def create_tables(self):
+    #     cursor = self.database_conn.cursor()
+    #     cursor.execute(
+    #         """CREATE TABLE IF NOT EXISTS users 
+    #                       (id INTEGER PRIMARY KEY AUTOINCREMENT,
+    #                        email TEXT NOT NULL,
+    #                        password TEXT NOT NULL)"""
+    #     )
+    #     cursor.execute(
+    #         """CREATE TABLE IF NOT EXISTS scores 
+    #                       (user_id INTEGER,
+    #                        topic TEXT NOT NULL,
+    #                        score INTEGER,
+    #                        FOREIGN KEY (user_id) REFERENCES users(id))"""
+    #     )
+    #     self.database_conn.commit()
 
-    def create_default_user(self):
-        # Check if a default user already exists
-        cursor = self.database_conn.cursor()
-        cursor.execute("SELECT COUNT(*) FROM users")
-        user_count = cursor.fetchone()[0]
+    # def create_default_user(self):
+    #     # Check if a default user already exists
+    #     cursor = self.database_conn.cursor()
+    #     cursor.execute("SELECT COUNT(*) FROM users")
+    #     user_count = cursor.fetchone()[0]
 
-        if user_count == 0:
-            # Create a default user
-            cursor.execute(
-                "INSERT INTO users (email, password) VALUES (?, ?)",
-                ("test@example.com", "testpassword"),
-            )
-            self.database_conn.commit()
-            print("Default user created.")
+    #     if user_count == 0:
+    #         # Create a default user
+    #         cursor.execute(
+    #             "INSERT INTO users (email, password) VALUES (?, ?)",
+    #             ("test@example.com", "testpassword"),
+    #         )
+    #         self.database_conn.commit()
+    #         print("Default user created.")
 
 
 if __name__ == "__main__":
