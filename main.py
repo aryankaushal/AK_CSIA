@@ -41,6 +41,9 @@ class HomePage(QWidget):
         self.learn_button = QPushButton("Learn")
         self.test_button = QPushButton("Test")
 
+        self.learn_button.clicked.connect(MainWindow.show_learn_page)
+        self.test_button.clicked.connect(MainWindow.show_test_page)
+
         layout = QVBoxLayout(self)
         layout.addWidget(self.points_label)
         layout.addWidget(self.learn_button)
@@ -113,7 +116,7 @@ class MainWindow(QWidget):
     def show_test_page(self):
         test_page = tests.TestPage()
         test_page.exec_()  # Show the TestPage
-        self.stacked_widget.setCurrentIndex(3)
+        # self.stacked_widget.setCurrentIndex(3)
 
     # def show_registration_page(self):
     #     self.stacked_widget.addWidget(self.registration_page)
@@ -128,7 +131,7 @@ class MainWindow(QWidget):
     def show_home_page(self):
         self.home_page.learn_button.clicked.connect(self.show_learn_page)
         self.home_page.test_button.clicked.connect(self.show_test_page)
-        self.stacked_widget.setCurrentIndex(0)
+        # self.stacked_widget.setCurrentIndex(0)
 
     def show_air_pollution_page(self):
         air_pollution_page = learn.AirCauses()
