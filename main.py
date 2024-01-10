@@ -48,7 +48,6 @@ class HomePage(QWidget):
         self.setLayout(layout)
 
 
-
 # **************************************** Main Window ****************************************
 class MainWindow(QWidget):
     def __init__(self):

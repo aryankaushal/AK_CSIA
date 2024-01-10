@@ -25,11 +25,14 @@ from UI import LearnUI, TestUI, HomeUI
 import time, datetime
 from login import AuthHandler
 
+
 # *********************************** Test Page --> Quizzes ***********************************
 class TestPage(QDialog):
     def __init__(self):
         super().__init__()
-
+        self.test_label = QLabel(
+            "Welcome to the Climaware Test page. This is where you can test your climate change knowledge. What do you want to be quizzed on?"
+        )
         self.air_button = QPushButton("Air Pollution")
         self.water_button = QPushButton("Water Pollution")
         self.land_button = QPushButton("Land Pollution")
@@ -178,4 +181,6 @@ class LandQuiz(TestPage):
 class GlobalQuiz(TestPage):
     def __init__(self):
         super().__init__("Global Warming Quiz", "global_quiz.txt")
+
+
 # *********************************************************************************************
