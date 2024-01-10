@@ -25,6 +25,7 @@ from UI import LearnUI, TestUI, HomeUI
 import time, datetime
 from login import AuthHandler
 
+
 # *************************************** Learn Page ***************************************
 class LearnPage(QDialog):
     def __init__(self):
@@ -52,26 +53,23 @@ class CausePage(QDialog):
     def __init__(self, cause_name):
         super().__init__()
 
-        self.setWindowTitle(cause_name)
+        self.causes_label = QLabel(
+            "Which phenomenon's causes do you want to learn about?"
+        )
 
-        self.info_label = QLabel(f"Information about {cause_name}:")
-
-        self.info_text_browser = QTextBrowser()
-        self.info_text_browser.setPlainText(self.generate_random_info())
-
-        self.back_button = QPushButton("Back")
-        self.back_button.clicked.connect(self.go_back)
+        self.airC_button = QPushButton("Air Pollution")
+        self.waterC_button = QPushButton("Water Pollution")
+        self.landC_button = QPushButton("Land Pollution")
+        self.globalC_button = QPushButton("Land Pollution")
 
         layout = QVBoxLayout()
-        layout.addWidget(self.info_label)
-        layout.addWidget(self.info_text_browser)
-        layout.addWidget(self.back_button)
+        layout.addWidget(self.airC_button)
+        layout.addWidget(self.waterC_button)
+        layout.addWidget(self.landC_button)
+        layout.addWidget(self.globalC_button)
+        layout.addWidget(self.learn_label)
 
         self.setLayout(layout)
-
-    def generate_random_info(self):
-        # For simplicity, generate random information about the cause
-        return f"Random information about {self.windowTitle()}"
 
     def go_back(self):
         self.close()
@@ -219,26 +217,23 @@ class EffectsPage(QDialog):
     def __init__(self, effect_name):
         super().__init__()
 
-        self.setWindowTitle(effect_name)
+        self.effects_label = QLabel(
+            "Which phenomenon's effects do you want to learn about?"
+        )
 
-        self.info_label = QLabel(f"Information about {effect_name}:")
-
-        self.info_text_browser = QTextBrowser()
-        self.info_text_browser.setPlainText(self.generate_random_info())
-
-        self.back_button = QPushButton("Back")
-        self.back_button.clicked.connect(self.go_back)
+        self.airE_button = QPushButton("Air Pollution")
+        self.waterE_button = QPushButton("Water Pollution")
+        self.landE_button = QPushButton("Land Pollution")
+        self.globalE_button = QPushButton("Land Pollution")
 
         layout = QVBoxLayout()
-        layout.addWidget(self.info_label)
-        layout.addWidget(self.info_text_browser)
-        layout.addWidget(self.back_button)
+        layout.addWidget(self.airE_button)
+        layout.addWidget(self.waterE_button)
+        layout.addWidget(self.landE_button)
+        layout.addWidget(self.globalE_button)
+        layout.addWidget(self.learn_label)
 
         self.setLayout(layout)
-
-    def generate_random_info(self):
-        # For simplicity, generate random information about the effect
-        return f"Random information about {self.windowTitle()}"
 
     def go_back(self):
         self.close()
@@ -378,8 +373,6 @@ class GlobalEffects(QWidget):
                 return file.read()
         except FileNotFoundError:
             return "Information not available."
-
-
 # *********************************************************************************************
 
 
@@ -388,29 +381,23 @@ class SolutionsPage(QDialog):
     def __init__(self, solution_name):
         super().__init__()
 
-        self.setWindowTitle(solution_name)
+        self.sol_label = QLabel(
+            "Which phenomenon's solutions do you want to learn about?"
+        )
 
-        self.info_label = QLabel(f"Information about {solution_name}:")
-
-        self.info_text_browser = QTextBrowser()
-        self.info_text_browser.setPlainText(self.generate_random_info())
-
-        self.back_button = QPushButton("Back")
-        self.back_button.clicked.connect(self.go_back)
+        self.airS_button = QPushButton("Air Pollution")
+        self.waterS_button = QPushButton("Water Pollution")
+        self.landS_button = QPushButton("Land Pollution")
+        self.globalS_button = QPushButton("Land Pollution")
 
         layout = QVBoxLayout()
-        layout.addWidget(self.info_label)
-        layout.addWidget(self.info_text_browser)
-        layout.addWidget(self.back_button)
-        layout.addWidget(self.test_button)
+        layout.addWidget(self.airS_button)
+        layout.addWidget(self.waterS_button)
+        layout.addWidget(self.landS_button)
+        layout.addWidget(self.globalS_button)
+        layout.addWidget(self.learn_label)
 
-        self.test_button = QPushButton("Let's Test")
-        self.test_button.clicked.connect(self.show_test_page)
         self.setLayout(layout)
-
-    def generate_random_info(self):
-        # For simplicity, generate random information about the solution
-        return f"Random information about {self.windowTitle()}"
 
     def go_back(self):
         self.close()
@@ -534,4 +521,6 @@ class GlobalSol(QWidget):
                 return file.read()
         except FileNotFoundError:
             return "Information not available."
+
+
 # *********************************************************************************************
