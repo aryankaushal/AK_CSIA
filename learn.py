@@ -39,6 +39,10 @@ class LearnPage(QDialog):
         self.effects_button = QPushButton("Effects")
         self.solutions_button = QPushButton("Solutions")
 
+        self.causes_button.clicked.connect(self.show_causes_page)
+        self.effects_button.clicked.connect(self.show_effects_page)
+        self.solutions_button.clicked.connect(self.show_solutions_page)
+
         layout = QVBoxLayout()
         layout.addWidget(self.learn_label)
         layout.addWidget(self.causes_button)
@@ -47,6 +51,20 @@ class LearnPage(QDialog):
 
         self.setLayout(layout)
 
+    def show_causes_page(self):
+        page = CausePage()
+        page.exec_()  
+        # self.stacked_widget.setCurrentIndex(0)
+
+    def show_effects_page(self):
+        page = EffectsPage()
+        page.exec_() 
+        # self.stacked_widget.setCurrentIndex(1)
+
+    def show_solutions_page(self):
+        page = SolutionsPage()
+        page.exec_() 
+        # self.stacked_widget.setCurrentIndex(2)
 
 # ******************************* Learn Page --> Causes Pages *******************************
 class CausePage(QDialog):

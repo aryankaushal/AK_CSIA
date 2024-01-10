@@ -89,29 +89,13 @@ class MainWindow(QWidget):
     def show_learn_page(self):
         learn_page = learn.LearnPage()
 
-        self.stacked_widget.addWidget(learn_page)
-        self.stacked_widget.setCurrentWidget(learn_page)
+        # self.stacked_widget.addWidget(learn_page)
+        # self.stacked_widget.setCurrentWidget(learn_page)
 
-        learn_page.causes_button.clicked.connect(learn.LearnPage.show_causes_page)
-        learn_page.effects_button.clicked.connect(learn.LearnPage.show_effects_page)
-        learn_page.solutions_button.clicked.connect(learn.LearnPage.show_solutions_page)
+        learn_page.exec_()
+        # self.stacked_widget.setCurrentIndex(4)
 
-        self.stacked_widget.setCurrentIndex(4)
-
-    def show_causes_page(self):
-        page = learn.CausePage()
-        page.exec_()  
-        self.stacked_widget.setCurrentIndex(0)
-
-    def show_effects_page(self):
-        page = learn.EffectsPage()
-        page.exec_() 
-        self.stacked_widget.setCurrentIndex(1)
-
-    def show_solutions_page(self):
-        page = learn.SolutionsPage()
-        page.exec_() 
-        self.stacked_widget.setCurrentIndex(2)
+    
 
     def show_test_page(self):
         test_page = tests.TestPage()
