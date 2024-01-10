@@ -8,8 +8,28 @@ from PyQt5.QtWidgets import (
     QDialog,
     QRadioButton,
 )
+class HomePageUI(QWidget):
+    def __init__(self):
+        super().__init__()
 
+        self.title_label = QLabel("<h1>Climaware</h1>")
+        self.additional_text = QLabel(
+            "Welcome to Climaware! Explore and learn about environmental issues."
+        )
 
+        self.points_label = QLabel("Points: 0")
+
+        self.learn_button = QPushButton("Learn")
+        self.test_button = QPushButton("Test")
+
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.points_label)
+        layout.addWidget(self.learn_button)
+        layout.addWidget(self.test_button)
+
+        self.setLayout(layout)
+
+        
 class SignUpUI(QWidget):
     def __init__(self):
         super().__init__()

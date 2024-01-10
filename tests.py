@@ -34,6 +34,11 @@ class TestPage(QDialog):
         self.test_label = QLabel(
             "Welcome to the Climaware Test page. This is where you can test your climate change knowledge. What do you want to be quizzed on?"
         )
+
+        self.setGeometry(100, 100, 500, 1000)
+        # self.setStyleSheet("background-color: grey;")
+        self.setFixedSize(500, 1000)
+
         self.air_button = QPushButton("Air Pollution")
         self.water_button = QPushButton("Water Pollution")
         self.land_button = QPushButton("Land Pollution")
@@ -70,6 +75,10 @@ class TestPage(QDialog):
 class TestDialog(QDialog):
     def __init__(self, topic, file_name):
         super().__init__()
+
+        self.setGeometry(100, 100, 500, 1000)
+        # self.setStyleSheet("background-color: grey;")
+        self.setFixedSize(500, 1000)
 
         self.questions = self.load_questions_from_file(file_name)
         self.current_question = 0
@@ -169,15 +178,20 @@ class AirQuiz(TestPage):
     def __init__(self):
         super().__init__("Air Pollution Quiz", "Text Files/air_quiz.csv")
 
+
 class WaterQuiz(TestPage):
     def __init__(self):
         super().__init__("Water Pollution Quiz", "Text Files/water_quiz.csv")
+
 
 class LandQuiz(TestPage):
     def __init__(self):
         super().__init__("Land Pollution Quiz", "Text Files/land_quiz.csv")
 
+
 class GlobalQuiz(TestPage):
     def __init__(self):
         super().__init__("Global Warming Quiz", "Text Files/global_quiz.csv")
+
+
 # *********************************************************************************************
