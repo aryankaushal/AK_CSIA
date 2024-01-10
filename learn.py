@@ -53,22 +53,23 @@ class LearnPage(QDialog):
 
     def show_causes_page(self):
         page = CausePage()
-        page.exec_()  
+        page.exec_()
         # self.stacked_widget.setCurrentIndex(0)
 
     def show_effects_page(self):
         page = EffectsPage()
-        page.exec_() 
+        page.exec_()
         # self.stacked_widget.setCurrentIndex(1)
 
     def show_solutions_page(self):
         page = SolutionsPage()
-        page.exec_() 
+        page.exec_()
         # self.stacked_widget.setCurrentIndex(2)
+
 
 # ******************************* Learn Page --> Causes Pages *******************************
 class CausePage(QDialog):
-    def __init__(self, cause_name):
+    def __init__(self):
         super().__init__()
 
         self.causes_label = QLabel(
@@ -85,9 +86,34 @@ class CausePage(QDialog):
         layout.addWidget(self.waterC_button)
         layout.addWidget(self.landC_button)
         layout.addWidget(self.globalC_button)
-        layout.addWidget(self.learn_label)
+        # layout.addWidget(self.learn_label)
+
+        self.airC_button.clicked.connect(self.show_airC)
+        self.waterC_button.clicked.connect(self.show_waterC)
+        self.landC_button.clicked.connect(self.show_landC)
+        self.globalC_button.clicked.connect(self.show_globalC)
 
         self.setLayout(layout)
+
+    def show_airC(self):
+        page = AirCauses()
+        page.exec_()
+        # self.stacked_widget.setCurrentIndex(0)
+
+    def show_waterC(self):
+        page = WaterCauses()
+        page.exec_()
+        # self.stacked_widget.setCurrentIndex(1)
+
+    def show_landC(self):
+        page = LandCauses()
+        page.exec_()
+        # self.stacked_widget.setCurrentIndex(0)
+
+    def show_globalC(self):
+        page = GlobalCauses()
+        page.exec_()
+        # self.stacked_widget.setCurrentIndex(1)
 
     def go_back(self):
         self.close()
@@ -107,10 +133,10 @@ class AirCauses(QWidget):
         layout = QVBoxLayout()
         layout.addWidget(self.back_button)
         layout.addWidget(self.info_label)
-        layout.addWidget(self.test_button)
+        # layout.addWidget(self.test_button)
 
-        self.test_button = QPushButton("Let's Test")
-        self.test_button.clicked.connect(self.show_test_page)
+        # self.test_button = QPushButton("Let's Test")
+        # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
 
@@ -227,6 +253,8 @@ class GlobalCauses(QWidget):
                 return file.read()
         except FileNotFoundError:
             return "Information not available."
+
+
 # ********************************************************************************************
 
 
@@ -391,6 +419,8 @@ class GlobalEffects(QWidget):
                 return file.read()
         except FileNotFoundError:
             return "Information not available."
+
+
 # *********************************************************************************************
 
 
