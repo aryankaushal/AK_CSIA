@@ -25,6 +25,8 @@ from UI import LearnUI, TestUI, HomeUI
 import time, datetime
 from login import AuthHandler
 
+import learn, tests
+
 # *************************************** Home Page ***************************************
 class HomePage(QWidget):
     def __init__(self, parent=None):
@@ -81,18 +83,34 @@ class MainWindow(QWidget):
         self.setLayout(layout)
 
     def show_learn_page(self):
-        learn_page = LearnPage()
+        learn_page = learn.LearnPage()
 
         self.stacked_widget.addWidget(learn_page)
         self.stacked_widget.setCurrentWidget(learn_page)
 
-        learn_page.causes_button.clicked.connect(self.show_causes_page)
-        learn_page.effects_button.clicked.connect(self.show_effects_page)
-        learn_page.solutions_button.clicked.connect(self.show_solutions_page)
+        learn_page.causes_button.clicked.connect(learn.LearnPage.show_causes_page)
+        learn_page.effects_button.clicked.connect(learn.LearnPage.show_effects_page)
+        learn_page.solutions_button.clicked.connect(learn.LearnPage.show_solutions_page)
+
         self.stacked_widget.setCurrentIndex(4)
 
+    def show_causes_page(self):
+        page = learn.CausePage()
+        page.exec_()  
+        self.stacked_widget.setCurrentIndex(0)
+
+    def show_effects_page(self):
+        page = learn.EffectsPage()
+        page.exec_() 
+        self.stacked_widget.setCurrentIndex(1)
+
+    def show_solutions_page(self):
+        page = learn.SolutionsPage()
+        page.exec_() 
+        self.stacked_widget.setCurrentIndex(2)
+
     def show_test_page(self):
-        test_page = TestPage()
+        test_page = tests.TestPage()
         test_page.exec_()  # Show the TestPage
         self.stacked_widget.setCurrentIndex(3)
 
@@ -112,22 +130,22 @@ class MainWindow(QWidget):
         self.stacked_widget.setCurrentIndex(2)
 
     def show_air_pollution_page(self):
-        air_pollution_page = AirCauses()
+        air_pollution_page = learn.AirCauses()
         self.stacked_widget.addWidget(air_pollution_page)
         self.stacked_widget.setCurrentWidget(air_pollution_page)
 
     def show_water_pollution_page(self):
-        water_pollution_page = WaterCauses()
+        water_pollution_page = learn.WaterCauses()
         self.stacked_widget.addWidget(water_pollution_page)
         self.stacked_widget.setCurrentWidget(water_pollution_page)
 
     def show_land_pollution_page(self):
-        land_pollution_page = LandCauses()
+        land_pollution_page = learn.LandCauses()
         self.stacked_widget.addWidget(land_pollution_page)
         self.stacked_widget.setCurrentWidget(land_pollution_page)
 
     def show_global_warming_page(self):
-        global_warming_page = GlobalCauses()
+        global_warming_page = learn.GlobalCauses()
         self.stacked_widget.addWidget(global_warming_page)
         self.stacked_widget.setCurrentWidget(global_warming_page)
 
