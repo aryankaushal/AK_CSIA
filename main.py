@@ -60,6 +60,8 @@ class MainWindow(QWidget):
 
         # self.auth_handler = AuthHandler(self.database_conn)
 
+        self.home_page = HomePage()
+
         self.stacked_widget = QStackedWidget()
         # self.learn_page = LearnUI()
         # self.test_page = TestUI()
@@ -73,6 +75,8 @@ class MainWindow(QWidget):
         # self.auth_handler.registration_page.sign_in_button.clicked.connect(
         #     self.show_sign_in_page
         # )
+
+        self.stacked_widget.addWidget(self.home_page)
 
         layout = QVBoxLayout()
         layout.addWidget(self.stacked_widget)
@@ -124,7 +128,7 @@ class MainWindow(QWidget):
     def show_home_page(self):
         self.home_page.learn_button.clicked.connect(self.show_learn_page)
         self.home_page.test_button.clicked.connect(self.show_test_page)
-        self.stacked_widget.setCurrentIndex(2)
+        self.stacked_widget.setCurrentIndex(0)
 
     def show_air_pollution_page(self):
         air_pollution_page = learn.AirCauses()
