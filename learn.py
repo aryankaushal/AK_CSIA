@@ -17,7 +17,7 @@ from PyQt5.QtWidgets import (
     QTextBrowser,
     QMessageBox,
 )
-from PyQt5.QtGui import QPixmap, QColor
+from PyQt5.QtGui import QPixmap, QColor, QFont
 from PyQt5.QtCore import pyqtSignal, Qt
 from email.mime.text import MIMEText
 from random import randint, sample
@@ -31,13 +31,22 @@ class LearnPage(QDialog):
     def __init__(self):
         super().__init__()
 
+        self.learn_title = QLabel("Climaware Learn")
+        self.learn_title.setFont(QFont("Arial", 50, QFont.Bold))
+        self.learn_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.learn_title.setStyleSheet("color: black;")
+
         self.learn_label = QLabel(
-            "Welcome to the Climaware Learn page. This is where you can study your climate change material. What do you want to learn about?"
+            "Welcome to the Climaware Learn page.\nThis is where you can study your climate change material.\nWhat do you want to learn about?"
         )
+        self.learn_label.setFont(QFont("Arial", 20, QFont.Bold))
+        self.learn_label.setAlignment(Qt.AlignHCenter)
+        self.learn_label.setStyleSheet("color: #004894;")
 
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
         self.setFixedSize(500, 1000)
+        self.setStyleSheet("background-color: #F4B970;")
 
         self.causes_button = QPushButton("Causes")
         self.effects_button = QPushButton("Effects")
@@ -47,7 +56,17 @@ class LearnPage(QDialog):
         self.effects_button.clicked.connect(self.show_effects_page)
         self.solutions_button.clicked.connect(self.show_solutions_page)
 
+        self.causes_button.setStyleSheet(
+            "background-color: yellow; color: black; border-radius: 20px; font-size: 16px; min-width: 30; min-height: 50px;"
+        )
+        self.effects_button.setStyleSheet(
+            "background-color: blue; color: black; border-radius: 20px; font-size: 16px; min-width: 30; min-height: 50px;"
+        )
+        self.solutions_button.setStyleSheet(
+            "background-color: lightgreen; color: black; border-radius: 20px; font-size: 16px; min-width: 30; min-height: 50px;"
+        )
         layout = QVBoxLayout()
+        layout.addWidget(self.learn_title)
         layout.addWidget(self.learn_label)
         layout.addWidget(self.causes_button)
         layout.addWidget(self.effects_button)

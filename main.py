@@ -44,37 +44,38 @@ class HomePage(QWidget):
         # self.points_label = QLabel("Points: 0")
 
         welcome_label = QLabel(
-            "Welcome to the best place to learn about climate change! We are glad you're joining us!"
+            "Welcome to the best place to learn about climate change!\nWe are glad you're joining us!"
         )
-        welcome_label.setFont(QFont("Arial", 12))
-        welcome_label.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        welcome_label.setFont(QFont("Arial", 16))
+        welcome_label.setStyleSheet("color: black;")
+        welcome_label.setAlignment(Qt.AlignHCenter)
 
         instruction_label = QLabel(
-            "Would you like to learn about climate change or test your understanding?"
+            "Would you like to learn about climate change\nor test your understanding?"
         )
-        instruction_label.setFont(QFont("Arial", 12))
-        instruction_label.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        instruction_label.setFont(QFont("Arial", 16))
+        instruction_label.setStyleSheet("color: black;")
+        instruction_label.setAlignment(Qt.AlignHCenter)
 
         self.learn_button = QPushButton("Learn")
         self.test_button = QPushButton("Test")
-
+        self.learn_button.setGeometry(50, 50, 30, 50)
         self.learn_button.setStyleSheet(
-            "background-color: #4CAF50; color: white; border-radius: 10px; font-size: 16px; margin-top: 20px"
+            "background-color: green; color: white; border-radius: 20px; font-size: 16px; min-width: 30; min-height: 50px;"
         )
         self.test_button.setStyleSheet(
-            "background-color: #4CAF50; color: white; border-radius: 10px; font-size: 16px; margin-top: 10px"
+            "background-color: green; color: white; border-radius: 20px; font-size: 16px; min-width: 30; min-height: 50px;"
         )
 
         self.learn_button.clicked.connect(MainWindow.show_learn_page)
         self.test_button.clicked.connect(MainWindow.show_test_page)
 
         layout = QVBoxLayout(self)
+        layout.addWidget(title_label)
+        layout.addWidget(welcome_label)
+        layout.addWidget(instruction_label)
         layout.addWidget(self.learn_button)
         layout.addWidget(self.test_button)
-        layout.addWidget(welcome_label)
-        layout.addWidget(title_label)
-        layout.addWidget(instruction_label)
-
         # layout.addWidget(self.points_label)
 
         self.setLayout(layout)
