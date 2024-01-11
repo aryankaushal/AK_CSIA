@@ -36,6 +36,7 @@ class TestPage(QDialog):
         )
 
         self.setGeometry(100, 100, 500, 1000)
+        self.setStyleSheet("background-color: #F3A3DB;")
         # self.setStyleSheet("background-color: grey;")
         self.setFixedSize(500, 1000)
 
@@ -77,7 +78,7 @@ class TestDialog(QDialog):
         super().__init__()
 
         self.setGeometry(100, 100, 500, 1000)
-        # self.setStyleSheet("background-color: grey;")
+        self.setStyleSheet("background-color: #97BFE5;")
         self.setFixedSize(500, 1000)
 
         self.questions = self.load_questions_from_file(file_name)
@@ -168,7 +169,7 @@ class TestDialog(QDialog):
             result_message = "Well done!"
         else:
             result_message = "Wow! A perfect score!"
-
+        result_message.setStyleSheet()
         QMessageBox.information(self, "Result Message", result_message)
 
         self.accept()
