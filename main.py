@@ -25,7 +25,7 @@ import time, datetime
 import secrets
 
 # from login import SignInPage, RegistrationPage
-import learn, tests
+import learn, tests, login
 
 
 # *************************************** Home Page ***************************************
@@ -103,12 +103,15 @@ class MainWindow(QWidget):
         self.create_tables()
         self.create_default_user()
 
+        self.registration_page = login.RegistrationPage(self.database_conn)
+        
+        print("I AM EHREREREE in main after calling reg")
+        
         self.home_page = HomePage()
         self.stacked_widget = QStackedWidget()
         self.stacked_widget.addWidget(self.home_page)
         self.setStyleSheet("background-color: lightblue;")
 
-        # # self.registration_page = RegistrationPage(self.database_conn)
         # # self.sign_in_page = SignInPage(self.database_conn)
 
         # self.registration_page.registration_successful.connect(self.show_home_page)
