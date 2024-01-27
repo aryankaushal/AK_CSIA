@@ -171,24 +171,21 @@ class MainWindow(QWidget):
         cursor = self.database_conn.cursor()
         cursor.execute("SELECT COUNT(*) FROM users")
         user_count = cursor.fetchone()[0]
+        print(user_count)
 
         if user_count == 0:
-            random_username = secrets.token_hex(
-                8
-            )  # You can adjust the length as needed
-            random_password = secrets.token_hex(
-                12
-            )  # You can adjust the length as needed
 
-            # Create a default user
+            username = "aryankkk"
+            password = "Aryan_2982"
             cursor.execute(
                 "INSERT INTO users (username, password) VALUES (?, ?)",
-                (random_username, random_password),
+                (username, password),
             )
             self.database_conn.commit()
             print("Default user created.")
-            print(f"Username: {random_username}")
-            print(f"Password: {random_password}")
+            print(f"Username: {username}")
+            print(f"Password: {password}")
+
             # # Create a default user
             # cursor.execute(
             #     "INSERT INTO users (username, password) VALUES (?, ?)",
