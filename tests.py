@@ -225,16 +225,9 @@ class TestDialog(QDialog):
         else:
             result_message = "Wow! A perfect score!"
 
-        # result_message = QMessageBox(result_message)
-        # result_message.setFont(QFont("Arial", 20, QFont.Bold))
-        # result_message.setAlignment(Qt.AlignHCenter)
-        # # result_message_label.setStyleSheet("color: black;")
-
-        # result_message.setStyleSheet()
         QMessageBox.information(self, "Result Message", result_message)
 
         self.accept()
-
 
 class AirQuiz(TestPage):
     def __init__(self):

@@ -22,7 +22,9 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from email.mime.text import MIMEText
 from random import randint, sample
 import time, datetime
-from login import SignInPage, RegistrationPage
+import secrets
+
+# from login import SignInPage, RegistrationPage
 import learn, tests
 
 
@@ -96,34 +98,30 @@ class MainWindow(QWidget):
         super().__init__()
         self.setWindowTitle("Climaware")
         self.setGeometry(512, 100, 500, 900)
-        # self.setFixedSize(500, 1000)
 
-        # self.database_conn = sqlite3.connect("user_data.db")
-        # self.create_tables()
-        # self.create_default_user()
-        # self.auth_handler = AuthHandler(self.database_conn)
+        self.database_conn = sqlite3.connect("user_data.db")
+        self.create_tables()
+        self.create_default_user()
 
         self.home_page = HomePage()
         self.stacked_widget = QStackedWidget()
         self.stacked_widget.addWidget(self.home_page)
         self.setStyleSheet("background-color: lightblue;")
 
-        # self.learn_page = LearnUI()
-        # self.test_page = TestUI()
-        # self.home_page = HomeUI()
+        # # self.registration_page = RegistrationPage(self.database_conn)
+        # # self.sign_in_page = SignInPage(self.database_conn)
 
-        # self.stacked_widget.addWidget(self.learn_page)
-        # self.stacked_widget.addWidget(self.auth_handler.sign_in_page)
-
-        # self.auth_handler.registration_page.sign_in_button.clicked.connect(
-        #     self.show_sign_in_page
-        # )
+        # self.registration_page.registration_successful.connect(self.show_home_page)
+        # self.sign_in_page.sign_in_successful.connect(self.show_home_page)
 
         layout = QVBoxLayout()
         layout.addWidget(self.stacked_widget)
         layout.setSpacing(1)
         layout.addStretch(1)
         self.setLayout(layout)
+
+        # self.home_page.learn_button.clicked.connect(self.show_registration_page)
+        # self.home_page.test_button.clicked.connect(self.show_sign_in_page)
 
     def show_learn_page(self):
         learn_page = learn.LearnPage()
@@ -134,53 +132,29 @@ class MainWindow(QWidget):
 
     def show_test_page(self):
         test_page = tests.TestPage()
-        test_page.exec_()  # Show the TestPage
+        test_page.exec_()
         # self.stacked_widget.setCurrentIndex(3)
 
-    def show_registration_page(self):
-        registration = RegistrationPage(self.database_conn)
+    # def show_registration_page(self):
+    #     self.home_page.learn_button.clicked.connect(self.show_registration_page)
+    #     self.home_page.test_button.clicked.connect(self.show_sign_in_page)
+    #     # registration = RegistrationPage(self.database_conn)
+    #     # self.stacked_widget.addWidget(self.registration_page)
+    #     self.stacked_widget.setCurrentWidget(self.registration_page)
+    #     self.stacked_widget.setCurrentIndex(0)
 
-        self.stacked_widget.addWidget(self.registration_page)
-        self.stacked_widget.setCurrentWidget(self.registration_page)
-        self.stacked_widget.setCurrentIndex(0)
-
-    def show_sign_in_page(self):
-        signup = SignInPage(self.database_conn)
-        self.stacked_widget.addWidget(self.sign_in_page)
-        self.stacked_widget.setCurrentWidget(self.sign_in_page)
-        self.stacked_widget.setCurrentIndex(1)
-
-    # def show_home_page(self):
-    #     self.home_page.learn_button.clicked.connect(self.show_learn_page)
-    #     self.home_page.test_button.clicked.connect(self.show_test_page)
-    #     # self.stacked_widget.setCurrentIndex(0)
-
-    # def show_air_pollution_page(self):
-    #     air_pollution_page = learn.AirCauses()
-    #     self.stacked_widget.addWidget(air_pollution_page)
-    #     self.stacked_widget.setCurrentWidget(air_pollution_page)
-
-    # def show_water_pollution_page(self):
-    #     water_pollution_page = learn.WaterCauses()
-    #     self.stacked_widget.addWidget(water_pollution_page)
-    #     self.stacked_widget.setCurrentWidget(water_pollution_page)
-
-    # def show_land_pollution_page(self):
-    #     land_pollution_page = learn.LandCauses()
-    #     self.stacked_widget.addWidget(land_pollution_page)
-    #     self.stacked_widget.setCurrentWidget(land_pollution_page)
-
-    # def show_global_warming_page(self):
-    #     global_warming_page = learn.GlobalCauses()
-    #     self.stacked_widget.addWidget(global_warming_page)
-    #     self.stacked_widget.setCurrentWidget(global_warming_page)
+    # def show_sign_in_page(self):
+    #     signup = SignInPage(self.database_conn)
+    #     self.stacked_widget.addWidget(self.sign_in_page)
+    #     self.stacked_widget.setCurrentWidget(self.sign_in_page)
+    #     self.stacked_widget.setCurrentIndex(1)
 
     def create_tables(self):
         cursor = self.database_conn.cursor()
         cursor.execute(
             """CREATE TABLE IF NOT EXISTS users
                           (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                           email TEXT NOT NULL,
+                           username TEXT NOT NULL,
                            password TEXT NOT NULL)"""
         )
         cursor.execute(
@@ -199,17 +173,36 @@ class MainWindow(QWidget):
         user_count = cursor.fetchone()[0]
 
         if user_count == 0:
+            random_username = secrets.token_hex(
+                8
+            )  # You can adjust the length as needed
+            random_password = secrets.token_hex(
+                12
+            )  # You can adjust the length as needed
+
             # Create a default user
             cursor.execute(
-                "INSERT INTO users (email, password) VALUES (?, ?)",
-                ("test@example.com", "testpassword"),
+                "INSERT INTO users (username, password) VALUES (?, ?)",
+                (random_username, random_password),
             )
             self.database_conn.commit()
             print("Default user created.")
+            print(f"Username: {random_username}")
+            print(f"Password: {random_password}")
+            # # Create a default user
+            # cursor.execute(
+            #     "INSERT INTO users (username, password) VALUES (?, ?)",
+            #     ("test@example.com", "testpassword"),
+            # )
+            # self.database_conn.commit()
+            # print("Default user created.")
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
+    # registration_page = RegistrationPage(window.database_conn)
+    # registration_page.switch_to_sign_in_page.connect(window.show_sign_in_page)
+    # registration_page.show()
     window.show()
     sys.exit(app.exec_())

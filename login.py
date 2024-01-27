@@ -21,10 +21,12 @@ from PyQt5.QtGui import QPixmap, QColor
 from PyQt5.QtCore import pyqtSignal, Qt, QTimer
 from email.mime.text import MIMEText
 from random import randint, sample
-from UI import LearnUI, TestUI, HomeUI
-import time
-import datetime
+# from UI import LearnUI, TestUI, HomeUI
+# import time
+# import datetime
 import pyotp
+import re
+
 
 class SignInPage(QDialog):
     sign_in_successful = pyqtSignal()
@@ -34,18 +36,19 @@ class SignInPage(QDialog):
 
         self.database_conn = database_conn
 
-        self.email_label = QLabel("Email:")
-        self.email_input = QLineEdit()
+        self.username_label = QLabel("Username:")
+        self.username_input = QLineEdit()
 
         self.password_label = QLabel("Password:")
         self.password_input = QLineEdit()
+        self.password_input.setEchoMode(QLineEdit.Password)
 
         self.sign_in_button = QPushButton("Sign In")
         self.sign_in_button.clicked.connect(self.sign_in_user)
 
         layout = QVBoxLayout()
-        layout.addWidget(self.email_label)
-        layout.addWidget(self.email_input)
+        layout.addWidget(self.username_label)
+        layout.addWidget(self.username_input)
         layout.addWidget(self.password_label)
         layout.addWidget(self.password_input)
         layout.addWidget(self.sign_in_button)
@@ -53,13 +56,14 @@ class SignInPage(QDialog):
         self.setLayout(layout)
 
     def sign_in_user(self):
-        email = self.email_input.text()
+        username = self.username_input.text()
         password = self.password_input.text()
-        # **********************************************************************************************************************
-        # Add code to check if the email and password match in the database
+
+        # Check if the username and password match in the database
         cursor = self.database_conn.cursor()
         cursor.execute(
-            "SELECT * FROM users WHERE email = ? AND password = ?", (email, password)
+            "SELECT * FROM users WHERE username = ? AND password = ?",
+            (username, password),
         )
         user_data = cursor.fetchone()
 
@@ -69,9 +73,8 @@ class SignInPage(QDialog):
             self.accept()  # Close the SignInPage
         else:
             QMessageBox.warning(
-                self, "Invalid Credentials", "Invalid email or password."
+                self, "Invalid Credentials", "Invalid username or password."
             )
-
 
 class RegistrationPage(QDialog):
     registration_successful = pyqtSignal()
@@ -83,167 +86,132 @@ class RegistrationPage(QDialog):
         self.max_attempts = 3
         self.attempts = 0
 
-        self.email_label = QLabel("Email:")
-        self.email_input = QLineEdit()
-
-        self.otp_label = QLabel("Enter OTP:")
-        self.otp_input = QLineEdit()
+        self.username_label = QLabel("Username:")
+        self.username_input = QLineEdit()
 
         self.password_label = QLabel("Password:")
         self.password_input = QLineEdit()
+        self.password_input.setEchoMode(QLineEdit.Password)
+
+        self.confirm_password_label = QLabel("Confirm Password:")
+        self.confirm_password_input = QLineEdit()
+        self.confirm_password_input.setEchoMode(QLineEdit.Password)
+
+        self.password_strength_label = QLabel()
+        self.password_strength_label.setAlignment(Qt.AlignCenter)
 
         self.register_button = QPushButton("Join us!")
         self.register_button.clicked.connect(self.register_user)
 
-        self.sign_in_button = QPushButton("Sign In instead")
+        self.sign_in_button = QPushButton("Sign In, instead")
         self.sign_in_button.clicked.connect(self.show_sign_in_page)
 
-        self.resend_button = QPushButton("Resend OTP")
-        self.resend_button.clicked.connect(self.resend_otp)
-        self.resend_button.setEnabled(False)
+        switch_to_sign_in_page = pyqtSignal()
 
-        self.timer_label = QLabel("Time left: ")
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.update_timer)
-
-        self.setup_otp()
+        def show_sign_in_page(self):
+            self.switch_to_sign_in_page.emit()
 
         layout = QVBoxLayout()
-        layout.addWidget(self.email_label)
-        layout.addWidget(self.email_input)
-        layout.addWidget(self.otp_label)
-        layout.addWidget(self.otp_input)
+        layout.addWidget(self.username_label)
+        layout.addWidget(self.username_input)
         layout.addWidget(self.password_label)
         layout.addWidget(self.password_input)
+        layout.addWidget(self.confirm_password_label)
+        layout.addWidget(self.confirm_password_input)
+        layout.addWidget(self.password_strength_label)
         layout.addWidget(self.register_button)
         layout.addWidget(self.sign_in_button)
-        layout.addWidget(self.resend_button)
-        layout.addWidget(self.timer_label)
 
         self.setLayout(layout)
 
-    def setup_otp(self):
-        otp_setup = RegistrationPage()
-        # Generate and send initial OTP
-        email = self.email_input.text()
-        otp = self.generate_otp(email)
-        self.send_otp_email(email, otp)
+        self.password_input.textChanged.connect(self.update_password_strength)
 
-        # Enable timer for 1 minute
-        self.timer.start(60000)
+    def update_password_strength(self):
+        password = self.password_input.text()
+        strength = self.calculate_password_strength(password)
 
-    def generate_otp(self, email):
-        otp = str(randint(100000, 999999))
-        OTP_STORE[email] = otp
-        return otp
+        colors = {
+            "very_weak": "red",
+            "weak": "orange",
+            "slightly_weak": "yellow",
+            "slightly_strong": "lightgreen",
+            "strong": "green",
+        }
 
-    def send_otp_email(self, email, otp):
-        port = 587
-        sender = "aryan_csia@outlook.com"
-        smtp_server = "smtp-mail.outlook.com"
-        password = "aryan1711"
+        self.password_strength_label.setText(f"Password Strength: {strength.capitalize()}")
+        self.password_strength_label.setStyleSheet(f"color: {colors[strength]}; font-weight: bold;")
 
-        message = f"""\
-            Subject: Climaware Account Registration OTP
+    def calculate_password_strength(self, password):
+        criteria_met = 0
 
-            We are proud of your endeavor to learn about climate change. Your OTP is {otp} """
+        # Check uppercase and lowercase
+        if any(c.isupper() for c in password) and any(c.islower() for c in password):
+            criteria_met += 1
 
-        context = ssl.create_default_context()
-        with smtplib.SMTP(smtp_server, port) as server:
-            server.ehlo()
-            server.starttls(context=context)
-            server.ehlo()
+        # Check one digit
+        if any(c.isdigit() for c in password):
+            criteria_met += 1
 
-            server.login(sender, password)
-            server.sendmail(sender, email, message)
-        return "OTP sent successfully!"
-        # For simplicity, we're printing the OTP here
-        print(f"Sending OTP to {email}: {otp}")
+        # Check one special character
+        if re.search(r"[#_/]", password):
+            criteria_met += 1
 
-    def update_timer(self):
-        # Update the timer label
-        remaining_time = self.timer.remainingTime() / 1000  # in seconds
-        self.timer_label.setText(f"Time left: {int(remaining_time)} seconds")
+        # Check 8 characters long
+        if len(password) >= 8:
+            criteria_met += 1
 
-        # If time is up, disable input and enable resend button
-        if remaining_time <= 0:
-            self.otp_input.setDisabled(True)
-            self.resend_button.setEnabled(True)
-            self.timer.stop()
+        # Determine strength based on the number of criteria met
+        if criteria_met == 0:
+            return "very_weak"
+        elif criteria_met == 1:
+            return "weak"
+        elif criteria_met == 2:
+            return "slightly_weak"
+        elif criteria_met == 3:
+            return "slightly_strong"
+        else:
+            return "strong"
 
     def register_user(self):
-        email = self.email_input.text()
-        entered_otp = self.otp_input.text()
+        username = self.username_input.text()
         password = self.password_input.text()
+        confirm_password = self.confirm_password_input.text()
 
-        # Validate OTP
-        if not self.validate_otp(email, entered_otp):
-            self.attempts += 1
-
-            if self.attempts >= self.max_attempts:
-                QMessageBox.critical(
-                    self, "Registration Failed", "Exceeded maximum attempts."
-                )
-                self.reject()
-            else:
-                QMessageBox.warning(
-                    self, "Invalid OTP", "Invalid OTP. Please try again."
-                )
-                self.reset_registration()
-        else:
-            # Registration successful
-            cursor = self.database_conn.cursor()
-            cursor.execute(
-                "INSERT INTO users (email, password) VALUES (?, ?)", (email, password)
+        # Validate password and confirm password match
+        if password != confirm_password:
+            QMessageBox.warning(
+                self, "Password Mismatch", "Password and Confirm Password do not match."
             )
-            self.database_conn.commit()
-            print("Registration successful!")
+            return
 
-            self.registration_successful.emit()
-            # Close the RegistrationPage
-            self.accept()
+        # Check if the username already exists in the database
+        cursor = self.database_conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
+        existing_user = cursor.fetchone()
 
-    def validate_otp(self, email, entered_otp):
-        stored_otp = OTP_STORE.get(email)
-        if not stored_otp:
-            print("OTP not found. Registration failed.")
-            return False
+        if existing_user:
+            QMessageBox.warning(
+                self, "User Exists", "User with the same username already exists."
+            )
+            return
 
-        # Validate the entered OTP
-        totp = pyotp.TOTP(stored_otp)
-        return totp.verify(entered_otp)
+        # Registration successful
+        cursor.execute(
+            "INSERT INTO users (username, password) VALUES (?, ?)", (username, password)
+        )
+        self.database_conn.commit()
+        print("Registration successful!")
 
-    def resend_otp(self):
-        # Resend OTP
-        email = self.email_input.text()
-        otp = self.generate_otp(email)
-        self.send_otp_email(email, otp)
-
-        # Reset attempts and enable input
-        self.attempts = 0
-        self.otp_input.setDisabled(False)
-
-        # Enable timer for 1 minute
-        self.timer.start(60000)
-
-        # Disable resend button again
-        self.resend_button.setEnabled(False)
-
-    def reset_registration(self):
-        # Reset input fields and enable timer for 1 minute
-        self.otp_input.clear()
-        self.otp_input.setDisabled(False)
-        self.timer.start(60000)
-        self.timer_label.setText("Time left: ")
+        self.registration_successful.emit()
+        # Close the RegistrationPage
+        self.accept()
 
 
 # Placeholder for storing OTPs (Replace this with a secure storage mechanism)
-OTP_STORE = {}
+# OTP_STORE = {}
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     registration_page = RegistrationPage(None)
     registration_page.show()
     sys.exit(app.exec_())
-
-
