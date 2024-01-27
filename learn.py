@@ -30,21 +30,20 @@ class LearnPage(QDialog):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Climaware Learn")
-        self.learn_title = QLabel("Climaware Learn")
-        self.learn_title.setFont(QFont("Arial", 50, QFont.Bold))
+        self.learn_title = QLabel("\nClimaware Learn")
+        self.learn_title.setFont(QFont("Arial", 60, QFont.Bold))
         self.learn_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
         self.learn_title.setStyleSheet("color: black;")
 
         self.learn_label = QLabel(
-            "Welcome to the Climaware Learn page.\nThis is where you can \nstudy your climate change material.\nWhat do you want to learn about?"
+            "Welcome to the Climaware Learn page.\n\nThis is where you can \nstudy your climate change material.\n\nWhat do you want to learn about?"
         )
-        self.learn_label.setFont(QFont("Arial Bold", 20, QFont.Bold))
+        self.learn_label.setFont(QFont("Arial", 25))
         self.learn_label.setAlignment(Qt.AlignHCenter)
         self.learn_label.setStyleSheet("color: #004894;")
 
-        self.setGeometry(100, 100, 500, 1000)
+        self.setGeometry(512, 100, 500, 900)
         # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
         self.setStyleSheet("background-color: #F4B970;")
 
         self.causes_button = QPushButton("Causes")
@@ -56,7 +55,7 @@ class LearnPage(QDialog):
         self.solutions_button.clicked.connect(self.show_solutions_page)
 
         self.causes_button.setStyleSheet(
-            "background-color: #F7C37C; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+            "background-color: #D73701; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
         )
         self.effects_button.setStyleSheet(
             "background-color: #048FB8; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
@@ -96,21 +95,47 @@ class CausePage(QDialog):
         super().__init__()
 
         self.setWindowTitle("Climaware Learn: Causes")
+
+        self.cause_title = QLabel("\nClimaware Learn: Causes")
+        self.cause_title.setFont(QFont("Arial", 60, QFont.Bold))
+        self.cause_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.cause_title.setStyleSheet("color: black;")
+
         self.setStyleSheet("background-color: #F4B970;")
+
+        self.setGeometry(512, 100, 500, 900)
+
         self.causes_label = QLabel(
             "Which phenomenon's causes do you want to learn about?"
         )
+        self.causes_label.setFont(QFont("Arial", 25))
+        self.causes_label.setAlignment(Qt.AlignHCenter)
+        self.causes_label.setStyleSheet("color: #004894;")
 
         self.airC_button = QPushButton("Air Pollution")
         self.waterC_button = QPushButton("Water Pollution")
         self.landC_button = QPushButton("Land Pollution")
         self.globalC_button = QPushButton("Land Pollution")
 
-        self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
         # self.setFixedSize(500, 1000)
 
+        self.airC_button.setStyleSheet(
+            "background-color: #A6AAAA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
+        self.waterC_button.setStyleSheet(
+            "background-color: #2194DA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
+        self.landC_button.setStyleSheet(
+            "background-color: #6C2E19; color: white; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
+        self.globalC_button.setStyleSheet(
+            "background-color: #B88E12; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
+
         layout = QVBoxLayout()
+        layout.addWidget(self.cause_title)
+        layout.addWidget(self.causes_label)
         layout.addWidget(self.airC_button)
         layout.addWidget(self.waterC_button)
         layout.addWidget(self.landC_button)
@@ -153,17 +178,27 @@ class AirCauses(QDialog):
         super().__init__()
 
         self.setWindowTitle("Air Pollution Causes")
-        self.setGeometry(100, 100, 500, 1000)
-        # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
 
-        self.back_button = QPushButton("Back")
-        self.back_button.clicked.connect(self.go_back)
+        self.setGeometry(512, 100, 500, 900)
+
+        self.airC_title = QLabel("Air Pollution Causes")
+        self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+        self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.airC_title.setStyleSheet("color: black;")
+
+        self.setStyleSheet("background-color: #493FA7;")
+
+        self.airC_button = QPushButton("Air Pollution")
+        self.waterC_button = QPushButton("Water Pollution")
+        self.landC_button = QPushButton("Land Pollution")
+        self.globalC_button = QPushButton("Land Pollution")
+
+        self.setGeometry(512, 100, 500, 900)
 
         self.info_label = QLabel(self.read_info_from_file("Text Files/air_causes.txt"))
 
         layout = QVBoxLayout()
-        layout.addWidget(self.back_button)
+        layout.addWidget(self.airC_title)
         layout.addWidget(self.info_label)
         # layout.addWidget(self.test_button)
 
@@ -171,11 +206,6 @@ class AirCauses(QDialog):
         # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
-
-    def go_back(self):
-        self.parent().stacked_widget.setCurrentIndex(
-            1
-        )  # Assuming index 1 is the CourseMaterialPage
 
     def read_info_from_file(self, file_path):
         try:
@@ -189,18 +219,20 @@ class LandCauses(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Land Pollution Causes")
-        self.setGeometry(100, 100, 500, 1000)
-        # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
+        self.setWindowTitle("Air Pollution Causes")
 
-        self.back_button = QPushButton("Back")
-        self.back_button.clicked.connect(self.go_back)
+        self.setGeometry(512, 100, 500, 900)
+
+        self.airC_title = QLabel("Air Pollution Causes")
+        self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+        self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.airC_title.setStyleSheet("color: black;")
+
+        self.setStyleSheet("background-color: #493FA7;")
 
         self.info_label = QLabel(self.read_info_from_file("Text Files/land_causes.txt"))
 
         layout = QVBoxLayout()
-        layout.addWidget(self.back_button)
         layout.addWidget(self.info_label)
         # layout.addWidget(self.test_button)
 
@@ -208,11 +240,6 @@ class LandCauses(QDialog):
         # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
-
-    def go_back(self):
-        self.parent().stacked_widget.setCurrentIndex(
-            1
-        )  # Assuming index 1 is the CourseMaterialPage
 
     def read_info_from_file(self, file_path):
         try:
@@ -226,20 +253,22 @@ class WaterCauses(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Water Pollution Causes")
-        self.setGeometry(100, 100, 500, 1000)
-        # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
+        self.setWindowTitle("Air Pollution Causes")
 
-        self.back_button = QPushButton("Back")
-        self.back_button.clicked.connect(self.go_back)
+        self.setGeometry(512, 100, 500, 900)
+
+        self.airC_title = QLabel("Air Pollution Causes")
+        self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+        self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.airC_title.setStyleSheet("color: black;")
+
+        self.setStyleSheet("background-color: #493FA7;")
 
         self.info_label = QLabel(
             self.read_info_from_file("Text Files/water_causes.txt")
         )
 
         layout = QVBoxLayout()
-        layout.addWidget(self.back_button)
         layout.addWidget(self.info_label)
         # layout.addWidget(self.test_button)
 
@@ -247,11 +276,6 @@ class WaterCauses(QDialog):
         # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
-
-    def go_back(self):
-        self.parent().stacked_widget.setCurrentIndex(
-            1
-        )  # Assuming index 1 is the CourseMaterialPage
 
     def read_info_from_file(self, file_path):
         try:
@@ -265,20 +289,22 @@ class GlobalCauses(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Global Warming Causes")
-        self.setGeometry(100, 100, 500, 1000)
-        # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
+        self.setWindowTitle("Air Pollution Causes")
 
-        self.back_button = QPushButton("Back")
-        self.back_button.clicked.connect(self.go_back)
+        self.setGeometry(512, 100, 500, 900)
+
+        self.airC_title = QLabel("Air Pollution Causes")
+        self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+        self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.airC_title.setStyleSheet("color: black;")
+
+        self.setStyleSheet("background-color: #493FA7;")
 
         self.info_label = QLabel(
             self.read_info_from_file("Text Files/global_causes.txt")
         )
 
         layout = QVBoxLayout()
-        layout.addWidget(self.back_button)
         layout.addWidget(self.info_label)
         # layout.addWidget(self.test_button)
 
@@ -286,11 +312,6 @@ class GlobalCauses(QDialog):
         # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
-
-    def go_back(self):
-        self.parent().stacked_widget.setCurrentIndex(
-            1
-        )  # Assuming index 1 is the CourseMaterialPage
 
     def read_info_from_file(self, file_path):
         try:
@@ -308,16 +329,47 @@ class EffectsPage(QDialog):
     def __init__(self):
         super().__init__()
 
+        self.setWindowTitle("Climaware Learn: Effects")
+
+        self.effect_title = QLabel("\nClimaware Learn: Effects")
+        self.effect_title.setFont(QFont("Arial", 60, QFont.Bold))
+        self.effect_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.effect_title.setStyleSheet("color: black;")
+
+        self.setStyleSheet("background-color: #F4B970;")
+
+        self.setGeometry(512, 100, 500, 900)
+
+        self.causes_label = QLabel(
+            "Which phenomenon's effects do you want to learn about?"
+        )
+        self.causes_label.setFont(QFont("Arial", 25))
+        self.causes_label.setAlignment(Qt.AlignHCenter)
+        self.causes_label.setStyleSheet("color: #004894;")
         self.airE_button = QPushButton("Air Pollution")
         self.waterE_button = QPushButton("Water Pollution")
         self.landE_button = QPushButton("Land Pollution")
         self.globalE_button = QPushButton("Land Pollution")
 
-        self.setGeometry(100, 100, 500, 1000)
+        self.airE_button.setStyleSheet(
+            "background-color: #A6AAAA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
+        self.waterE_button.setStyleSheet(
+            "background-color: #2194DA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
+        self.landE_button.setStyleSheet(
+            "background-color: #6C2E19; color: white; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
+        self.globalE_button.setStyleSheet(
+            "background-color: #B88E12; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
+        self.setGeometry(512, 100, 500, 900)
         # self.setStyleSheet("background-color: grey;")
         # self.setFixedSize(500, 1000)
 
         layout = QVBoxLayout()
+        layout.addWidget(self.effect_title)
+        layout.addWidget(self.causes_label)
         layout.addWidget(self.airE_button)
         layout.addWidget(self.waterE_button)
         layout.addWidget(self.landE_button)
@@ -359,18 +411,20 @@ class AirEffects(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Air Pollution Effects")
-        self.setGeometry(100, 100, 500, 1000)
-        # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
+        self.setWindowTitle("Air Pollution Causes")
 
-        self.back_button = QPushButton("Back")
-        self.back_button.clicked.connect(self.go_back)
+        self.setGeometry(512, 100, 500, 900)
+
+        self.airC_title = QLabel("Air Pollution Causes")
+        self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+        self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.airC_title.setStyleSheet("color: black;")
+
+        self.setStyleSheet("background-color: #493FA7;")
 
         self.info_label = QLabel(self.read_info_from_file("Text Files/air_effects.txt"))
 
         layout = QVBoxLayout()
-        layout.addWidget(self.back_button)
         layout.addWidget(self.info_label)
         # layout.addWidget(self.test_button)
 
@@ -378,11 +432,6 @@ class AirEffects(QDialog):
         # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
-
-    def go_back(self):
-        self.parent().stacked_widget.setCurrentIndex(
-            1
-        )  # Assuming index 1 is the CourseMaterialPage
 
     def read_info_from_file(self, file_path):
         try:
@@ -396,20 +445,22 @@ class LandEffects(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Land Pollution Effects")
-        self.setGeometry(100, 100, 500, 1000)
-        # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
+        self.setWindowTitle("Air Pollution Causes")
 
-        self.back_button = QPushButton("Back")
-        self.back_button.clicked.connect(self.go_back)
+        self.setGeometry(512, 100, 500, 900)
+
+        self.airC_title = QLabel("Air Pollution Causes")
+        self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+        self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.airC_title.setStyleSheet("color: black;")
+
+        self.setStyleSheet("background-color: #493FA7;")
 
         self.info_label = QLabel(
             self.read_info_from_file("Text Files/land_effects.txt")
         )
 
         layout = QVBoxLayout()
-        layout.addWidget(self.back_button)
         layout.addWidget(self.info_label)
         # layout.addWidget(self.test_button)
 
@@ -417,11 +468,6 @@ class LandEffects(QDialog):
         # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
-
-    def go_back(self):
-        self.parent().stacked_widget.setCurrentIndex(
-            1
-        )  # Assuming index 1 is the CourseMaterialPage
 
     def read_info_from_file(self, file_path):
         try:
@@ -435,20 +481,22 @@ class WaterEffects(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Water Pollution Effects")
-        self.setGeometry(100, 100, 500, 1000)
-        # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
+        self.setWindowTitle("Air Pollution Causes")
 
-        self.back_button = QPushButton("Back")
-        self.back_button.clicked.connect(self.go_back)
+        self.setGeometry(512, 100, 500, 900)
+
+        self.airC_title = QLabel("Air Pollution Causes")
+        self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+        self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.airC_title.setStyleSheet("color: black;")
+
+        self.setStyleSheet("background-color: #493FA7;")
 
         self.info_label = QLabel(
             self.read_info_from_file("Text Files/water_effects.txt")
         )
 
         layout = QVBoxLayout()
-        layout.addWidget(self.back_button)
         layout.addWidget(self.info_label)
         # layout.addWidget(self.test_button)
 
@@ -456,11 +504,6 @@ class WaterEffects(QDialog):
         # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
-
-    def go_back(self):
-        self.parent().stacked_widget.setCurrentIndex(
-            1
-        )  # Assuming index 1 is the CourseMaterialPage
 
     def read_info_from_file(self, file_path):
         try:
@@ -474,20 +517,22 @@ class GlobalEffects(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Global Warming Effects")
-        self.setGeometry(100, 100, 500, 1000)
-        # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
+        self.setWindowTitle("Air Pollution Causes")
 
-        self.back_button = QPushButton("Back")
-        self.back_button.clicked.connect(self.go_back)
+        self.setGeometry(512, 100, 500, 900)
+
+        self.airC_title = QLabel("Air Pollution Causes")
+        self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+        self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.airC_title.setStyleSheet("color: black;")
+
+        self.setStyleSheet("background-color: #493FA7;")
 
         self.info_label = QLabel(
             self.read_info_from_file("Text Files/global_effects.txt")
         )
 
         layout = QVBoxLayout()
-        layout.addWidget(self.back_button)
         layout.addWidget(self.info_label)
         # layout.addWidget(self.test_button)
 
@@ -495,11 +540,6 @@ class GlobalEffects(QDialog):
         # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
-
-    def go_back(self):
-        self.parent().stacked_widget.setCurrentIndex(
-            1
-        )  # Assuming index 1 is the CourseMaterialPage
 
     def read_info_from_file(self, file_path):
         try:
@@ -517,16 +557,47 @@ class SolutionsPage(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.airS_button = QPushButton("Air Pollution")
-        self.waterS_button = QPushButton("Water Pollution")
-        self.landS_button = QPushButton("Land Pollution")
-        self.globalS_button = QPushButton("Land Pollution")
+        self.setWindowTitle("Climaware Learn: Solutions")
 
-        self.setGeometry(100, 100, 500, 1000)
+        self.sol_title = QLabel("\nClimaware Learn: Solutions")
+        self.sol_title.setFont(QFont("Arial", 60, QFont.Bold))
+        self.sol_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.sol_title.setStyleSheet("color: black;")
+
+        self.setStyleSheet("background-color: #F4B970;")
+
+        self.setGeometry(512, 100, 500, 900)
+
+        self.causes_label = QLabel(
+            "Which phenomenon's solutions do you want to learn about?"
+        )
+        self.causes_label.setFont(QFont("Arial", 25))
+        self.causes_label.setAlignment(Qt.AlignHCenter)
+        self.causes_label.setStyleSheet("color: #004894;")
+        self.airE_button = QPushButton("Air Pollution")
+        self.waterE_button = QPushButton("Water Pollution")
+        self.landE_button = QPushButton("Land Pollution")
+        self.globalE_button = QPushButton("Land Pollution")
+
+        self.airS_button.setStyleSheet(
+            "background-color: #A6AAAA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
+        self.waterS_button.setStyleSheet(
+            "background-color: #2194DA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
+        self.landS_button.setStyleSheet(
+            "background-color: #6C2E19; color: white; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
+        self.globalS_button.setStyleSheet(
+            "background-color: #B88E12; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
+        self.setGeometry(512, 100, 500, 900)
         # self.setStyleSheet("background-color: grey;")
         # self.setFixedSize(500, 1000)
 
         layout = QVBoxLayout()
+        layout.addWidget(self.sol_title)
+        layout.addWidget(self.causes_label)
         layout.addWidget(self.airS_button)
         layout.addWidget(self.waterS_button)
         layout.addWidget(self.landS_button)
@@ -569,25 +640,22 @@ class AirSol(QDialog):
         super().__init__()
 
         self.setWindowTitle("Air Pollution Solutions")
-        self.setGeometry(100, 100, 500, 1000)
-        # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
 
-        self.back_button = QPushButton("Back")
-        self.back_button.clicked.connect(self.go_back)
+        self.setGeometry(512, 100, 500, 900)
+
+        self.airC_title = QLabel("Air Pollution Solutions")
+        self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+        self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.airC_title.setStyleSheet("color: black;")
+
+        self.setStyleSheet("background-color: #493FA7;")
 
         self.info_label = QLabel(self.read_info_from_file("Text Files/air_sol.txt"))
 
         layout = QVBoxLayout()
-        layout.addWidget(self.back_button)
         layout.addWidget(self.info_label)
 
         self.setLayout(layout)
-
-    def go_back(self):
-        self.parent().stacked_widget.setCurrentIndex(
-            1
-        )  # Assuming index 1 is the CourseMaterialPage
 
     def read_info_from_file(self, file_path):
         try:
@@ -602,25 +670,22 @@ class LandSol(QDialog):
         super().__init__()
 
         self.setWindowTitle("Land Pollution Solutions")
-        self.setGeometry(100, 100, 500, 1000)
-        # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
 
-        self.back_button = QPushButton("Back")
-        self.back_button.clicked.connect(self.go_back)
+        self.setGeometry(512, 100, 500, 900)
+
+        self.airC_title = QLabel("Land Pollution Solutions")
+        self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+        self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.airC_title.setStyleSheet("color: black;")
+
+        self.setStyleSheet("background-color: #493FA7;")
 
         self.info_label = QLabel(self.read_info_from_file("Text Files/land_sol.txt"))
 
         layout = QVBoxLayout()
-        layout.addWidget(self.back_button)
         layout.addWidget(self.info_label)
 
         self.setLayout(layout)
-
-    def go_back(self):
-        self.parent().stacked_widget.setCurrentIndex(
-            1
-        )  # Assuming index 1 is the CourseMaterialPage
 
     def read_info_from_file(self, file_path):
         try:
@@ -635,25 +700,22 @@ class WaterSol(QDialog):
         super().__init__()
 
         self.setWindowTitle("Water Pollution Solutions")
-        self.setGeometry(100, 100, 500, 1000)
-        # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
 
-        self.back_button = QPushButton("Back")
-        self.back_button.clicked.connect(self.go_back)
+        self.setGeometry(512, 100, 500, 900)
+
+        self.airC_title = QLabel("Water Pollution Solutions")
+        self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+        self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.airC_title.setStyleSheet("color: black;")
+
+        self.setStyleSheet("background-color: #493FA7;")
 
         self.info_label = QLabel(self.read_info_from_file("Text Files/water_sol.txt"))
 
         layout = QVBoxLayout()
-        layout.addWidget(self.back_button)
         layout.addWidget(self.info_label)
 
         self.setLayout(layout)
-
-    def go_back(self):
-        self.parent().stacked_widget.setCurrentIndex(
-            1
-        )  # Assuming index 1 is the CourseMaterialPage
 
     def read_info_from_file(self, file_path):
         try:
@@ -668,25 +730,22 @@ class GlobalSol(QDialog):
         super().__init__()
 
         self.setWindowTitle("Global Warming Solutions")
-        self.setGeometry(100, 100, 500, 1000)
-        # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
 
-        self.back_button = QPushButton("Back")
-        self.back_button.clicked.connect(self.go_back)
+        self.setGeometry(512, 100, 500, 900)
+
+        self.airC_title = QLabel("Global Warming Solutions")
+        self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+        self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.airC_title.setStyleSheet("color: black;")
+
+        self.setStyleSheet("background-color: #493FA7;")
 
         self.info_label = QLabel(self.read_info_from_file("Text Files/global_sol.txt"))
 
         layout = QVBoxLayout()
-        layout.addWidget(self.back_button)
         layout.addWidget(self.info_label)
 
         self.setLayout(layout)
-
-    def go_back(self):
-        self.parent().stacked_widget.setCurrentIndex(
-            1
-        )  # Assuming index 1 is the CourseMaterialPage
 
     def read_info_from_file(self, file_path):
         try:

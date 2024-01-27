@@ -16,8 +16,9 @@ from PyQt5.QtWidgets import (
     QTextEdit,
     QTextBrowser,
     QMessageBox,
+    QGraphicsDropShadowEffect,
 )
-from PyQt5.QtGui import QPixmap, QColor
+from PyQt5.QtGui import QPixmap, QColor, QFont
 from PyQt5.QtCore import pyqtSignal, Qt
 from email.mime.text import MIMEText
 import random
@@ -25,25 +26,55 @@ from UI import LearnUI, TestUI, HomeUI
 import time, datetime
 import csv
 
+
 # *********************************** Test Page --> Quizzes ***********************************
 class TestPage(QDialog):
     def __init__(self):
         super().__init__()
-        self.test_label = QLabel(
-            "Welcome to the Climaware Test page. This is where you can test your climate change knowledge. What do you want to be quizzed on?"
-        )
 
-        self.setGeometry(100, 100, 500, 1000)
+        self.setWindowTitle("Climaware Test")
+        self.test_title = QLabel("\nClimaware Test")
+        self.test_title.setFont(QFont("Arial", 60, QFont.Bold))
+        self.test_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.test_title.setStyleSheet("color: black;")
+
+        self.test_label = QLabel(
+            "Welcome to the Climaware Test page.\n\nThis is where you can \ntest your climate change knowledge.\n\nWhat do you want to test?"
+        )
+        self.test_label.setFont(QFont("Arial", 25))
+        self.test_label.setAlignment(Qt.AlignHCenter)
+        self.test_label.setStyleSheet("color: #004894;")
+
+        self.setGeometry(512, 100, 500, 900)
+        # self.setStyleSheet("background-color: grey;")
+        self.setStyleSheet("background-color: #F4B970;")
+
+        self.setGeometry(512, 100, 500, 900)
         self.setStyleSheet("background-color: #F3A3DB;")
         # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
+        self.setFixedSize(500, 900)
 
         self.air_button = QPushButton("Air Pollution")
         self.water_button = QPushButton("Water Pollution")
         self.land_button = QPushButton("Land Pollution")
         self.global_button = QPushButton("Global Warming")
 
+        self.air_button.setStyleSheet(
+            "background-color: #A6AAAA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
+        self.water_button.setStyleSheet(
+            "background-color: #2194DA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
+        self.land_button.setStyleSheet(
+            "background-color: #6C2E19; color: white; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
+        self.global_button.setStyleSheet(
+            "background-color: #B88E12; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
+
         layout = QVBoxLayout()
+        layout.addWidget(self.test_title)
+        layout.addWidget(self.test_label)
         layout.addWidget(self.air_button)
         layout.addWidget(self.water_button)
         layout.addWidget(self.land_button)
@@ -75,8 +106,14 @@ class TestDialog(QDialog):
     def __init__(self, topic, file_name):
         super().__init__()
 
-        self.setGeometry(100, 100, 500, 1000)
-        self.setStyleSheet("background-color: #97BFE5;")
+        self.setWindowTitle("Climaware Quiz")
+        self.quiz_title = QLabel("\nClimaware Quiz")
+        self.quiz_title.setFont(QFont("Arial", 40, QFont.Bold))
+        self.quiz_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.quiz_title.setStyleSheet("color: black;")
+
+        self.setGeometry(512, 100, 500, 900)
+        self.setStyleSheet("background-color: #DFA528;")
         # self.setFixedSize(500, 1000)
 
         self.questions = self.load_questions_from_file(file_name)
@@ -84,22 +121,41 @@ class TestDialog(QDialog):
         self.score = 0
 
         self.question_label = QLabel(self.questions[self.current_question]["question"])
+        self.question_label.setFont(QFont("Arial", 20, QFont.Bold))
+        self.question_label.setAlignment(Qt.AlignHCenter)
+        self.question_label.setStyleSheet("color: #5A246A;")
 
         self.option_buttons = []
         for i, option in enumerate(self.questions[self.current_question]["options"]):
             button = QRadioButton(option)
+            button.setFont(QFont("Arial", 20))
+            button.setStyleSheet("color: black;")
             self.option_buttons.append(button)
+            print("\n")
 
         self.submit_button = QPushButton("Submit")
+        self.submit_button.setFont(QFont("Arial", 16, QFont.Bold))
+        self.submit_button.setStyleSheet(
+            "background-color: #5A246A; color: white; border-radius: 20px; font-size: 20px; min-width: 20; min-height: 50px;"
+        )
         self.submit_button.clicked.connect(self.submit_answer)
 
         layout = QVBoxLayout()
+        layout.addWidget(self.quiz_title)
         layout.addWidget(self.question_label)
+
         for button in self.option_buttons:
             layout.addWidget(button)
         layout.addWidget(self.submit_button)
 
         self.setLayout(layout)
+        # self.update_question()?????
+
+        # def get_font(self, size, bold=False):
+        #     font = self.font()
+        #     font.setPointSize(size)
+        #     font.setBold(bold)
+        #     return font
 
     def load_questions_from_file(self, file_path):
         questions = []
@@ -133,25 +189,19 @@ class TestDialog(QDialog):
         selected_option = None
 
         correct_option = int(self.questions[self.current_question]["correct"])
-        print("cur q idx: ", self.current_question)
-        print("cor opt: ", correct_option)
 
         for i, button in enumerate(self.option_buttons):
-            print("i: ", i)
             if button.isChecked():
                 selected_option = i + 1  # Options are 1-indexed
-                print("sel opt: ", selected_option)
 
-                if selected_option == correct_option: self.score += 1
-                print("cur score: ", self.score)
+                if selected_option == correct_option:
+                    self.score += 1
 
                 self.current_question += 1
 
                 if self.current_question < len(self.questions):
-                    print("calling update")
                     self.update_question()
                 else:
-                    print("calling res")
                     self.show_result()
 
     def update_question(self):
@@ -174,7 +224,13 @@ class TestDialog(QDialog):
             result_message = "Well done!"
         else:
             result_message = "Wow! A perfect score!"
-        result_message.setStyleSheet()
+
+        # result_message = QMessageBox(result_message)
+        # result_message.setFont(QFont("Arial", 20, QFont.Bold))
+        # result_message.setAlignment(Qt.AlignHCenter)
+        # # result_message_label.setStyleSheet("color: black;")
+
+        # result_message.setStyleSheet()
         QMessageBox.information(self, "Result Message", result_message)
 
         self.accept()
@@ -182,17 +238,26 @@ class TestDialog(QDialog):
 
 class AirQuiz(TestPage):
     def __init__(self):
+        self.setWindowTitle("Air Pollution Quiz")
         super().__init__("Air Pollution Quiz", "Text Files/air_quiz.csv")
+
 
 class WaterQuiz(TestPage):
     def __init__(self):
+        self.setWindowTitle("Water Pollution Quiz")
         super().__init__("Water Pollution Quiz", "Text Files/water_quiz.csv")
+
 
 class LandQuiz(TestPage):
     def __init__(self):
+        self.setWindowTitle("Land Pollution Quiz")
         super().__init__("Land Pollution Quiz", "Text Files/land_quiz.csv")
+
 
 class GlobalQuiz(TestPage):
     def __init__(self):
+        self.setWindowTitle("Global Warming Quiz")
         super().__init__("Global Warming Quiz", "Text Files/global_quiz.csv")
+
+
 # *********************************************************************************************

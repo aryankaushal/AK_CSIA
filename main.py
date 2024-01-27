@@ -21,10 +21,10 @@ from PyQt5.QtGui import QPixmap, QColor, QFont
 from PyQt5.QtCore import pyqtSignal, Qt
 from email.mime.text import MIMEText
 from random import randint, sample
-from UI import LearnUI, TestUI, HomeUI
 import time, datetime
 from login import SignInPage, RegistrationPage
 import learn, tests
+
 
 # *************************************** Home Page ***************************************
 class HomePage(QWidget):
@@ -32,33 +32,33 @@ class HomePage(QWidget):
         super().__init__(parent)
 
         self.setWindowTitle("Climaware")
-        self.setGeometry(100, 100, 500, 1000)
+        self.setGeometry(512, 100, 500, 900)
         # self.setStyleSheet("background-color: grey;")
         # self.setFixedSize(500, 1000)
 
         thisis_label = QLabel("This is")
-        thisis_label.setFont(QFont("Arial", 20, QFont.Bold))
+        thisis_label.setFont(QFont("Arial", 30))
         thisis_label.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
         thisis_label.setStyleSheet("color: grey;")
 
         title_label = QLabel("Climaware")
-        title_label.setFont(QFont("Arial", 60, QFont.Bold))
+        title_label.setFont(QFont("Arial", 80, QFont.Bold))
         title_label.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
         title_label.setStyleSheet("color: black;")
         title_label.contentsMargins()
         # self.points_label = QLabel("Points: 0")
 
         welcome_label = QLabel(
-            "Welcome to the best place to learn about climate change!\nWe are glad you're joining us!"
+            "\nWelcome to the best place to learn about climate change!\n\n\nWe are glad you're joining us!\n\n\n"
         )
-        welcome_label.setFont(QFont("Arial", 16))
-        welcome_label.setStyleSheet("color: black;")
+        welcome_label.setFont(QFont("Arial", 25, QFont.Bold))
+        welcome_label.setStyleSheet("color: #15098A;")
         welcome_label.setAlignment(Qt.AlignHCenter)
 
         instruction_label = QLabel(
-            "Would you like to learn about climate change\nor test your understanding?"
+            "Would you like to learn about climate change\nthrough some concise study material\nor test your understanding via short quizzes?\n\n"
         )
-        instruction_label.setFont(QFont("Arial", 16))
+        instruction_label.setFont(QFont("Arial", 25))
         instruction_label.setStyleSheet("color: black;")
         instruction_label.setAlignment(Qt.AlignHCenter)
 
@@ -68,11 +68,11 @@ class HomePage(QWidget):
         button_height = 40
         self.learn_button.setGeometry(50, 50, button_width, button_height)
         self.learn_button.setStyleSheet(
-            "background-color: green; color: white; border-radius: 20px; font-size: 16px; min-width: 20; min-height: 50px;"
+            "background-color: #EB711E; color: white; border-radius: 20px; font-size: 20px; min-width: 20; min-height: 50px;"
         )
         self.test_button.setGeometry(50, 50, button_width, button_height)
         self.test_button.setStyleSheet(
-            "background-color: green; color: white; border-radius: 20px; font-size: 16px; min-width: 30; min-height: 50px;"
+            "background-color: #972E6E; color: white; border-radius: 20px; font-size: 20px; min-width: 20; min-height: 50px;"
         )
 
         self.learn_button.clicked.connect(MainWindow.show_learn_page)
@@ -95,7 +95,7 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Climaware")
-        self.setGeometry(100, 100, 500, 1000)
+        self.setGeometry(512, 100, 500, 900)
         # self.setFixedSize(500, 1000)
 
         # self.database_conn = sqlite3.connect("user_data.db")
@@ -139,7 +139,7 @@ class MainWindow(QWidget):
 
     def show_registration_page(self):
         registration = RegistrationPage(self.database_conn)
-        
+
         self.stacked_widget.addWidget(self.registration_page)
         self.stacked_widget.setCurrentWidget(self.registration_page)
         self.stacked_widget.setCurrentIndex(0)
