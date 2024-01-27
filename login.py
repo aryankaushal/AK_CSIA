@@ -82,7 +82,7 @@ class RegistrationPage(QDialog):
     def __init__(self, database_conn):
         super().__init__()
 
-        print("INSIDE REG CLASS")
+        # print("INSIDE REG CLASS")
         self.database_conn = database_conn
         self.max_attempts = 3
         self.attempts = 0
@@ -107,7 +107,7 @@ class RegistrationPage(QDialog):
         self.sign_in_button = QPushButton("Sign In, instead")
         self.sign_in_button.clicked.connect(self.show_sign_in_page)
 
-        switch_to_sign_in_page = pyqtSignal()
+        # switch_to_sign_in_page = pyqtSignal()
 
         layout = QVBoxLayout()
         layout.addWidget(self.username_label)
@@ -125,7 +125,8 @@ class RegistrationPage(QDialog):
         self.password_input.textChanged.connect(self.update_password_strength)
 
     def show_sign_in_page(self):
-            self.switch_to_sign_in_page.emit()
+            page = SignInPage(self.database_conn)
+            page.exec_()
 
     def update_password_strength(self):
         password = self.password_input.text()

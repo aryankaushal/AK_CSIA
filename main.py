@@ -104,11 +104,12 @@ class MainWindow(QWidget):
         self.create_default_user()
 
         self.registration_page = login.RegistrationPage(self.database_conn)
-        
-        print("I AM EHREREREE in main after calling reg")
-        
-        self.home_page = HomePage()
         self.stacked_widget = QStackedWidget()
+        self.stacked_widget.addWidget(self.registration_page)
+        print("I AM EHREREREE in main after calling reg")
+
+        self.home_page = HomePage()
+
         self.stacked_widget.addWidget(self.home_page)
         self.setStyleSheet("background-color: lightblue;")
 
@@ -138,10 +139,12 @@ class MainWindow(QWidget):
         test_page.exec_()
         # self.stacked_widget.setCurrentIndex(3)
 
-    # def show_registration_page(self):
-    #     self.home_page.learn_button.clicked.connect(self.show_registration_page)
-    #     self.home_page.test_button.clicked.connect(self.show_sign_in_page)
-    #     # registration = RegistrationPage(self.database_conn)
+    def show_registration_page(self):
+        reg_page = login.RegistrationPage(self.database_conn)
+        reg_page.exec_()
+        # self.home_page.learn_button.clicked.connect(self.show_registration_page)
+        # self.home_page.test_button.clicked.connect(self.show_registration_in_page)
+
     #     # self.stacked_widget.addWidget(self.registration_page)
     #     self.stacked_widget.setCurrentWidget(self.registration_page)
     #     self.stacked_widget.setCurrentIndex(0)
