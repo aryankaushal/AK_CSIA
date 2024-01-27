@@ -1,21 +1,21 @@
 index,question,option1,option2,option3,option4,correct
-1,What is a major anthropogenic source of air pollution?,Volcanic eruptions,Combustion of fossil fuels,Wildfires,Agricultural practices,Combustion of fossil fuels
-2,Which air pollutant is commonly associated with vehicle emissions?,Methane,Carbon monoxide,Nitrogen oxides,Sulfur dioxide,Carbon monoxide
-3,What is the primary cause of acid rain?,Deforestation,Greenhouse gas emissions,Release of sulfur dioxide and nitrogen oxides,Industrial waste disposal,Release of sulfur dioxide and nitrogen oxides
-4,How do particulate matter (PM) pollutants affect human health?,Cause skin irritation,Contribute to respiratory problems,Enhance cognitive function,Reduce cardiovascular risks,Contribute to respiratory problems
-5,Which greenhouse gas contributes to climate change when released from burning fossil fuels?,Methane,Carbon dioxide,Sulfur hexafluoride,Nitrous oxide,Carbon dioxide
-6,What is a significant effect of air pollution on ecosystems?,Enhanced biodiversity,Improved soil fertility,Decline of plant and animal species,Increased crop yields,Decline of plant and animal species
-7,How can the promotion of electric vehicles contribute to reducing air pollution?,Increased greenhouse gas emissions,Lower fuel efficiency,Decreased reliance on fossil fuels,Higher emissions from power plants,Decreased reliance on fossil fuels
-8,What role does reforestation play in mitigating air pollution?,Increases industrial emissions,Reduces carbon sequestration,Enhances air quality by absorbing pollutants,Accelerates climate change,Enhances air quality by absorbing pollutants
-9,Which industry is a major contributor to indoor air pollution?,Automotive,Textile,Electronics,Food processing,Textile
-10,How can sustainable agriculture practices help combat air pollution?,Increase chemical fertilizer use,Minimize pesticide and herbicide use,Maximize water consumption,Promote deforestation,Minimize pesticide and herbicide use
-11,What is the primary source of ground-level ozone?,Vehicle exhaust emissions,Volcanic eruptions,Industrial waste disposal,Wildfires,Vehicle exhaust emissions
-12,What is a negative impact of open burning on air quality?,Improved visibility,Reduced levels of particulate matter,Release of harmful pollutants into the atmosphere,Enhanced respiratory health,Release of harmful pollutants into the atmosphere
-13,What is the purpose of international cooperation in addressing air pollution?,Promote increased emissions,Coordinate efforts to tackle shared environmental challenges,Encourage unregulated industrial activities,Accelerate deforestation,Coordinate efforts to tackle shared environmental challenges
-14,How do green roofs contribute to mitigating air pollution in urban areas?,Increase energy consumption,Trap pollutants,Reduce green spaces,Enhance traffic congestion,Trap pollutants
-15,Which pollutant is commonly associated with industrial activities?,Ammonia,Nitrous oxide,Methane,Sulfur dioxide,Sulfur dioxide
-16,What is the effect of air pollution on reproductive health?,Decreased risk of preterm birth,Low birth weight,Enhanced fetal development,Improved child health,Low birth weight
-17,How can advancements in technology help reduce air pollution?,Increase emissions from industries,Promote the use of fossil fuels,Develop cleaner technologies and innovations,Encourage deforestation,Develop cleaner technologies and innovations
-18,What role do financial incentives play in addressing air pollution?,Encourage non-compliance with emission standards,Penalize sustainable practices,Discourage technological advancements,Promote adoption of cleaner technologies and practices,Promote adoption of cleaner technologies and practices
-19,What is a direct consequence of air pollution on buildings and structures?,Enhanced durability,Improved structural integrity,Release of harmful pollutants,Structural deterioration,Structural deterioration
-20,Why is monitoring air quality crucial in addressing air pollution?,Identify sources of pollution,Encourage non-compliance with emission standards,Increase pollution levels,Discourage public awareness,Identify sources of pollution
+1,What is a major anthropogenic source of air pollution?,Volcanic eruptions,Combustion of fossil fuels,Wildfires,Agricultural practices,2
+2,Which air pollutant is commonly associated with vehicle emissions?,Methane,Carbon monoxide,Nitrogen oxides,Sulfur dioxide,2
+3,What is the primary cause of acid rain?,Deforestation,Greenhouse gas emissions,Release of sulfur dioxide and nitrogen oxides,Industrial waste disposal,3
+4,How do particulate matter (PM) pollutants affect human health?,Cause skin irritation,Contribute to respiratory problems,Enhance cognitive function,Reduce cardiovascular risks,2
+5,Which greenhouse gas contributes to climate change when released from burning fossil fuels?,Methane,Carbon dioxide,Sulfur hexafluoride,Nitrous oxide,2
+6,What is a significant effect of air pollution on ecosystems?,Enhanced biodiversity,Improved soil fertility,Decline of plant and animal species,Increased crop yields,3
+7,How can the promotion of electric vehicles contribute to reducing air pollution?,Increased greenhouse gas emissions,Lower fuel efficiency,Decreased reliance on fossil fuels,Higher emissions from power plants,3
+8,What role does reforestation play in mitigating air pollution?,Increases industrial emissions,Reduces carbon sequestration,Enhances air quality by absorbing pollutants,Accelerates climate change,3
+9,Which industry is a major contributor to indoor air pollution?,Automotive,Textile,Electronics,Food processing,2
+10,How can sustainable agriculture practices help combat air pollution?,Increase chemical fertilizer use,Minimize pesticide and herbicide use,Maximize water consumption,Promote deforestation,2
+11,What is the primary source of ground-level ozone?,Vehicle exhaust emissions,Volcanic eruptions,Industrial waste disposal,Wildfires,1
+12,What is a negative impact of open burning on air quality?,Improved visibility,Reduced levels of particulate matter,Release of harmful pollutants into the atmosphere,Enhanced respiratory health,3
+13,What is the purpose of international cooperation in addressing air pollution?,Promote increased emissions,Coordinate efforts to tackle shared environmental challenges,Encourage unregulated industrial activities,Accelerate deforestation,2
+14,How do green roofs contribute to mitigating air pollution in urban areas?,Increase energy consumption,Trap pollutants,Reduce green spaces,Enhance traffic congestion,2
+15,Which pollutant is commonly associated with industrial activities?,Ammonia,Nitrous oxide,Methane,Sulfur dioxide,4
+16,What is the effect of air pollution on reproductive health?,Decreased risk of preterm birth,Low birth weight,Enhanced fetal development,Improved child health,2
+17,How can advancements in technology help reduce air pollution?,Increase emissions from industries,Promote the use of fossil fuels,Develop cleaner technologies and innovations,Encourage deforestation,3
+18,What role do financial incentives play in addressing air pollution?,Encourage non-compliance with emission standards,Penalize sustainable practices,Discourage technological advancements,Promote adoption of cleaner technologies and practices,4
+19,What is a direct consequence of air pollution on buildings and structures?,Enhanced durability,Improved structural integrity,Release of harmful pollutants,Structural deterioration,4
+20,Why is monitoring air quality crucial in addressing air pollution?,Identify sources of pollution,Encourage non-compliance with emission standards,Increase pollution levels,Discourage public awareness,1

@@ -132,7 +132,7 @@ class TestDialog(QDialog):
     def submit_answer(self):
         selected_option = None
 
-        correct_option = self.questions[self.current_question]["correct"]
+        correct_option = int(self.questions[self.current_question]["correct"])
         print("cur q idx: ", self.current_question)
         print("cor opt: ", correct_option)
 

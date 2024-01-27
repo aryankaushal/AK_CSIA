@@ -1,21 +1,22 @@
 index,question,option1,option2,option3,option4,correct
-1,What is a major cause of water pollution from industrial activities?,Discharge of untreated wastewater,Proper waste disposal in water bodies,Use of eco-friendly technologies,Sustainable waste management,Discharge of untreated wastewater
-2,How does agricultural runoff contribute to water pollution?,Increases water quality,Enhances biodiversity,Reduces nutrient levels,Introduces pesticides and fertilizers,Introduces pesticides and fertilizers
-3,Which pollutant is commonly associated with oil spills in water bodies?,Sulfur dioxide,Lead,Methane,Crude oil,Crude oil
-4,What is the primary effect of eutrophication in water bodies?,Decreased algae growth,Improved oxygen levels,Overgrowth of algae,Increased biodiversity,Overgrowth of algae
-5,How does plastic pollution impact aquatic ecosystems?,Enhances biodiversity,Provides habitat for aquatic organisms,Introduces toxins and harms marine life,Stimulates coral growth,Introduces toxins and harms marine life
-6,Which waterborne disease is often linked to contaminated drinking water?,Influenza,Cholera,Dengue fever,Malaria,Cholera
-7,How can wastewater treatment facilities help mitigate water pollution?,Increase pollutant discharge,Improve water quality by removing contaminants,Introduce harmful chemicals,Promote eutrophication,Improve water quality by removing contaminants
-8,What is the purpose of stormwater management in urban areas?,Increase runoff volume,Reduce pollution in stormwater runoff,Encourage impervious surfaces,Enhance soil erosion,Reduce pollution in stormwater runoff
-9,What is a potential solution to reduce nutrient runoff from agricultural fields?,Increase chemical fertilizer use,Implement precision farming,Maximize pesticide application,Promote deforestation,Implement precision farming
-10,What is a common source of heavy metal pollution in water bodies?,Industrial discharges,Agricultural runoff,Plastic pollution,Sewage disposal,Industrial discharges
-11,How does untreated sewage disposal contribute to water pollution?,Increases oxygen levels,Enhances water quality,Introduces pathogens and contaminants,Reduces nutrient levels,Introduces pathogens and contaminants
-12,Which human activity is a major contributor to nutrient pollution in water bodies?,Recycling practices,Air travel,Industrial production,Agricultural practices,Agricultural practices
-13,What is the primary effect of oil spills on marine ecosystems?,Enhanced biodiversity,Improved water quality,Death of marine organisms,Increased oxygen levels,Death of marine organisms
-14,How can buffer zones along water bodies help reduce water pollution?,Increase industrial discharges,Enhance biodiversity,Promote sedimentation,Filter pollutants and reduce runoff,Filter pollutants and reduce runoff
-15,Which gas is responsible for the acidification of water bodies?,Carbon dioxide (CO2),Oxygen (O2),Methane (CH4),Nitrous oxide (N2O),Carbon dioxide (CO2)
-16,What is a consequence of thermal pollution in water bodies?,Decreased oxygen levels,Increased biodiversity,Enhanced fish populations,Altered aquatic ecosystems,Altered aquatic ecosystems
-17,How does habitat destruction contribute to water pollution?,Enhances water quality,Reduces sedimentation,Increases nutrient levels,Disrupts ecosystems and releases pollutants,Disrupts ecosystems and releases pollutants
-18,What is a potential solution to reduce plastic pollution in oceans?,Increase plastic production,Improve waste management practices,Ban the use of plastic products,Encourage single-use plastic consumption,Improve waste management practices
-19,Which water quality parameter is crucial for supporting aquatic life?,High levels of heavy metals,Low dissolved oxygen content,Excessive nutrient levels,Increased turbidity,Low dissolved oxygen content
-20,What is a strategy to prevent groundwater contamination from industrial activities?,Promote sustainable agriculture,Use of eco-friendly packaging,Proper disposal of hazardous waste,Increase use of chemical fertilizers,Proper disposal of hazardous waste
+1,What is a major cause of water pollution from industrial activities?,Discharge of untreated wastewater,Proper waste disposal in water bodies,Use of eco-friendly technologies,Sustainable waste management,1
+2,How does agricultural runoff contribute to water pollution?,Increases water quality,Enhances biodiversity,Reduces nutrient levels,Introduces pesticides and fertilizers,4
+3,Which pollutant is commonly associated with oil spills in water bodies?,Sulfur dioxide,Lead,Methane,Crude oil,4
+4,What is the primary effect of eutrophication in water bodies?,Decreased algae growth,Improved oxygen levels,Overgrowth of algae,Increased biodiversity,3
+5,How does plastic pollution impact aquatic ecosystems?,Enhances biodiversity,Provides habitat for aquatic organisms,Introduces toxins and harms marine life,Stimulates coral growth,3
+6,Which waterborne disease is often linked to contaminated drinking water?,Influenza,Cholera,Dengue fever,Malaria,2
+7,How can wastewater treatment facilities help mitigate water pollution?,Increase pollutant discharge,Improve water quality by removing contaminants,Introduce harmful chemicals,Promote eutrophication,2
+8,What is the purpose of stormwater management in urban areas?,Increase runoff volume,Reduce pollution in stormwater runoff,Encourage impervious surfaces,Enhance soil erosion,2
+9,What is a potential solution to reduce nutrient runoff from agricultural fields?,Increase chemical fertilizer use,Implement precision farming,Maximize pesticide application,Promote deforestation,2
+10,What is a common source of heavy metal pollution in water bodies?,Industrial discharges,Agricultural runoff,Plastic pollution,Sewage disposal,1
+11,How does untreated sewage disposal contribute to water pollution?,Increases oxygen levels,Enhances water quality,Introduces pathogens and contaminants,Reduces nutrient levels,3
+12,Which human activity is a major contributor to nutrient pollution in water bodies?,Recycling practices,Air travel,Industrial production,Agricultural practices,4
+13,What is the primary effect of oil spills on marine ecosystems?,Enhanced biodiversity,Improved water quality,Death of marine organisms,Increased oxygen levels,3
+14,How can buffer zones along water bodies help reduce water pollution?,Increase industrial discharges,Enhance biodiversity,Promote sedimentation,Filter pollutants and reduce runoff,4
+15,Which gas is responsible for the acidification of water bodies?,Carbon dioxide (CO2),Oxygen (O2),Methane (CH4),Nitrous oxide (N2O),1
+16,What is a consequence of thermal pollution in water bodies?,Decreased oxygen levels,Increased biodiversity,Enhanced fish populations,Altered aquatic ecosystems,1
+17,How does habitat destruction contribute to water pollution?,Enhances water quality,Reduces sedimentation,Increases nutrient levels,Disrupts ecosystems and releases pollutants,4
+18,What is a potential solution to reduce plastic pollution in oceans?,Increase plastic production,Improve waste management practices,Ban the use of plastic products,Encourage single-use plastic consumption,2
+19,Which water quality parameter is crucial for supporting aquatic life?,High levels of heavy metals,Low dissolved oxygen content,Excessive nutrient levels,Increased turbidity,2
+20,What is a strategy to prevent groundwater contamination from industrial activities?,Promote sustainable agriculture,Use of eco-friendly packaging,Proper disposal of hazardous waste,Increase use of chemical fertilizers,3
+

@@ -1,21 +1,21 @@
 index,question,option1,option2,option3,option4,correct
-1,What is a key cause of land pollution?,Industrialization,Agricultural practices,Recycling,Renewable energy,Agricultural practices
-2,Which of the following contributes to soil erosion and loss of biodiversity?,Green infrastructure,Deforestation,Recycling programs,Bioremediation,Deforestation
-3,How can land pollution affect water quality?,Improving water purification,Enhancing aquatic habitats,Contaminating water sources,Promoting biodiversity,Contaminating water sources
-4,What is a direct impact of land pollution on human health?,Increased agricultural yield,Respiratory problems,Improved air quality,Enhanced immune system,Respiratory problems
-5,Which approach helps in minimizing the need for new raw materials and reduces landfill waste?,Hazardous waste management,Public awareness,Waste reduction and recycling,Land reclamation,Waste reduction and recycling
-6,What is an example of hazardous waste?,Biodegradable waste,Plastic bottles,Radioactive materials,Glass containers,Radioactive materials
-7,What does bioremediation involve in the context of land pollution?,Planting native vegetation,Disposing of waste in landfills,Using chemicals to clean soil,Using living organisms to treat contaminated soil,Using living organisms to treat contaminated soil
-8,What is an effective solution for restoring degraded land areas?,Increased industrial activities,Green infrastructure,Illegal dumping,Land reclamation and restoration,Land reclamation and restoration
-9,How can urban green spaces contribute to reducing land pollution?,By increasing impervious surfaces,By promoting illegal dumping,By enhancing natural water absorption,By depleting soil fertility,By enhancing natural water absorption
-10,What role does public awareness play in addressing land pollution?,Increasing pollution levels,Enhancing waste disposal methods,Encouraging responsible practices,Decreasing biodiversity,Encouraging responsible practices
-11,What is the primary purpose of enforcing environmental regulations related to land use?,Promoting pollution,Minimizing waste,Encouraging illegal dumping,Allowing non-compliance,Minimizing waste
-12,Which industry practice contributes to sustainable land use and waste reduction?,Alternative industrial practices,Increased use of hazardous chemicals,Deforestation,Unregulated waste disposal,Alternative industrial practices
-13,What is the consequence of improper waste disposal in open areas or landfills?,Improved soil fertility,Enhanced biodiversity,Soil and water contamination,Reduced air pollution,Soil and water contamination
-14,How can communities contribute to reducing land pollution at the grassroots level?,Ignoring environmental issues,Engaging in illegal dumping,Implementing clean-up campaigns and tree planting,Promoting pollution,Implementing clean-up campaigns and tree planting
-15,What is the purpose of green infrastructure in addressing land pollution?,Enhancing impervious surfaces,Minimizing urban development,Reducing pollution at the source,Encouraging deforestation,Reducing pollution at the source
+1,What is a key cause of land pollution?,Industrialization,Agricultural practices,Recycling,Renewable energy,2
+2,Which of the following contributes to soil erosion and loss of biodiversity?,Green infrastructure,Deforestation,Recycling programs,Bioremediation,2
+3,How can land pollution affect water quality?,Improving water purification,Enhancing aquatic habitats,Contaminating water sources,Promoting biodiversity,3
+4,What is a direct impact of land pollution on human health?,Increased agricultural yield,Respiratory problems,Improved air quality,Enhanced immune system,2
+5,Which approach helps in minimizing the need for new raw materials and reduces landfill waste?,Hazardous waste management,Public awareness,Waste reduction and recycling,Land reclamation,3
+6,What is an example of hazardous waste?,Biodegradable waste,Plastic bottles,Radioactive materials,Glass containers,3
+7,What does bioremediation involve in the context of land pollution?,Planting native vegetation,Disposing of waste in landfills,Using chemicals to clean soil,Using living organisms to treat contaminated soil,4
+8,What is an effective solution for restoring degraded land areas?,Increased industrial activities,Green infrastructure,Illegal dumping,Land reclamation and restoration,4
+9,How can urban green spaces contribute to reducing land pollution?,By increasing impervious surfaces,By promoting illegal dumping,By enhancing natural water absorption,By depleting soil fertility,3
+10,What role does public awareness play in addressing land pollution?,Increasing pollution levels,Enhancing waste disposal methods,Encouraging responsible practices,Decreasing biodiversity,3
+11,What is the primary purpose of enforcing environmental regulations related to land use?,Promoting pollution,Minimizing waste,Encouraging illegal dumping,Allowing non-compliance,2
+12,Which industry practice contributes to sustainable land use and waste reduction?,Alternative industrial practices,Increased use of hazardous chemicals,Deforestation,Unregulated waste disposal,1
+13,What is the consequence of improper waste disposal in open areas or landfills?,Improved soil fertility,Enhanced biodiversity,Soil and water contamination,Reduced air pollution,3
+14,How can communities contribute to reducing land pollution at the grassroots level?,Ignoring environmental issues,Engaging in illegal dumping,Implementing clean-up campaigns and tree planting,Promoting pollution,3
+15,What is the purpose of green infrastructure in addressing land pollution?,Enhancing impervious surfaces,Minimizing urban development,Reducing pollution at the source,Encouraging deforestation,3
 16,What effect does land pollution have on the aesthetic value of landscapes?,Improving visual appeal,Enhancing recreational areas,Diminishing visual appeal,Promoting,Diminishing visual appeal
-17,What impact does mining activities have on land pollution?,Habitat destruction,Enhanced biodiversity,Improved soil fertility,Reduced air pollution,Habitat destruction
-18,How can deforestation contribute to land pollution?,Increased soil fertility,Enhanced biodiversity,Reduced erosion,Soil degradation,Soil degradation
-19,What does the improper disposal of electronic waste contribute to?,Air purification,Water quality improvement,Soil contamination,Enhanced soil fertility,Soil contamination
-20,What is the consequence of oil spills on land?,Improved soil fertility,Water purification,Contaminated soil and water,Increased biodiversity,Contaminated soil and water
+17,What impact does mining activities have on land pollution?,Habitat destruction,Enhanced biodiversity,Improved soil fertility,Reduced air pollution,1
+18,How can deforestation contribute to land pollution?,Increased soil fertility,Enhanced biodiversity,Reduced erosion,Soil degradation,4
+19,What does the improper disposal of electronic waste contribute to?,Air purification,Water quality improvement,Soil contamination,Enhanced soil fertility,3
+20,What is the consequence of oil spills on land?,Improved soil fertility,Water purification,Contaminated soil and water,Increased biodiversity,3
