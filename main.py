@@ -171,10 +171,12 @@ class MainWindow(QWidget):
         cursor = self.database_conn.cursor()
         cursor.execute("SELECT COUNT(*) FROM users")
         user_count = cursor.fetchone()[0]
-        print(user_count)
+
+        # cursor.execute("SELECT * FROM users")
+        # for row in cursor:
+        #     print(row)
 
         if user_count == 0:
-
             username = "aryankkk"
             password = "Aryan_2982"
             cursor.execute(
