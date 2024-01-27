@@ -36,7 +36,7 @@ class TestPage(QDialog):
         self.setGeometry(100, 100, 500, 1000)
         self.setStyleSheet("background-color: #F3A3DB;")
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         self.air_button = QPushButton("Air Pollution")
         self.water_button = QPushButton("Water Pollution")
@@ -77,7 +77,7 @@ class TestDialog(QDialog):
 
         self.setGeometry(100, 100, 500, 1000)
         self.setStyleSheet("background-color: #97BFE5;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         self.questions = self.load_questions_from_file(file_name)
         self.current_question = 0
@@ -131,21 +131,28 @@ class TestDialog(QDialog):
 
     def submit_answer(self):
         selected_option = None
-        for i, button in enumerate(self.option_buttons):
-            if button.isChecked():
-                selected_option = i + 1  # Options are 1-indexed
 
         correct_option = self.questions[self.current_question]["correct"]
+        print("cur q idx: ", self.current_question)
+        print("cor opt: ", correct_option)
 
-        if selected_option == correct_option:
-            self.score += 1
+        for i, button in enumerate(self.option_buttons):
+            print("i: ", i)
+            if button.isChecked():
+                selected_option = i + 1  # Options are 1-indexed
+                print("sel opt: ", selected_option)
 
-        self.current_question += 1
+                if selected_option == correct_option: self.score += 1
+                print("cur score: ", self.score)
 
-        if self.current_question < len(self.questions):
-            self.update_question()
-        else:
-            self.show_result()
+                self.current_question += 1
+
+                if self.current_question < len(self.questions):
+                    print("calling update")
+                    self.update_question()
+                else:
+                    print("calling res")
+                    self.show_result()
 
     def update_question(self):
         self.question_label.setText(self.questions[self.current_question]["question"])

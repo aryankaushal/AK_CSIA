@@ -44,7 +44,7 @@ class LearnPage(QDialog):
 
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
         self.setStyleSheet("background-color: #F4B970;")
 
         self.causes_button = QPushButton("Causes")
@@ -108,7 +108,7 @@ class CausePage(QDialog):
 
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         layout = QVBoxLayout()
         layout.addWidget(self.airC_button)
@@ -155,7 +155,7 @@ class AirCauses(QDialog):
         self.setWindowTitle("Air Pollution Causes")
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
@@ -192,7 +192,7 @@ class LandCauses(QDialog):
         self.setWindowTitle("Land Pollution Causes")
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
@@ -229,7 +229,7 @@ class WaterCauses(QDialog):
         self.setWindowTitle("Water Pollution Causes")
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
@@ -268,7 +268,7 @@ class GlobalCauses(QDialog):
         self.setWindowTitle("Global Warming Causes")
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
@@ -315,7 +315,7 @@ class EffectsPage(QDialog):
 
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         layout = QVBoxLayout()
         layout.addWidget(self.airE_button)
@@ -362,7 +362,7 @@ class AirEffects(QDialog):
         self.setWindowTitle("Air Pollution Effects")
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
@@ -399,7 +399,7 @@ class LandEffects(QDialog):
         self.setWindowTitle("Land Pollution Effects")
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
@@ -438,7 +438,7 @@ class WaterEffects(QDialog):
         self.setWindowTitle("Water Pollution Effects")
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
@@ -477,7 +477,7 @@ class GlobalEffects(QDialog):
         self.setWindowTitle("Global Warming Effects")
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
@@ -524,7 +524,7 @@ class SolutionsPage(QDialog):
 
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         layout = QVBoxLayout()
         layout.addWidget(self.airS_button)
@@ -571,7 +571,7 @@ class AirSol(QDialog):
         self.setWindowTitle("Air Pollution Solutions")
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
@@ -604,7 +604,7 @@ class LandSol(QDialog):
         self.setWindowTitle("Land Pollution Solutions")
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
@@ -637,7 +637,7 @@ class WaterSol(QDialog):
         self.setWindowTitle("Water Pollution Solutions")
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)
@@ -670,7 +670,7 @@ class GlobalSol(QDialog):
         self.setWindowTitle("Global Warming Solutions")
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         self.back_button = QPushButton("Back")
         self.back_button.clicked.connect(self.go_back)

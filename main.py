@@ -34,7 +34,7 @@ class HomePage(QWidget):
         self.setWindowTitle("Climaware")
         self.setGeometry(100, 100, 500, 1000)
         # self.setStyleSheet("background-color: grey;")
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         thisis_label = QLabel("This is")
         thisis_label.setFont(QFont("Arial", 20, QFont.Bold))
@@ -96,7 +96,7 @@ class MainWindow(QWidget):
         super().__init__()
         self.setWindowTitle("Climaware")
         self.setGeometry(100, 100, 500, 1000)
-        self.setFixedSize(500, 1000)
+        # self.setFixedSize(500, 1000)
 
         # self.database_conn = sqlite3.connect("user_data.db")
         # self.create_tables()
