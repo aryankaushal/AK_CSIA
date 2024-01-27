@@ -123,6 +123,7 @@ class RegistrationPage(QDialog):
         self.setLayout(layout)
 
     def setup_otp(self):
+        otp_setup = RegistrationPage()
         # Generate and send initial OTP
         email = self.email_input.text()
         otp = self.generate_otp(email)
@@ -141,18 +142,18 @@ class RegistrationPage(QDialog):
         sender = "aryan_csia@outlook.com"
         smtp_server = "smtp-mail.outlook.com"
         password = "aryan1711"
-        
+
         message = f"""\
             Subject: Climaware Account Registration OTP
 
             We are proud of your endeavor to learn about climate change. Your OTP is {otp} """
-        
+
         context = ssl.create_default_context()
         with smtplib.SMTP(smtp_server, port) as server:
             server.ehlo()
             server.starttls(context=context)
             server.ehlo()
-            
+
             server.login(sender, password)
             server.sendmail(sender, email, message)
         return "OTP sent successfully!"
@@ -235,6 +236,7 @@ class RegistrationPage(QDialog):
         self.timer.start(60000)
         self.timer_label.setText("Time left: ")
 
+
 # Placeholder for storing OTPs (Replace this with a secure storage mechanism)
 OTP_STORE = {}
 
@@ -244,8 +246,4 @@ if __name__ == "__main__":
     registration_page.show()
     sys.exit(app.exec_())
 
-class AuthHandler:
-    def __init__(self, database_conn):
-        self.database_conn = database_conn
-        self.registration_page = RegistrationPage(self.database_conn)
-        self.sign_in_page = SignInPage(self.database_conn)
+

@@ -23,9 +23,7 @@ from email.mime.text import MIMEText
 import random
 from UI import LearnUI, TestUI, HomeUI
 import time, datetime
-from login import AuthHandler
 import csv
-
 
 # *********************************** Test Page --> Quizzes ***********************************
 class TestPage(QDialog):
@@ -179,20 +177,15 @@ class AirQuiz(TestPage):
     def __init__(self):
         super().__init__("Air Pollution Quiz", "Text Files/air_quiz.csv")
 
-
 class WaterQuiz(TestPage):
     def __init__(self):
         super().__init__("Water Pollution Quiz", "Text Files/water_quiz.csv")
-
 
 class LandQuiz(TestPage):
     def __init__(self):
         super().__init__("Land Pollution Quiz", "Text Files/land_quiz.csv")
 
-
 class GlobalQuiz(TestPage):
     def __init__(self):
         super().__init__("Global Warming Quiz", "Text Files/global_quiz.csv")
-
-
 # *********************************************************************************************

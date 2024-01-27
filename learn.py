@@ -23,23 +23,22 @@ from email.mime.text import MIMEText
 from random import randint, sample
 from UI import LearnUI, TestUI, HomeUI
 import time, datetime
-from login import AuthHandler
 
 
 # *************************************** Learn Page ***************************************
 class LearnPage(QDialog):
     def __init__(self):
         super().__init__()
-
+        self.setWindowTitle("Climaware Learn")
         self.learn_title = QLabel("Climaware Learn")
         self.learn_title.setFont(QFont("Arial", 50, QFont.Bold))
         self.learn_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
         self.learn_title.setStyleSheet("color: black;")
 
         self.learn_label = QLabel(
-            "Welcome to the Climaware Learn page.\nThis is where you can study your climate change material.\nWhat do you want to learn about?"
+            "Welcome to the Climaware Learn page.\nThis is where you can \nstudy your climate change material.\nWhat do you want to learn about?"
         )
-        self.learn_label.setFont(QFont("Arial", 20, QFont.Bold))
+        self.learn_label.setFont(QFont("Arial Bold", 20, QFont.Bold))
         self.learn_label.setAlignment(Qt.AlignHCenter)
         self.learn_label.setStyleSheet("color: #004894;")
 
@@ -57,13 +56,13 @@ class LearnPage(QDialog):
         self.solutions_button.clicked.connect(self.show_solutions_page)
 
         self.causes_button.setStyleSheet(
-            "background-color: yellow; color: black; border-radius: 20px; font-size: 16px; min-width: 30; min-height: 50px;"
+            "background-color: #F7C37C; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
         )
         self.effects_button.setStyleSheet(
-            "background-color: blue; color: black; border-radius: 20px; font-size: 16px; min-width: 30; min-height: 50px;"
+            "background-color: #048FB8; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
         )
         self.solutions_button.setStyleSheet(
-            "background-color: lightgreen; color: black; border-radius: 20px; font-size: 16px; min-width: 30; min-height: 50px;"
+            "background-color: #96EE85; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
         )
         layout = QVBoxLayout()
         layout.addWidget(self.learn_title)
@@ -76,6 +75,7 @@ class LearnPage(QDialog):
 
     def show_causes_page(self):
         page = CausePage()
+
         page.exec_()
         # self.stacked_widget.setCurrentIndex(0)
 
@@ -95,6 +95,8 @@ class CausePage(QDialog):
     def __init__(self):
         super().__init__()
 
+        self.setWindowTitle("Climaware Learn: Causes")
+        self.setStyleSheet("background-color: #F4B970;")
         self.causes_label = QLabel(
             "Which phenomenon's causes do you want to learn about?"
         )

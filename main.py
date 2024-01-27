@@ -23,9 +23,8 @@ from email.mime.text import MIMEText
 from random import randint, sample
 from UI import LearnUI, TestUI, HomeUI
 import time, datetime
-from login import AuthHandler
+from login import SignInPage, RegistrationPage
 import learn, tests
-
 
 # *************************************** Home Page ***************************************
 class HomePage(QWidget):
@@ -37,10 +36,16 @@ class HomePage(QWidget):
         # self.setStyleSheet("background-color: grey;")
         self.setFixedSize(500, 1000)
 
+        thisis_label = QLabel("This is")
+        thisis_label.setFont(QFont("Arial", 20, QFont.Bold))
+        thisis_label.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        thisis_label.setStyleSheet("color: grey;")
+
         title_label = QLabel("Climaware")
-        title_label.setFont(QFont("Arial", 50, QFont.Bold))
+        title_label.setFont(QFont("Arial", 60, QFont.Bold))
         title_label.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
         title_label.setStyleSheet("color: black;")
+        title_label.contentsMargins()
         # self.points_label = QLabel("Points: 0")
 
         welcome_label = QLabel(
@@ -59,10 +64,13 @@ class HomePage(QWidget):
 
         self.learn_button = QPushButton("Learn")
         self.test_button = QPushButton("Test")
-        self.learn_button.setGeometry(50, 50, 30, 50)
+        button_width = 20
+        button_height = 40
+        self.learn_button.setGeometry(50, 50, button_width, button_height)
         self.learn_button.setStyleSheet(
-            "background-color: green; color: white; border-radius: 20px; font-size: 16px; min-width: 30; min-height: 50px;"
+            "background-color: green; color: white; border-radius: 20px; font-size: 16px; min-width: 20; min-height: 50px;"
         )
+        self.test_button.setGeometry(50, 50, button_width, button_height)
         self.test_button.setStyleSheet(
             "background-color: green; color: white; border-radius: 20px; font-size: 16px; min-width: 30; min-height: 50px;"
         )
@@ -71,6 +79,7 @@ class HomePage(QWidget):
         self.test_button.clicked.connect(MainWindow.show_test_page)
 
         layout = QVBoxLayout(self)
+        layout.addWidget(thisis_label)
         layout.addWidget(title_label)
         layout.addWidget(welcome_label)
         layout.addWidget(instruction_label)
@@ -85,9 +94,8 @@ class HomePage(QWidget):
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
-
+        self.setWindowTitle("Climaware")
         self.setGeometry(100, 100, 500, 1000)
-        # self.setStyleSheet("background-color: grey;")
         self.setFixedSize(500, 1000)
 
         # self.database_conn = sqlite3.connect("user_data.db")
@@ -113,6 +121,8 @@ class MainWindow(QWidget):
 
         layout = QVBoxLayout()
         layout.addWidget(self.stacked_widget)
+        layout.setSpacing(1)
+        layout.addStretch(1)
         self.setLayout(layout)
 
     def show_learn_page(self):
@@ -127,15 +137,18 @@ class MainWindow(QWidget):
         test_page.exec_()  # Show the TestPage
         # self.stacked_widget.setCurrentIndex(3)
 
-    # def show_registration_page(self):
-    #     self.stacked_widget.addWidget(self.registration_page)
-    #     self.stacked_widget.setCurrentWidget(self.registration_page)
-    #     self.stacked_widget.setCurrentIndex(0)
+    def show_registration_page(self):
+        registration = RegistrationPage(self.database_conn)
+        
+        self.stacked_widget.addWidget(self.registration_page)
+        self.stacked_widget.setCurrentWidget(self.registration_page)
+        self.stacked_widget.setCurrentIndex(0)
 
-    # def show_sign_in_page(self):
-    #     self.stacked_widget.addWidget(self.sign_in_page)
-    #     self.stacked_widget.setCurrentWidget(self.sign_in_page)
-    #     self.stacked_widget.setCurrentIndex(1)
+    def show_sign_in_page(self):
+        signup = SignInPage(self.database_conn)
+        self.stacked_widget.addWidget(self.sign_in_page)
+        self.stacked_widget.setCurrentWidget(self.sign_in_page)
+        self.stacked_widget.setCurrentIndex(1)
 
     # def show_home_page(self):
     #     self.home_page.learn_button.clicked.connect(self.show_learn_page)
@@ -162,37 +175,37 @@ class MainWindow(QWidget):
     #     self.stacked_widget.addWidget(global_warming_page)
     #     self.stacked_widget.setCurrentWidget(global_warming_page)
 
-    # def create_tables(self):
-    #     cursor = self.database_conn.cursor()
-    #     cursor.execute(
-    #         """CREATE TABLE IF NOT EXISTS users
-    #                       (id INTEGER PRIMARY KEY AUTOINCREMENT,
-    #                        email TEXT NOT NULL,
-    #                        password TEXT NOT NULL)"""
-    #     )
-    #     cursor.execute(
-    #         """CREATE TABLE IF NOT EXISTS scores
-    #                       (user_id INTEGER,
-    #                        topic TEXT NOT NULL,
-    #                        score INTEGER,
-    #                        FOREIGN KEY (user_id) REFERENCES users(id))"""
-    #     )
-    #     self.database_conn.commit()
+    def create_tables(self):
+        cursor = self.database_conn.cursor()
+        cursor.execute(
+            """CREATE TABLE IF NOT EXISTS users
+                          (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                           email TEXT NOT NULL,
+                           password TEXT NOT NULL)"""
+        )
+        cursor.execute(
+            """CREATE TABLE IF NOT EXISTS scores
+                          (user_id INTEGER,
+                           topic TEXT NOT NULL,
+                           score INTEGER,
+                           FOREIGN KEY (user_id) REFERENCES users(id))"""
+        )
+        self.database_conn.commit()
 
-    # def create_default_user(self):
-    #     # Check if a default user already exists
-    #     cursor = self.database_conn.cursor()
-    #     cursor.execute("SELECT COUNT(*) FROM users")
-    #     user_count = cursor.fetchone()[0]
+    def create_default_user(self):
+        # Check if a default user already exists
+        cursor = self.database_conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM users")
+        user_count = cursor.fetchone()[0]
 
-    #     if user_count == 0:
-    #         # Create a default user
-    #         cursor.execute(
-    #             "INSERT INTO users (email, password) VALUES (?, ?)",
-    #             ("test@example.com", "testpassword"),
-    #         )
-    #         self.database_conn.commit()
-    #         print("Default user created.")
+        if user_count == 0:
+            # Create a default user
+            cursor.execute(
+                "INSERT INTO users (email, password) VALUES (?, ?)",
+                ("test@example.com", "testpassword"),
+            )
+            self.database_conn.commit()
+            print("Default user created.")
 
 
 if __name__ == "__main__":
