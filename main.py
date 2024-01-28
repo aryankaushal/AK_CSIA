@@ -21,12 +21,8 @@ from PyQt5.QtGui import QPixmap, QColor, QFont
 from PyQt5.QtCore import pyqtSignal, Qt
 from email.mime.text import MIMEText
 from random import randint, sample
-
-# import time, datetimes
-
-# from login import SignInPage, RegistrationPage
 import learn, tests, login
-
+# import time, datetimes
 
 # *************************************** Home Page ***************************************
 class HomePage(QWidget):
@@ -135,10 +131,9 @@ class MainWindow(QWidget):
         layout.addStretch(1)
         self.setLayout(layout)
 
-
     def show_registration_success_message(self):
         message_box = QMessageBox(self)
-        message_box.setStyleSheet("background-color: black;") 
+        message_box.setStyleSheet("background-color: black;")
         message_box.information(
             self,
             "Registration Successful",

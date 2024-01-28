@@ -219,7 +219,7 @@ class LandCauses(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Air Pollution Causes")
+        self.setWindowTitle("Land Pollution Causes")
 
         self.setGeometry(512, 100, 500, 900)
 
@@ -253,7 +253,7 @@ class WaterCauses(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Air Pollution Causes")
+        self.setWindowTitle("Water Pollution Causes")
 
         self.setGeometry(512, 100, 500, 900)
 
@@ -289,7 +289,7 @@ class GlobalCauses(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Air Pollution Causes")
+        self.setWindowTitle("Global Warming Causes")
 
         self.setGeometry(512, 100, 500, 900)
 
@@ -411,7 +411,7 @@ class AirEffects(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Air Pollution Causes")
+        self.setWindowTitle("Air Pollution Effects")
 
         self.setGeometry(512, 100, 500, 900)
 
