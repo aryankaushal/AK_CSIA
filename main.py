@@ -21,8 +21,8 @@ from PyQt5.QtGui import QPixmap, QColor, QFont
 from PyQt5.QtCore import pyqtSignal, Qt
 from email.mime.text import MIMEText
 from random import randint, sample
-import time, datetime
-import secrets
+
+# import time, datetimes
 
 # from login import SignInPage, RegistrationPage
 import learn, tests, login
@@ -30,8 +30,8 @@ import learn, tests, login
 
 # *************************************** Home Page ***************************************
 class HomePage(QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__()
 
         self.setWindowTitle("Climaware")
         self.setGeometry(512, 100, 500, 900)
@@ -106,17 +106,19 @@ class MainWindow(QWidget):
         self.registration_page = login.RegistrationPage(self.database_conn)
         self.stacked_widget = QStackedWidget()
         self.stacked_widget.addWidget(self.registration_page)
-        
-        # added:
+
         self.sign_in_page = login.SignInPage(self.database_conn)
-        self.stacked_widget.addWidget(self.sign_in_page)
 
-        # print("I AM EHREREREE in main after calling reg")
-
-        self.home_page = HomePage()
-
-        self.stacked_widget.addWidget(self.home_page)
+        # added:
+        # self.home_page = HomePage()
+        # self.stacked_widget.addWidget(self.home_page)
         self.setStyleSheet("background-color: lightblue;")
+
+        # added:
+        # self.sign_in_page = login.SignInPage(self.database_conn)
+        # self.stacked_widget.addWidget(self.sign_in_page)
+
+        # self.home_page = HomePage()
 
         # # self.sign_in_page = SignInPage(self.database_conn)
         self.registration_page.registration_successful.connect(
@@ -124,7 +126,8 @@ class MainWindow(QWidget):
         )
 
         # self.registration_page.registration_successful.connect(self.show_home_page)
-        self.sign_in_page.sign_in_successful.connect(self.sign_in_page.show_home_page)
+        # self.sign_in_page.sign_in_successful.connect(self.sign_in_page.show_home_page)
+        self.sign_in_page.sign_in_successful.connect(self.show_home_page)
 
         layout = QVBoxLayout()
         layout.addWidget(self.stacked_widget)
@@ -132,16 +135,22 @@ class MainWindow(QWidget):
         layout.addStretch(1)
         self.setLayout(layout)
 
+
     def show_registration_success_message(self):
-        QMessageBox.information(
+        message_box = QMessageBox(self)
+        message_box.setStyleSheet("background-color: black;") 
+        message_box.information(
             self,
             "Registration Successful",
             "Congratulations!\nClose this, run the app again, and select the Sign In button.",
         )
-        # self.home_page.learn_button.clicked.connect(self.show_registration_page)
-        # self.home_page.test_button.clicked.connect(self.show_sign_in_page)
 
-    
+    # self.home_page.learn_button.clicked.connect(self.show_registration_page)
+    # self.home_page.test_button.clicked.connect(self.show_sign_in_page)
+
+    def show_home_page(self):
+        home_page = HomePage()
+        home_page.exec_()
 
     def show_learn_page(self):
         learn_page = learn.LearnPage()

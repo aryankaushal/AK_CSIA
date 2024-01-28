@@ -52,14 +52,16 @@ class SignInPage(QDialog):
 
         self.username_label = QLabel("Username:")
         self.username_input = QLineEdit()
+        self.username_input.setStyleSheet("background-color: #444444;")
         self.username_label.setFont(QFont("Arial", 25, QFont.Bold))
-        self.username_label.setStyleSheet("color: black;")
+        self.username_label.setStyleSheet("color: #444444;")
 
         self.password_label = QLabel("Password:")
         self.password_input = QLineEdit()
+        self.password_input.setStyleSheet("background-color: #444444;")
         self.password_input.setEchoMode(QLineEdit.Password)
         self.password_label.setFont(QFont("Arial", 25, QFont.Bold))
-        self.password_label.setStyleSheet("color: black;")
+        self.password_label.setStyleSheet("color: #444444;")
 
         self.sign_in_button = QPushButton("Sign In")
         self.sign_in_button.clicked.connect(self.sign_in_user)
@@ -78,7 +80,7 @@ class SignInPage(QDialog):
         layout.addWidget(self.sign_in_button)
 
         self.setLayout(layout)
-    
+
     def sign_in_user(self):
         username = self.username_input.text()
         password = self.password_input.text()
@@ -129,6 +131,7 @@ class RegistrationPage(QDialog):
 
         self.username_label = QLabel("Username:")
         self.username_input = QLineEdit()
+        self.username_input.setStyleSheet("background-color: #444444;")
         self.username_label.setFont(QFont("Arial", 25, QFont.Bold))
         self.username_label.setStyleSheet("color: black;")
 
@@ -140,12 +143,14 @@ class RegistrationPage(QDialog):
 
         self.password_label = QLabel("Password:")
         self.password_input = QLineEdit()
+        self.password_input.setStyleSheet("background-color: #444444;")
         self.password_input.setEchoMode(QLineEdit.Password)
         self.password_label.setFont(QFont("Arial", 30, QFont.Bold))
         self.password_label.setStyleSheet("color: black;")
 
         self.confirm_password_label = QLabel("Confirm Password:")
         self.confirm_password_input = QLineEdit()
+        self.confirm_password_input.setStyleSheet("background-color: #444444;")
         self.confirm_password_input.setEchoMode(QLineEdit.Password)
         self.confirm_password_label.setFont(QFont("Arial", 25, QFont.Bold))
         self.confirm_password_label.setStyleSheet("color: black;")
@@ -273,7 +278,7 @@ class RegistrationPage(QDialog):
         print("Registration successful!")
 
         # QMessageBox.information(
-        #     self, "Registration Successful", 
+        #     self, "Registration Successful",
         #     "Congratulations! Registration successful!\nClose this, run the app, and use the Sign In button"
         # )
 
