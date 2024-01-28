@@ -84,16 +84,6 @@ class SignInPage(QDialog):
 
         # Check if the username and password match in the database
         cursor = self.database_conn.cursor()
-        # cursor.execute(f"""SELECT * FROM users""")
-        # q = cursor.fetchall()
-        # flag = False
-        # for entry in q:
-        #     if entry[1] == password and entry[0] == username:
-        #         self.homepage = HomePage()
-        #         self.homepage.show()
-        #         self.hide()
-        #         flag = True
-
         cursor.execute(
             "SELECT * FROM users WHERE username = ? AND password = ?",
             (username, password),
@@ -105,8 +95,6 @@ class SignInPage(QDialog):
             self.home_page = HomePage()
             self.home_page.show()
             self.hide()
-            # self.sign_in_successful.emit()
-            # self.accept()  # Close the SignInPage
         else:
             QMessageBox.warning(
                 self, "Invalid Credentials", "Invalid username and/or password."

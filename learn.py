@@ -412,7 +412,6 @@ class AirEffects(QDialog):
         super().__init__()
 
         self.setWindowTitle("Air Pollution Effects")
-
         self.setGeometry(512, 100, 500, 900)
 
         self.airC_title = QLabel("Air Pollution Causes")
@@ -421,16 +420,9 @@ class AirEffects(QDialog):
         self.airC_title.setStyleSheet("color: black;")
 
         self.setStyleSheet("background-color: #493FA7;")
-
         self.info_label = QLabel(self.read_info_from_file("Text Files/air_effects.txt"))
-
         layout = QVBoxLayout()
         layout.addWidget(self.info_label)
-        # layout.addWidget(self.test_button)
-
-        # self.test_button = QPushButton("Let's Test")
-        # self.test_button.clicked.connect(self.show_test_page)
-
         self.setLayout(layout)
 
     def read_info_from_file(self, file_path):
