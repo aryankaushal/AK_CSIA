@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import (
     QLabel,
     QPushButton,
     QStackedWidget,
+    QMessageBox
 )
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt

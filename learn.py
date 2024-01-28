@@ -349,7 +349,7 @@ class EffectsPage(QDialog):
         self.airE_button = QPushButton("Air Pollution")
         self.waterE_button = QPushButton("Water Pollution")
         self.landE_button = QPushButton("Land Pollution")
-        self.globalE_button = QPushButton("Land Pollution")
+        self.globalE_button = QPushButton("Global Warming")
 
         self.airE_button.setStyleSheet(
             "background-color: #A6AAAA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
@@ -414,7 +414,7 @@ class AirEffects(QDialog):
         self.setWindowTitle("Air Pollution Effects")
         self.setGeometry(512, 100, 500, 900)
 
-        self.airC_title = QLabel("Air Pollution Causes")
+        self.airC_title = QLabel("Air Pollution Effects")
         self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
         self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
         self.airC_title.setStyleSheet("color: black;")
@@ -437,11 +437,11 @@ class LandEffects(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Air Pollution Causes")
+        self.setWindowTitle("Land Pollution Effects")
 
         self.setGeometry(512, 100, 500, 900)
 
-        self.airC_title = QLabel("Air Pollution Causes")
+        self.airC_title = QLabel("Land Pollution Effects")
         self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
         self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
         self.airC_title.setStyleSheet("color: black;")
@@ -473,11 +473,11 @@ class WaterEffects(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Air Pollution Causes")
+        self.setWindowTitle("Water Pollution Effects")
 
         self.setGeometry(512, 100, 500, 900)
 
-        self.airC_title = QLabel("Air Pollution Causes")
+        self.airC_title = QLabel("Water Pollution Effects")
         self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
         self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
         self.airC_title.setStyleSheet("color: black;")
@@ -509,11 +509,11 @@ class GlobalEffects(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Air Pollution Causes")
+        self.setWindowTitle("Global Warming Effects")
 
         self.setGeometry(512, 100, 500, 900)
 
-        self.airC_title = QLabel("Air Pollution Causes")
+        self.airC_title = QLabel("Global Warming Effects")
         self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
         self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
         self.airC_title.setStyleSheet("color: black;")
@@ -566,21 +566,21 @@ class SolutionsPage(QDialog):
         self.causes_label.setFont(QFont("Arial", 25))
         self.causes_label.setAlignment(Qt.AlignHCenter)
         self.causes_label.setStyleSheet("color: #004894;")
-        self.airE_button = QPushButton("Air Pollution")
-        self.waterE_button = QPushButton("Water Pollution")
-        self.landE_button = QPushButton("Land Pollution")
-        self.globalE_button = QPushButton("Land Pollution")
+        self.airS_button = QPushButton("Air Pollution")
+        self.waterS_button = QPushButton("Water Pollution")
+        self.landS_button = QPushButton("Land Pollution")
+        self.globalS_button = QPushButton("Global Warming")
 
-        self.airE_button.setStyleSheet(
+        self.airS_button.setStyleSheet(
             "background-color: #A6AAAA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
         )
-        self.waterE_button.setStyleSheet(
+        self.waterS_button.setStyleSheet(
             "background-color: #2194DA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
         )
-        self.landE_button.setStyleSheet(
+        self.landS_button.setStyleSheet(
             "background-color: #6C2E19; color: white; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
         )
-        self.globalE_button.setStyleSheet(
+        self.globalS_button.setStyleSheet(
             "background-color: #B88E12; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
         )
         self.setGeometry(512, 100, 500, 900)
