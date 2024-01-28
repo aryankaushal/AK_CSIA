@@ -106,7 +106,12 @@ class MainWindow(QWidget):
         self.registration_page = login.RegistrationPage(self.database_conn)
         self.stacked_widget = QStackedWidget()
         self.stacked_widget.addWidget(self.registration_page)
-        print("I AM EHREREREE in main after calling reg")
+        
+        # added:
+        self.sign_in_page = login.SignInPage(self.database_conn)
+        self.stacked_widget.addWidget(self.sign_in_page)
+
+        # print("I AM EHREREREE in main after calling reg")
 
         self.home_page = HomePage()
 
@@ -114,9 +119,12 @@ class MainWindow(QWidget):
         self.setStyleSheet("background-color: lightblue;")
 
         # # self.sign_in_page = SignInPage(self.database_conn)
+        self.registration_page.registration_successful.connect(
+            self.show_registration_success_message
+        )
 
         # self.registration_page.registration_successful.connect(self.show_home_page)
-        # self.sign_in_page.sign_in_successful.connect(self.show_home_page)
+        self.sign_in_page.sign_in_successful.connect(self.sign_in_page.show_home_page)
 
         layout = QVBoxLayout()
         layout.addWidget(self.stacked_widget)
@@ -124,8 +132,16 @@ class MainWindow(QWidget):
         layout.addStretch(1)
         self.setLayout(layout)
 
+    def show_registration_success_message(self):
+        QMessageBox.information(
+            self,
+            "Registration Successful",
+            "Congratulations!\nClose this, run the app again, and select the Sign In button.",
+        )
         # self.home_page.learn_button.clicked.connect(self.show_registration_page)
         # self.home_page.test_button.clicked.connect(self.show_sign_in_page)
+
+    
 
     def show_learn_page(self):
         learn_page = learn.LearnPage()
