@@ -11,17 +11,14 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QPushButton,
     QDialog,
-    QStackedWidget,
-    QRadioButton,
-    QTextEdit,
-    QTextBrowser,
+
     QMessageBox,
 )
 from PyQt5.QtGui import QPixmap, QColor, QFont
 from PyQt5.QtCore import pyqtSignal, Qt, QTimer
 from email.mime.text import MIMEText
 from random import randint, sample
-
+from main import HomePage
 # from UI import LearnUI, TestUI, HomeUI
 # import time
 # import datetime
@@ -87,6 +84,16 @@ class SignInPage(QDialog):
 
         # Check if the username and password match in the database
         cursor = self.database_conn.cursor()
+        # cursor.execute(f"""SELECT * FROM users""")
+        # q = cursor.fetchall()
+        # flag = False
+        # for entry in q:
+        #     if entry[1] == password and entry[0] == username:
+        #         self.homepage = HomePage()
+        #         self.homepage.show()
+        #         self.hide()
+        #         flag = True
+
         cursor.execute(
             "SELECT * FROM users WHERE username = ? AND password = ?",
             (username, password),
@@ -95,8 +102,11 @@ class SignInPage(QDialog):
 
         if user_data:
             print("Sign in successful!")
-            self.sign_in_successful.emit()
-            self.accept()  # Close the SignInPage
+            self.home_page = HomePage()
+            self.home_page.show()
+            self.hide()
+            # self.sign_in_successful.emit()
+            # self.accept()  # Close the SignInPage
         else:
             QMessageBox.warning(
                 self, "Invalid Credentials", "Invalid username and/or password."
@@ -145,7 +155,7 @@ class RegistrationPage(QDialog):
         self.password_input = QLineEdit()
         self.password_input.setStyleSheet("background-color: #444444;")
         self.password_input.setEchoMode(QLineEdit.Password)
-        self.password_label.setFont(QFont("Arial", 30, QFont.Bold))
+        self.password_label.setFont(QFont("Arial", 25, QFont.Bold))
         self.password_label.setStyleSheet("color: black;")
 
         self.confirm_password_label = QLabel("Confirm Password:")
@@ -157,7 +167,7 @@ class RegistrationPage(QDialog):
 
         self.password_strength_label = QLabel()
         self.password_strength_label.setAlignment(Qt.AlignCenter)
-        self.password_label.setFont(QFont("Arial", 14, QFont.Bold))
+        self.password_strength_label.setFont(QFont("Arial", 14, QFont.Bold))
 
         self.register_button = QPushButton("Join us!")
         self.register_button.clicked.connect(self.register_user)
