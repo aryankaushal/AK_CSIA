@@ -15,18 +15,15 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import pyqtSignal, Qt, QTimer
 from random import randint, sample
-# from main import HomePage
-
 # import time
 # import datetime
 import pyotp
 import re
-
 import learn, tests
 
 
 # *************************************** Home Page ***************************************
-class HomePage(QWidget):
+class HomePage(QDialog):
     def __init__(self):
         super().__init__()
 
@@ -34,6 +31,7 @@ class HomePage(QWidget):
 
         self.setWindowTitle("Climaware")
         self.setGeometry(512, 100, 500, 900)
+        self.setStyleSheet("background-color: lightblue;")
 
         thisis_label = QLabel("This is")
         thisis_label.setFont(QFont("Arial", 30))
@@ -92,7 +90,6 @@ class HomePage(QWidget):
         print("in show hp")
         home_page = HomePage()
         home_page.exec_()
-
         # self.home_page = HomePage()
         # self.stacked_widget.addWidget(self.home_page)
         # self.stacked_widget.setCurrentWidget(self.home_page)
@@ -105,7 +102,6 @@ class HomePage(QWidget):
     def show_test_page(self):
         test_page = tests.TestPage()
         test_page.exec_()
-
 
 
 class RegistrationPage(QDialog):
@@ -208,7 +204,7 @@ class RegistrationPage(QDialog):
         message_box.information(
             self,
             "Registration Successful",
-            "Congratulations!\nClose this, run the app again, and select the Sign In button.",
+            "Congratulations!\nClose this, run the app again, and click the Sign In, instead button.",
         )
 
     def update_password_strength(self):
@@ -291,11 +287,11 @@ class RegistrationPage(QDialog):
         self.database_conn.commit()
         print("Registration successful!")
 
-        QMessageBox.information(
-            self,
-            "Registration Successful",
-            "Congratulations! Registration successful!\nClose this, run the app, and use the Sign In button",
-        )
+        # QMessageBox.information(
+        #     self,
+        #     "Registration Successful",
+        #     "Congratulations! Registration successful!\nClose this, run the app, and use the Sign In button",
+        # )
 
         # self.registration_successful.emit()
         self.show_registration_success_message()
@@ -387,6 +383,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     # home_page = HomePage()
     # home_page.show()
-    registration_page = RegistrationPage(None)
+    database_conn = sqlite3.connect("user_data.db")
+    registration_page = RegistrationPage(database_conn)
     registration_page.show()
     sys.exit(app.exec_())
