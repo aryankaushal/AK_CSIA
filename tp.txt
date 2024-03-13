@@ -1,0 +1,1391 @@
+01: import sys
+02: import sqlite3
+03: from PyQt5.QtWidgets import (
+04:     QApplication,
+05:     QWidget,
+06:     QVBoxLayout,
+07:     QStackedWidget,
+08: )
+09: from PyQt5.QtGui import QFont
+10: from PyQt5.QtCore import Qt
+11: import login
+12: 
+13: # **************************************** Main Window ****************************************
+14: class MainWindow(QWidget):
+15:     def __init__(self):
+16:         super().__init__()
+17: 
+18:         self.stacked_widget = QStackedWidget()
+19: 
+20:         self.setWindowTitle("Climaware")
+21:         self.setGeometry(512, 100, 500, 900)
+22:         self.setStyleSheet("background-color: lightblue;")
+23: 
+24:         self.database_conn = sqlite3.connect("user_data.db")
+25:         self.create_tables()
+26:         self.create_default_user()
+27: 
+28:         self.registration_page = login.RegistrationPage(self.database_conn)
+29:         self.sign_in_page = login.SignInPage(self.database_conn)
+30: 
+31:         self.show_registration_page()
+32: 
+33:         layout = QVBoxLayout()
+34:         layout.addWidget(self.stacked_widget)
+35:         layout.setSpacing(1)
+36:         layout.addStretch(1)
+37:         self.setLayout(layout)
+38:     
+39:     def show_registration_page(self):
+40:         reg_page = login.RegistrationPage(self.database_conn)
+41:         reg_page.exec_()
+42:         return
+43: 
+44:     def create_tables(self):
+45:         cursor = self.database_conn.cursor()
+46:         cursor.execute(
+47:             """CREATE TABLE IF NOT EXISTS users
+48:                           (id INTEGER PRIMARY KEY AUTOINCREMENT,
+49:                            username TEXT NOT NULL,
+50:                            password TEXT NOT NULL,
+51:                            points INTEGER DEFAULT 0)"""
+52:         )
+53:         cursor.execute(
+54:             """CREATE TABLE IF NOT EXISTS scores
+55:                           (user_id INTEGER,
+56:                            topic TEXT NOT NULL,
+57:                            score INTEGER,
+58:                            FOREIGN KEY (user_id) REFERENCES users(id))"""
+59:         )
+60:         self.database_conn.commit()
+61: 
+62:     def create_default_user(self):
+63:         # Check if a default user already exists
+64:         cursor = self.database_conn.cursor()
+65:         cursor.execute("SELECT COUNT(*) FROM users")
+66:         user_count = cursor.fetchone()[0]
+67: 
+68:         if user_count == 0:
+69:             username = "aryankkk"
+70:             password = "Aryan_2982"
+71:             cursor.execute(
+72:                 "INSERT INTO users (username, password) VALUES (?, ?)",
+73:                 (username, password),
+74:             )
+75:             self.database_conn.commit()
+76:             print("Default user created.")
+77:             print(f"Username: {username}")
+78:             print(f"Password: {password}")
+79: 
+80: if __name__ == "__main__":
+81:     app = QApplication(sys.argv)
+82:     window = MainWindow()
+83:     window.show()
+84:     sys.exit(app.exec_())
+85:
+
+ 
+
+Login.py file
+
+001: import sys
+002: import sqlite3
+003: from PyQt5.QtWidgets import (
+004:     QApplication,
+005:     QWidget,
+006:     QVBoxLayout,
+007:     QPushButton,
+008:     QLabel,
+009:     QLineEdit,
+010:     QPushButton,
+011:     QDialog,
+012:     QMessageBox,
+013:     QStackedWidget,
+014: )
+015: from PyQt5.QtGui import QFont
+016: from PyQt5.QtCore import pyqtSignal, Qt, QTimer
+017: import re
+018: import learn, tests
+019: 
+020: 
+021: # *************************************** Home Page ***************************************
+022: class HomePage(QDialog):
+023:     def __init__(self):
+024:         super().__init__()
+025: 
+026:         self.stacked_widget = QStackedWidget()
+027: 
+028:         self.setWindowTitle("Climaware")
+029:         self.setGeometry(512, 100, 500, 900)
+030:         self.setStyleSheet("background-color: lightblue;")
+031: 
+032:         thisis_label = QLabel("This is")
+033:         thisis_label.setFont(QFont("Arial", 30))
+034:         thisis_label.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+035:         thisis_label.setStyleSheet("color: grey;")
+036: 
+037:         title_label = QLabel("Climaware")
+038:         title_label.setFont(QFont("Arial", 80, QFont.Bold))
+039:         title_label.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+040:         title_label.setStyleSheet("color: black;")
+041:         title_label.contentsMargins()
+042:         # self.points_label = QLabel("Points: 0")
+043: 
+044:         welcome_label = QLabel(
+045:             "\nWelcome to the best place to learn about climate change!\n\n\nWe are glad you're joining us!\n\n\n"
+046:         )
+047:         welcome_label.setFont(QFont("Arial", 25, QFont.Bold))
+048:         welcome_label.setStyleSheet("color: #15098A;")
+049:         welcome_label.setAlignment(Qt.AlignHCenter)
+050: 
+051:         instruction_label = QLabel(
+052:             "Would you like to learn about climate change\nthrough some concise study material\nor test your understanding via short quizzes?\n\n"
+053:         )
+054:         instruction_label.setFont(QFont("Arial", 25))
+055:         instruction_label.setStyleSheet("color: black;")
+056:         instruction_label.setAlignment(Qt.AlignHCenter)
+057: 
+058:         self.learn_button = QPushButton("Learn")
+059:         self.test_button = QPushButton("Test")
+060:         button_width = 20
+061:         button_height = 40
+062:         self.learn_button.setGeometry(50, 50, button_width, button_height)
+063:         self.learn_button.setStyleSheet(
+064:             "background-color: #EB711E; color: white; border-radius: 20px; font-size: 20px; min-width: 20; min-height: 50px;"
+065:         )
+066:         self.test_button.setGeometry(50, 50, button_width, button_height)
+067:         self.test_button.setStyleSheet(
+068:             "background-color: #972E6E; color: white; border-radius: 20px; font-size: 20px; min-width: 20; min-height: 50px;"
+069:         )
+070: 
+071:         self.learn_button.clicked.connect(self.show_learn_page)
+072:         self.test_button.clicked.connect(self.show_test_page)
+073: 
+074:         layout = QVBoxLayout(self)
+075:         layout.addWidget(thisis_label)
+076:         layout.addWidget(title_label)
+077:         layout.addWidget(welcome_label)
+078:         layout.addWidget(instruction_label)
+079:         layout.addWidget(self.learn_button)
+080:         layout.addWidget(self.test_button)
+081: 
+082:         self.setLayout(layout)
+083: 
+084:     def show_home_page(self):
+085:         home_page = HomePage()
+086:         home_page.exec_()
+087: 
+088:     def show_learn_page(self):
+089:         learn_page = learn.LearnPage()
+090:         learn_page.exec_()
+091: 
+092:     def show_test_page(self):
+093:         test_page = tests.TestPage()
+094:         test_page.exec_()
+095: 
+096: class RegistrationPage(QDialog):
+097: 
+098:     def __init__(self, database_conn):
+099:         super().__init__()
+100: 
+101:         self.setWindowTitle("Climaware Registration")
+102:         self.setGeometry(512, 100, 500, 900)
+103:         self.setStyleSheet("background-color: #B5B5C8;")
+104:         self.reg_title = QLabel("\nWelcome to\nClimaware!")
+105:         self.reg_title.setFont(QFont("Arial", 40, QFont.Bold))
+106:         self.reg_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+107:         self.reg_title.setStyleSheet("color: black;")
+108:   
+109:         self.instruction_label = QLabel(
+110:             "Enter your desired username and password to join us!"
+111:         )
+112:         self.instruction_label.setFont(QFont("Arial", 25))
+113:         self.instruction_label.setStyleSheet("color: black;")
+114:         self.instruction_label.setAlignment(Qt.AlignHCenter)
+115: 
+116:         self.database_conn = database_conn
+117:         self.max_attempts = 3
+118:         self.attempts = 0
+119: 
+120:         self.username_label = QLabel("Username:")
+121:         self.username_input = QLineEdit()
+122:         self.username_input.setStyleSheet("background-color: #444444;")
+123:         self.username_label.setFont(QFont("Arial", 25, QFont.Bold))
+124:         self.username_label.setStyleSheet("color: black;")
+125: 
+126:         self.instruction2_label = QLabel(
+127:             "Password must:\n1. Be at least 8 characters long\n2. Contain at least one uppercase letter, one lowercase letter,\none digit, and one special character (#, _, /)."
+128:         )
+129:         self.instruction2_label.setFont(QFont("Arial", 14))
+130:         self.instruction2_label.setStyleSheet("color: #444444;")
+131: 
+132:         self.password_label = QLabel("Password:")
+133:         self.password_input = QLineEdit()
+134:         self.password_input.setStyleSheet("background-color: #444444;")
+135:         self.password_input.setEchoMode(QLineEdit.Password)
+136:         self.password_label.setFont(QFont("Arial", 25, QFont.Bold))
+137:         self.password_label.setStyleSheet("color: black;")
+138: 
+139:         self.confirm_password_label = QLabel("Confirm Password:")
+140:         self.confirm_password_input = QLineEdit()
+141:         self.confirm_password_input.setStyleSheet("background-color: #444444;")
+142:         self.confirm_password_input.setEchoMode(QLineEdit.Password)
+143:         self.confirm_password_label.setFont(QFont("Arial", 25, QFont.Bold))
+144:         self.confirm_password_label.setStyleSheet("color: black;")
+145: 
+146:         self.password_strength_label = QLabel()
+147:         self.password_strength_label.setAlignment(Qt.AlignCenter)
+148:         self.password_strength_label.setFont(QFont("Arial", 14, QFont.Bold))
+149: 
+150:         self.register_button = QPushButton("Join us!")
+151:         self.register_button.clicked.connect(self.register_user)
+152:         self.register_button.setFont(QFont("Arial", 25, QFont.Bold))
+153:         self.register_button.setStyleSheet(
+154:             "background-color: #1FD38C; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+155:         )
+156: 
+157:         self.sign_in_button = QPushButton("Sign In, instead")
+158:         self.sign_in_button.clicked.connect(self.show_sign_in_page)
+159:         self.sign_in_button.setFont(QFont("Arial", 25, QFont.Bold))
+160:         self.sign_in_button.setStyleSheet(
+161:             "background-color: #1F94D3; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+162:         )
+163: 
+164:         layout = QVBoxLayout()
+165:         layout.addWidget(self.reg_title)
+166:         layout.addWidget(self.instruction_label)
+167:         layout.addWidget(self.username_label)
+168:         layout.addWidget(self.username_input)
+169:         layout.addWidget(self.instruction2_label)
+170:         layout.addWidget(self.password_label)
+171:         layout.addWidget(self.password_input)
+172:         layout.addWidget(self.confirm_password_label)
+173:         layout.addWidget(self.confirm_password_input)
+174:         layout.addWidget(self.password_strength_label)
+175:         layout.addWidget(self.register_button)
+176:         layout.addWidget(self.sign_in_button)
+177: 
+178:         self.setLayout(layout)
+179: 
+180:         self.password_input.textChanged.connect(self.update_password_strength)
+181: 
+182:     def show_sign_in_page(self):
+183:         page = SignInPage(self.database_conn)
+184:         page.exec_()
+185: 
+186:     def show_registration_success_message(self):
+187:         message_box = QMessageBox(self)
+188:         message_box.setStyleSheet("background-color: black;")
+189:         message_box.information(
+190:             self,
+191:             "Registration Successful",
+192:             "Congratulations!\nClose this, run the app again, and click the Sign In, instead button.",
+193:         )
+194: 
+195:     def update_password_strength(self):
+196:         password = self.password_input.text()
+197:         strength = self.calculate_password_strength(password)
+198: 
+199:         colors = {
+200:             "Very Weak": "red",
+201:             "Weak": "orange",
+202:             "Slightly Weak": "yellow",
+203:             "Slightly Strong": "lightgreen",
+204:             "Strong": "green",
+205:         }
+206: 
+207:         self.password_strength_label.setText(
+208:             f"Password Strength: {strength.capitalize()}"
+209:         )
+210:         self.password_strength_label.setStyleSheet(
+211:             f"color: {colors[strength]}; font-weight: bold;"
+212:         )
+213: 
+214:     def calculate_password_strength(self, password):
+215:         criteria_met = 0
+216: 
+217:         # Check uppercase and lowercase
+218:         if any(c.isupper() for c in password) and any(c.islower() for c in password):
+219:             criteria_met += 1
+220: 
+221:         # Check one digit
+222:         if any(c.isdigit() for c in password):
+223:             criteria_met += 1
+224: 
+225:         # Check one special character
+226:         if re.search(r"[#_/]", password):
+227:             criteria_met += 1
+228: 
+229:         # Check 8 characters long
+230:         if len(password) >= 8:
+231:             criteria_met += 1
+232: 
+233:         # Determine strength based on the number of criteria met
+234:         if criteria_met == 0:
+235:             return "Very Weak"
+236:         elif criteria_met == 1:
+237:             return "Weak"
+238:         elif criteria_met == 2:
+239:             return "Slightly Weak"
+240:         elif criteria_met == 3:
+241:             return "Slightly Strong"
+242:         else:
+243:             return "Strong"
+244: 
+245:     def register_user(self):
+246:         username = self.username_input.text()
+247:         password = self.password_input.text()
+248:         confirm_password = self.confirm_password_input.text()
+249: 
+250:         # Validate password and confirm password match
+251:         if password != confirm_password:
+252:             QMessageBox.warning(
+253:                 self, "Password Mismatch", "Password and Confirm Password do not match."
+254:             )
+255:             return
+256: 
+257:         # Check if the username already exists in the database
+258:         cursor = self.database_conn.cursor()
+259:         cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
+260:         existing_user = cursor.fetchone()
+261: 
+262:         if existing_user:
+263:             QMessageBox.warning(
+264:                 self, "User Exists", "User with the same username already exists."
+265:             )
+266:             return
+267: 
+268:         cursor.execute(
+269:             "INSERT INTO users (username, password) VALUES (?, ?)", (username, password)
+270:         )
+271:         self.database_conn.commit()
+272:         print("Registration successful!")
+273:         HomePage().show_home_page()
+274:         self.accept()
+275: 
+276: 
+277: class SignInPage(QDialog):
+278: 
+279:     def __init__(self, database_conn):
+280:         super().__init__()
+281: 
+282:         self.setWindowTitle("Climaware Sign In")
+283:         self.setGeometry(512, 100, 500, 900)
+284:         self.setStyleSheet("background-color: #B5B5C8;")
+285:         self.reg_title = QLabel("\nWelcome back to\nClimaware!")
+286:         self.reg_title.setFont(QFont("Arial", 40, QFont.Bold))
+287:         self.reg_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+288:         self.reg_title.setStyleSheet("color: black;")
+289: 
+290:         self.instruction_label = QLabel("Enter your username and password to sign in!")
+291:         self.instruction_label.setFont(QFont("Arial", 25))
+292:         self.instruction_label.setStyleSheet("color: black;")
+293:         self.instruction_label.setAlignment(Qt.AlignHCenter)
+294: 
+295:         self.database_conn = database_conn
+296: 
+297:         self.username_label = QLabel("Username:")
+298:         self.username_input = QLineEdit()
+299:         self.username_input.setStyleSheet("background-color: #444444;")
+300:         self.username_label.setFont(QFont("Arial", 25, QFont.Bold))
+301:         self.username_label.setStyleSheet("color: #444444;")
+302: 
+303:         self.password_label = QLabel("Password:")
+304:         self.password_input = QLineEdit()
+305:         self.password_input.setStyleSheet("background-color: #444444;")
+306:         self.password_input.setEchoMode(QLineEdit.Password)
+307:         self.password_label.setFont(QFont("Arial", 25, QFont.Bold))
+308:         self.password_label.setStyleSheet("color: #444444;")
+309: 
+310:         self.sign_in_button = QPushButton("Sign In")
+311:         self.sign_in_button.clicked.connect(self.sign_in_user)
+312:         self.sign_in_button.setFont(QFont("Arial", 25, QFont.Bold))
+313:         self.sign_in_button.setStyleSheet(
+314:             "background-color: #1F94D3; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+315:         )
+316: 
+317:         layout = QVBoxLayout()
+318:         layout.addWidget(self.reg_title)
+319:         layout.addWidget(self.instruction_label)
+320:         layout.addWidget(self.username_label)
+321:         layout.addWidget(self.username_input)
+322:         layout.addWidget(self.password_label)
+323:         layout.addWidget(self.password_input)
+324:         layout.addWidget(self.sign_in_button)
+325: 
+326:         self.setLayout(layout)
+327: 
+328:     def sign_in_user(self):
+329:         username = self.username_input.text()
+330:         password = self.password_input.text()
+331: 
+332:         cursor = self.database_conn.cursor()
+333:         cursor.execute(
+334:             "SELECT * FROM users WHERE username = ? AND password = ?",
+335:             (username, password),
+336:         )
+337:         user_data = cursor.fetchone()
+338: 
+339:         if user_data:
+340:             print("Sign in successful!")
+341:             HomePage().show_home_page()
+342:         else:
+343:             QMessageBox.warning(
+344:                 self, "Invalid Credentials", "Invalid username and/or password."
+345:             )
+346: 
+347: 
+348: if __name__ == "__main__":
+349:     app = QApplication(sys.argv)
+350:     database_conn = sqlite3.connect("user_data.db")
+351:     registration_page = RegistrationPage(database_conn)
+352:     registration_page.show()
+353:     sys.exit(app.exec_())
+354:
+ 
+learn.py file
+
+001: from PyQt5.QtWidgets import (
+002:     QVBoxLayout,
+003:     QPushButton,
+004:     QLabel,
+005:     QPushButton,
+006:     QDialog,
+007: )
+008: from PyQt5.QtGui import QFont
+009: from PyQt5.QtCore import Qt
+010: 
+011: # *************************************** Learn Page ***************************************
+012: class LearnPage(QDialog):
+013:     def __init__(self):
+014:         super().__init__()
+015:         self.setWindowTitle("Climaware Learn")
+016:         self.learn_title = QLabel("\nClimaware Learn")
+017:         self.learn_title.setFont(QFont("Arial", 60, QFont.Bold))
+018:         self.learn_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+019:         self.learn_title.setStyleSheet("color: black;")
+020: 
+021:         self.setGeometry(512, 100, 500, 900)
+022:         self.setStyleSheet("background-color: #F4B970;")
+023: 
+024:         self.learn_label = QLabel(
+025:             "Welcome to the Climaware Learn page.\n\nThis is where you can \nstudy your climate change material.\n\nWhat do you want to learn about?"
+026:         )
+027:         self.learn_label.setFont(QFont("Arial", 25))
+028:         self.learn_label.setAlignment(Qt.AlignHCenter)
+029:         self.learn_label.setStyleSheet("color: #004894;")
+030: 
+031:         self.causes_button = QPushButton("Causes")
+032:         self.effects_button = QPushButton("Effects")
+033:         self.solutions_button = QPushButton("Solutions")
+034: 
+035:         self.causes_button.clicked.connect(self.show_causes_page)
+036:         self.effects_button.clicked.connect(self.show_effects_page)
+037:         self.solutions_button.clicked.connect(self.show_solutions_page)
+038: 
+039:         self.causes_button.setStyleSheet(
+040:             "background-color: #D73701; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+041:         )
+042:         self.effects_button.setStyleSheet(
+043:             "background-color: #048FB8; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+044:         )
+045:         self.solutions_button.setStyleSheet(
+046:             "background-color: #96EE85; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+047:         )
+048:         layout = QVBoxLayout()
+049:         layout.addWidget(self.learn_title)
+050:         layout.addWidget(self.learn_label)
+051:         layout.addWidget(self.causes_button)
+052:         layout.addWidget(self.effects_button)
+053:         layout.addWidget(self.solutions_button)
+054: 
+055:         self.setLayout(layout)
+056: 
+057:     def show_causes_page(self):
+058:         page = CausePage()
+059:         page.exec_()
+060: 
+061:     def show_effects_page(self):
+062:         page = EffectsPage()
+063:         page.exec_()
+064: 
+065:     def show_solutions_page(self):
+066:         page = SolutionsPage()
+067:         page.exec_()
+068: 
+069: 
+070: # ******************************* Learn Page --> Causes Pages *******************************
+071: class CausePage(QDialog):
+072:     def __init__(self):
+073:         super().__init__()
+074: 
+075:         self.setWindowTitle("Climaware Learn: Causes")
+076: 
+077:         self.cause_title = QLabel("\nClimaware Learn: Causes")
+078:         self.cause_title.setFont(QFont("Arial", 60, QFont.Bold))
+079:         self.cause_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+080:         self.cause_title.setStyleSheet("color: black;")
+081: 
+082:         self.setStyleSheet("background-color: #F4B970;")
+083: 
+084:         self.setGeometry(512, 100, 500, 900)
+085: 
+086:         self.causes_label = QLabel(
+087:             "Which phenomenon's causes do you want to learn about?"
+088:         )
+089:         self.causes_label.setFont(QFont("Arial", 25))
+090:         self.causes_label.setAlignment(Qt.AlignHCenter)
+091:         self.causes_label.setStyleSheet("color: #004894;")
+092: 
+093:         self.airC_button = QPushButton("Air Pollution")
+094:         self.waterC_button = QPushButton("Water Pollution")
+095:         self.landC_button = QPushButton("Land Pollution")
+096:         self.globalC_button = QPushButton("Global Warming")
+097: 
+098:         self.airC_button.setStyleSheet(
+099:             "background-color: #A6AAAA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+100:         )
+101:         self.waterC_button.setStyleSheet(
+102:             "background-color: #2194DA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+103:         )
+104:         self.landC_button.setStyleSheet(
+105:             "background-color: #6C2E19; color: white; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+106:         )
+107:         self.globalC_button.setStyleSheet(
+108:             "background-color: #B88E12; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+109:         )
+110: 
+111:         layout = QVBoxLayout()
+112:         layout.addWidget(self.cause_title)
+113:         layout.addWidget(self.causes_label)
+114:         layout.addWidget(self.airC_button)
+115:         layout.addWidget(self.waterC_button)
+116:         layout.addWidget(self.landC_button)
+117:         layout.addWidget(self.globalC_button)
+118: 
+119:         self.airC_button.clicked.connect(self.show_airC)
+120:         self.waterC_button.clicked.connect(self.show_waterC)
+121:         self.landC_button.clicked.connect(self.show_landC)
+122:         self.globalC_button.clicked.connect(self.show_globalC)
+123: 
+124:         self.setLayout(layout)
+125: 
+126:     def show_airC(self):
+127:         page = AirCauses()
+128:         page.exec_()
+129: 
+130:     def show_waterC(self):
+131:         page = WaterCauses()
+132:         page.exec_()
+133: 
+134:     def show_landC(self):
+135:         page = LandCauses()
+136:         page.exec_()
+137: 
+138:     def show_globalC(self):
+139:         page = GlobalCauses()
+140:         page.exec_()
+141: 
+142:     def go_back(self):
+143:         self.close()
+144: 
+145: 
+146: class AirCauses(QDialog):
+147:     def __init__(self):
+148:         super().__init__()
+149: 
+150:         self.setWindowTitle("Air Pollution Causes")
+151: 
+152:         self.setGeometry(512, 100, 500, 900)
+153: 
+154:         self.airC_title = QLabel("Air Pollution Causes")
+155:         self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+156:         self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+157:         self.airC_title.setStyleSheet("color: black;")
+158: 
+159:         self.setStyleSheet("background-color: #493FA7;")
+160: 
+161:         self.airC_button = QPushButton("Air Pollution")
+162:         self.waterC_button = QPushButton("Water Pollution")
+163:         self.landC_button = QPushButton("Land Pollution")
+164:         self.globalC_button = QPushButton("Land Pollution")
+165: 
+166:         self.setGeometry(512, 100, 500, 900)
+167: 
+168:         self.info_label = QLabel(self.read_info_from_file("Text Files/air_causes.txt"))
+169: 
+170:         layout = QVBoxLayout()
+171:         layout.addWidget(self.airC_title)
+172:         layout.addWidget(self.info_label)
+173: 
+174:         self.setLayout(layout)
+175: 
+176:     def read_info_from_file(self, file_path):
+177:         try:
+178:             with open(file_path, "r") as file:
+179:                 return file.read()
+180:         except FileNotFoundError:
+181:             return "Information not available."
+182: 
+183: 
+184: class LandCauses(QDialog):
+185:     def __init__(self):
+186:         super().__init__()
+187: 
+188:         self.setWindowTitle("Land Pollution Causes")
+189: 
+190:         self.setGeometry(512, 100, 500, 900)
+191: 
+192:         self.airC_title = QLabel("Land Pollution Causes")
+193:         self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+194:         self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+195:         self.airC_title.setStyleSheet("color: black;")
+196: 
+197:         self.setStyleSheet("background-color: #493FA7;")
+198: 
+199:         self.info_label = QLabel(self.read_info_from_file("Text Files/land_causes.txt"))
+200: 
+201:         layout = QVBoxLayout()
+202:         layout.addWidget(self.info_label)
+203: 
+204:         self.setLayout(layout)
+205: 
+206:     def read_info_from_file(self, file_path):
+207:         try:
+208:             with open(file_path, "r") as file:
+209:                 return file.read()
+210:         except FileNotFoundError:
+211:             return "Information not available."
+212: 
+213: 
+214: class WaterCauses(QDialog):
+215:     def __init__(self):
+216:         super().__init__()
+217: 
+218:         self.setWindowTitle("Water Pollution Causes")
+219: 
+220:         self.setGeometry(512, 100, 500, 900)
+221: 
+222:         self.airC_title = QLabel("Water Pollution Causes")
+223:         self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+224:         self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+225:         self.airC_title.setStyleSheet("color: black;")
+226: 
+227:         self.setStyleSheet("background-color: #493FA7;")
+228: 
+229:         self.info_label = QLabel(
+230:             self.read_info_from_file("Text Files/water_causes.txt")
+231:         )
+232: 
+233:         layout = QVBoxLayout()
+234:         layout.addWidget(self.info_label)
+235: 
+236:         self.setLayout(layout)
+237: 
+238:     def read_info_from_file(self, file_path):
+239:         try:
+240:             with open(file_path, "r") as file:
+241:                 return file.read()
+242:         except FileNotFoundError:
+243:             return "Information not available."
+244: 
+245: 
+246: class GlobalCauses(QDialog):
+247:     def __init__(self):
+248:         super().__init__()
+249: 
+250:         self.setWindowTitle("Global Warming Causes")
+251: 
+252:         self.setGeometry(512, 100, 500, 900)
+253: 
+254:         self.airC_title = QLabel("Global Warming Causes")
+255:         self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+256:         self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+257:         self.airC_title.setStyleSheet("color: black;")
+258: 
+259:         self.setStyleSheet("background-color: #493FA7;")
+260: 
+261:         self.info_label = QLabel(
+262:             self.read_info_from_file("Text Files/global_causes.txt")
+263:         )
+264: 
+265:         layout = QVBoxLayout()
+266:         layout.addWidget(self.info_label)
+267: 
+268:         self.setLayout(layout)
+269: 
+270:     def read_info_from_file(self, file_path):
+271:         try:
+272:             with open(file_path, "r") as file:
+273:                 return file.read()
+274:         except FileNotFoundError:
+275:             return "Information not available."
+276: 
+277: 
+278: # ********************************************************************************************
+279: 
+280: 
+281: # ******************************* Learn Page --> Effects Pages *******************************
+282: class EffectsPage(QDialog):
+283:     def __init__(self):
+284:         super().__init__()
+285: 
+286:         self.setWindowTitle("Climaware Learn: Effects")
+287: 
+288:         self.effect_title = QLabel("\nClimaware Learn: Effects")
+289:         self.effect_title.setFont(QFont("Arial", 60, QFont.Bold))
+290:         self.effect_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+291:         self.effect_title.setStyleSheet("color: black;")
+292: 
+293:         self.setStyleSheet("background-color: #F4B970;")
+294: 
+295:         self.setGeometry(512, 100, 500, 900)
+296: 
+297:         self.causes_label = QLabel(
+298:             "Which phenomenon's effects do you want to learn about?"
+299:         )
+300:         self.causes_label.setFont(QFont("Arial", 25))
+301:         self.causes_label.setAlignment(Qt.AlignHCenter)
+302:         self.causes_label.setStyleSheet("color: #004894;")
+303:         self.airE_button = QPushButton("Air Pollution")
+304:         self.waterE_button = QPushButton("Water Pollution")
+305:         self.landE_button = QPushButton("Land Pollution")
+306:         self.globalE_button = QPushButton("Global Warming")
+307: 
+308:         self.airE_button.setStyleSheet(
+309:             "background-color: #A6AAAA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+310:         )
+311:         self.waterE_button.setStyleSheet(
+312:             "background-color: #2194DA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+313:         )
+314:         self.landE_button.setStyleSheet(
+315:             "background-color: #6C2E19; color: white; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+316:         )
+317:         self.globalE_button.setStyleSheet(
+318:             "background-color: #B88E12; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+319:         )
+320:         self.setGeometry(512, 100, 500, 900)
+321: 
+322:         layout = QVBoxLayout()
+323:         layout.addWidget(self.effect_title)
+324:         layout.addWidget(self.causes_label)
+325:         layout.addWidget(self.airE_button)
+326:         layout.addWidget(self.waterE_button)
+327:         layout.addWidget(self.landE_button)
+328:         layout.addWidget(self.globalE_button)
+329: 
+330:         self.airE_button.clicked.connect(self.show_airE)
+331:         self.waterE_button.clicked.connect(self.show_waterE)
+332:         self.landE_button.clicked.connect(self.show_landE)
+333:         self.globalE_button.clicked.connect(self.show_globalE)
+334: 
+335:         self.setLayout(layout)
+336: 
+337:     def show_airE(self):
+338:         page = AirEffects()
+339:         page.exec_()
+340: 
+341:     def show_waterE(self):
+342:         page = WaterEffects()
+343:         page.exec_()
+344: 
+345:     def show_landE(self):
+346:         page = LandEffects()
+347:         page.exec_()
+348: 
+349:     def show_globalE(self):
+350:         page = GlobalEffects()
+351:         page.exec_()
+352: 
+353:     def go_back(self):
+354:         self.close()
+355: 
+356: 
+357: class AirEffects(QDialog):
+358:     def __init__(self):
+359:         super().__init__()
+360: 
+361:         self.setWindowTitle("Air Pollution Effects")
+362:         self.setGeometry(512, 100, 500, 900)
+363: 
+364:         self.airC_title = QLabel("Air Pollution Effects")
+365:         self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+366:         self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+367:         self.airC_title.setStyleSheet("color: black;")
+368: 
+369:         self.setStyleSheet("background-color: #493FA7;")
+370:         self.info_label = QLabel(self.read_info_from_file("Text Files/air_effects.txt"))
+371:         layout = QVBoxLayout()
+372:         layout.addWidget(self.info_label)
+373:         self.setLayout(layout)
+374: 
+375:     def read_info_from_file(self, file_path):
+376:         try:
+377:             with open(file_path, "r") as file:
+378:                 return file.read()
+379:         except FileNotFoundError:
+380:             return "Information not available."
+381: 
+382: 
+383: class LandEffects(QDialog):
+384:     def __init__(self):
+385:         super().__init__()
+386: 
+387:         self.setWindowTitle("Land Pollution Effects")
+388: 
+389:         self.setGeometry(512, 100, 500, 900)
+390: 
+391:         self.airC_title = QLabel("Land Pollution Effects")
+392:         self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+393:         self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+394:         self.airC_title.setStyleSheet("color: black;")
+395: 
+396:         self.setStyleSheet("background-color: #493FA7;")
+397: 
+398:         self.info_label = QLabel(
+399:             self.read_info_from_file("Text Files/land_effects.txt")
+400:         )
+401: 
+402:         layout = QVBoxLayout()
+403:         layout.addWidget(self.info_label)
+404: 
+405:         self.setLayout(layout)
+406: 
+407:     def read_info_from_file(self, file_path):
+408:         try:
+409:             with open(file_path, "r") as file:
+410:                 return file.read()
+411:         except FileNotFoundError:
+412:             return "Information not available."
+413: 
+414: 
+415: class WaterEffects(QDialog):
+416:     def __init__(self):
+417:         super().__init__()
+418: 
+419:         self.setWindowTitle("Water Pollution Effects")
+420: 
+421:         self.setGeometry(512, 100, 500, 900)
+422: 
+423:         self.airC_title = QLabel("Water Pollution Effects")
+424:         self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+425:         self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+426:         self.airC_title.setStyleSheet("color: black;")
+427: 
+428:         self.setStyleSheet("background-color: #493FA7;")
+429: 
+430:         self.info_label = QLabel(
+431:             self.read_info_from_file("Text Files/water_effects.txt")
+432:         )
+433: 
+434:         layout = QVBoxLayout()
+435:         layout.addWidget(self.info_label)
+436: 
+437:         self.setLayout(layout)
+438: 
+439:     def read_info_from_file(self, file_path):
+440:         try:
+441:             with open(file_path, "r") as file:
+442:                 return file.read()
+443:         except FileNotFoundError:
+444:             return "Information not available."
+445: 
+446: 
+447: class GlobalEffects(QDialog):
+448:     def __init__(self):
+449:         super().__init__()
+450: 
+451:         self.setWindowTitle("Global Warming Effects")
+452: 
+453:         self.setGeometry(512, 100, 500, 900)
+454: 
+455:         self.airC_title = QLabel("Global Warming Effects")
+456:         self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+457:         self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+458:         self.airC_title.setStyleSheet("color: black;")
+459: 
+460:         self.setStyleSheet("background-color: #493FA7;")
+461: 
+462:         self.info_label = QLabel(
+463:             self.read_info_from_file("Text Files/global_effects.txt")
+464:         )
+465: 
+466:         layout = QVBoxLayout()
+467:         layout.addWidget(self.info_label)
+468: 
+469:         self.setLayout(layout)
+470: 
+471:     def read_info_from_file(self, file_path):
+472:         try:
+473:             with open(file_path, "r") as file:
+474:                 return file.read()
+475:         except FileNotFoundError:
+476:             return "Information not available."
+477: 
+478: 
+479: # *********************************************************************************************
+480: 
+481: 
+482: # ****************************** Learn Page --> Solutions Pages *******************************
+483: class SolutionsPage(QDialog):
+484:     def __init__(self):
+485:         super().__init__()
+486: 
+487:         self.setWindowTitle("Climaware Learn: Solutions")
+488: 
+489:         self.sol_title = QLabel("\nClimaware Learn: Solutions")
+490:         self.sol_title.setFont(QFont("Arial", 60, QFont.Bold))
+491:         self.sol_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+492:         self.sol_title.setStyleSheet("color: black;")
+493: 
+494:         self.setStyleSheet("background-color: #F4B970;")
+495: 
+496:         self.setGeometry(512, 100, 500, 900)
+497: 
+498:         self.causes_label = QLabel(
+499:             "Which phenomenon's solutions do you want to learn about?"
+500:         )
+501:         self.causes_label.setFont(QFont("Arial", 25))
+502:         self.causes_label.setAlignment(Qt.AlignHCenter)
+503:         self.causes_label.setStyleSheet("color: #004894;")
+504:         self.airS_button = QPushButton("Air Pollution")
+505:         self.waterS_button = QPushButton("Water Pollution")
+506:         self.landS_button = QPushButton("Land Pollution")
+507:         self.globalS_button = QPushButton("Global Warming")
+508: 
+509:         self.airS_button.setStyleSheet(
+510:             "background-color: #A6AAAA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+511:         )
+512:         self.waterS_button.setStyleSheet(
+513:             "background-color: #2194DA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+514:         )
+515:         self.landS_button.setStyleSheet(
+516:             "background-color: #6C2E19; color: white; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+517:         )
+518:         self.globalS_button.setStyleSheet(
+519:             "background-color: #B88E12; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+520:         )
+521:         self.setGeometry(512, 100, 500, 900)
+522: 
+523:         layout = QVBoxLayout()
+524:         layout.addWidget(self.sol_title)
+525:         layout.addWidget(self.causes_label)
+526:         layout.addWidget(self.airS_button)
+527:         layout.addWidget(self.waterS_button)
+528:         layout.addWidget(self.landS_button)
+529:         layout.addWidget(self.globalS_button)
+530: 
+531:         self.airS_button.clicked.connect(self.show_airS)
+532:         self.waterS_button.clicked.connect(self.show_waterS)
+533:         self.landS_button.clicked.connect(self.show_landS)
+534:         self.globalS_button.clicked.connect(self.show_globalS)
+535: 
+536:         self.setLayout(layout)
+537: 
+538:     def show_airS(self):
+539:         page = AirSol()
+540:         page.exec_()
+541: 
+542:     def show_waterS(self):
+543:         page = WaterSol()
+544:         page.exec_()
+545: 
+546:     def show_landS(self):
+547:         page = LandSol()
+548:         page.exec_()
+549: 
+550:     def show_globalS(self):
+551:         page = GlobalSol()
+552:         page.exec_()
+553: 
+554:     def go_back(self):
+555:         self.close()
+556: 
+557: 
+558: class AirSol(QDialog):
+559:     def __init__(self):
+560:         super().__init__()
+561: 
+562:         self.setWindowTitle("Air Pollution Solutions")
+563: 
+564:         self.setGeometry(512, 100, 500, 900)
+565: 
+566:         self.airC_title = QLabel("Air Pollution Solutions")
+567:         self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+568:         self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+569:         self.airC_title.setStyleSheet("color: black;")
+570: 
+571:         self.setStyleSheet("background-color: #493FA7;")
+572: 
+573:         self.info_label = QLabel(self.read_info_from_file("Text Files/air_sol.txt"))
+574: 
+575:         layout = QVBoxLayout()
+576:         layout.addWidget(self.info_label)
+577: 
+578:         self.setLayout(layout)
+579: 
+580:     def read_info_from_file(self, file_path):
+581:         try:
+582:             with open(file_path, "r") as file:
+583:                 return file.read()
+584:         except FileNotFoundError:
+585:             return "Information not available."
+586: 
+587: 
+588: class LandSol(QDialog):
+589:     def __init__(self):
+590:         super().__init__()
+591: 
+592:         self.setWindowTitle("Land Pollution Solutions")
+593: 
+594:         self.setGeometry(512, 100, 500, 900)
+595: 
+596:         self.airC_title = QLabel("Land Pollution Solutions")
+597:         self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+598:         self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+599:         self.airC_title.setStyleSheet("color: black;")
+600: 
+601:         self.setStyleSheet("background-color: #493FA7;")
+602: 
+603:         self.info_label = QLabel(self.read_info_from_file("Text Files/land_sol.txt"))
+604: 
+605:         layout = QVBoxLayout()
+606:         layout.addWidget(self.info_label)
+607: 
+608:         self.setLayout(layout)
+609: 
+610:     def read_info_from_file(self, file_path):
+611:         try:
+612:             with open(file_path, "r") as file:
+613:                 return file.read()
+614:         except FileNotFoundError:
+615:             return "Information not available."
+616: 
+617: 
+618: class WaterSol(QDialog):
+619:     def __init__(self):
+620:         super().__init__()
+621: 
+622:         self.setWindowTitle("Water Pollution Solutions")
+623: 
+624:         self.setGeometry(512, 100, 500, 900)
+625: 
+626:         self.airC_title = QLabel("Water Pollution Solutions")
+627:         self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+628:         self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+629:         self.airC_title.setStyleSheet("color: black;")
+630: 
+631:         self.setStyleSheet("background-color: #493FA7;")
+632: 
+633:         self.info_label = QLabel(self.read_info_from_file("Text Files/water_sol.txt"))
+634: 
+635:         layout = QVBoxLayout()
+636:         layout.addWidget(self.info_label)
+637: 
+638:         self.setLayout(layout)
+639: 
+640:     def read_info_from_file(self, file_path):
+641:         try:
+642:             with open(file_path, "r") as file:
+643:                 return file.read()
+644:         except FileNotFoundError:
+645:             return "Information not available."
+646: 
+647: 
+648: class GlobalSol(QDialog):
+649:     def __init__(self):
+650:         super().__init__()
+651: 
+652:         self.setWindowTitle("Global Warming Solutions")
+653: 
+654:         self.setGeometry(512, 100, 500, 900)
+655: 
+656:         self.airC_title = QLabel("Global Warming Solutions")
+657:         self.airC_title.setFont(QFont("Arial", 40, QFont.Bold))
+658:         self.airC_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+659:         self.airC_title.setStyleSheet("color: black;")
+660: 
+661:         self.setStyleSheet("background-color: #493FA7;")
+662: 
+663:         self.info_label = QLabel(self.read_info_from_file("Text Files/global_sol.txt"))
+664: 
+665:         layout = QVBoxLayout()
+666:         layout.addWidget(self.info_label)
+667: 
+668:         self.setLayout(layout)
+669: 
+670:     def read_info_from_file(self, file_path):
+671:         try:
+672:             with open(file_path, "r") as file:
+673:                 return file.read()
+674:         except FileNotFoundError:
+675:             return "Information not available."
+676: 
+677: 
+678: # *********************************************************************************************
+
+ 
+tests.py file
+
+001: from PyQt5.QtWidgets import (
+002:     QVBoxLayout,
+003:     QPushButton,
+004:     QLabel,
+005:     QPushButton,
+006:     QDialog,
+007:     QRadioButton,
+008:     QMessageBox,
+009: )
+010: from PyQt5.QtGui import QPixmap, QColor, QFont
+011: from PyQt5.QtCore import pyqtSignal, Qt, QTimer
+012: from email.mime.text import MIMEText
+013: import random
+014: import time, datetime
+015: import csv
+016: 
+017: # *********************************** Test Page --> Quizzes ***********************************
+018: class TestPage(QDialog):
+019:     def __init__(self):
+020:         super().__init__()
+021: 
+022:         self.setWindowTitle("Climaware Test")
+023:         self.test_title = QLabel("\nClimaware Test")
+024:         self.test_title.setFont(QFont("Arial", 60, QFont.Bold))
+025:         self.test_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+026:         self.test_title.setStyleSheet("color: black;")
+027: 
+028:         self.test_label = QLabel(
+029:             "Welcome to the Climaware Test page.\n\nThis is where you can \ntest your climate change knowledge.\n\nWhat do you want to test?"
+030:         )
+031:         self.test_label.setFont(QFont("Arial", 25))
+032:         self.test_label.setAlignment(Qt.AlignHCenter)
+033:         self.test_label.setStyleSheet("color: #004894;")
+034: 
+035:         self.setGeometry(512, 100, 500, 900)
+036:         # self.setStyleSheet("background-color: grey;")
+037:         self.setStyleSheet("background-color: #F4B970;")
+038: 
+039:         self.setGeometry(512, 100, 500, 900)
+040:         self.setStyleSheet("background-color: #F3A3DB;")
+041:         # self.setStyleSheet("background-color: grey;")
+042:         self.setFixedSize(500, 900)
+043: 
+044:         self.air_button = QPushButton("Air Pollution")
+045:         self.water_button = QPushButton("Water Pollution")
+046:         self.land_button = QPushButton("Land Pollution")
+047:         self.global_button = QPushButton("Global Warming")
+048:         self.mixed_button = QPushButton("Mixed Timed Quiz")
+049: 
+050:         self.air_button.setStyleSheet(
+051:             "background-color: #A6AAAA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+052:         )
+053:         self.water_button.setStyleSheet(
+054:             "background-color: #2194DA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+055:         )
+056:         self.land_button.setStyleSheet(
+057:             "background-color: #6C2E19; color: white; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+058:         )
+059:         self.global_button.setStyleSheet(
+060:             "background-color: #B88E12; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+061:         )
+062:         self.mixed_button.setStyleSheet(
+063:             "background-color: #FF6399; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+064:         )
+065: 
+066:         layout = QVBoxLayout()
+067:         layout.addWidget(self.test_title)
+068:         layout.addWidget(self.test_label)
+069:         layout.addWidget(self.air_button)
+070:         layout.addWidget(self.water_button)
+071:         layout.addWidget(self.land_button)
+072:         layout.addWidget(self.global_button)
+073:         layout.addWidget(self.mixed_button)
+074: 
+075:         self.air_button.clicked.connect(
+076:             lambda: self.initiate_test("Air Pollution", "Text Files/air_quiz.csv")
+077:         )
+078:         self.water_button.clicked.connect(
+079:             lambda: self.initiate_test("Water Pollution", "Text Files/water_quiz.csv")
+080:         )
+081:         self.land_button.clicked.connect(
+082:             lambda: self.initiate_test("Land Pollution", "Text Files/land_quiz.csv")
+083:         )
+084:         self.global_button.clicked.connect(
+085:             lambda: self.initiate_test("Global Warming", "Text Files/global_quiz.csv")
+086:         )
+087:         self.mixed_button.clicked.connect(
+088:             lambda: self.initiate_test("Mixed", "Text Files/mixed_quiz.csv")
+089:         )
+090: 
+091:         self.setLayout(layout)
+092: 
+093:     def initiate_test(self, topic, file_name):
+094:         test_dialog = TestDialog(topic, file_name)
+095:         result = test_dialog.exec_()
+096: 
+097: 
+098: class TestDialog(QDialog):
+099:     def __init__(self, topic, file_name):
+100:         super().__init__()
+101: 
+102:         self.setWindowTitle("Climaware Quiz")
+103:         self.quiz_title = QLabel("\nClimaware Quiz")
+104:         self.quiz_title.setFont(QFont("Arial", 40, QFont.Bold))
+105:         self.quiz_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+106:         self.quiz_title.setStyleSheet("color: black;")
+107: 
+108:         self.setGeometry(512, 100, 500, 900)
+109:         self.setStyleSheet("background-color: #DFA528;")
+110: 
+111:         self.questions = self.load_questions_from_file(file_name)
+112:         self.current_question = 0
+113:         self.score = 0
+114: 
+115:         self.mixed_bag_mode = topic == "Mixed Bag Test"
+116:         if self.mixed_bag_mode:
+117:             self.initialize_mixed_bag_test()
+118:         else:
+119:             self.initialize_regular_test()
+120: 
+121:     def initialize_mixed_bag_test(self):
+122:         self.setWindowTitle("Mixed Bag Test")
+123:         self.timer = QTimer(self)
+124:         self.timer.timeout.connect(self.timeout_handler)
+125:         self.timer_interval = 180000  # 3 minutes
+126:         self.timer.start(self.timer_interval)
+127: 
+128:         self.question_queue = self.load_questions_from_file("mixed_bag_quiz.csv")
+129:         random.shuffle(self.question_queue)
+130: 
+131:         self.update_question()
+132: 
+133:         self.question_label = QLabel(self.questions[self.current_question]["question"])
+134:         self.question_label.setFont(QFont("Arial", 20, QFont.Bold))
+135:         self.question_label.setAlignment(Qt.AlignHCenter)
+136:         self.question_label.setStyleSheet("color: #5A246A;")
+137: 
+138:         self.option_buttons = []
+139:         for i, option in enumerate(self.questions[self.current_question]["options"]):
+140:             button = QRadioButton(option)
+141:             button.setFont(QFont("Arial", 20))
+142:             button.setStyleSheet("color: black;")
+143:             self.option_buttons.append(button)
+144:             print("\n")
+145: 
+146:         self.submit_button = QPushButton("Submit")
+147:         self.submit_button.setFont(QFont("Arial", 16, QFont.Bold))
+148:         self.submit_button.setStyleSheet(
+149:             "background-color: #5A246A; color: white; border-radius: 20px; font-size: 20px; min-width: 20; min-height: 50px;"
+150:         )
+151:         self.submit_button.clicked.connect(self.submit_answer)
+152: 
+153:         layout = QVBoxLayout()
+154:         layout.addWidget(self.quiz_title)
+155:         layout.addWidget(self.question_label)
+156: 
+157:         for button in self.option_buttons:
+158:             layout.addWidget(button)
+159:         layout.addWidget(self.submit_button)
+160: 
+161:         self.setLayout(layout)
+162: 
+163:     def load_questions_from_file(self, file_path):
+164:         questions = []
+165: 
+166:         try:
+167:             with open(file_path, "r", encoding="utf-8") as file:
+168:                 reader = csv.DictReader(file)
+169:                 all_questions = list(reader)
+170: 
+171:                 # Randomly select 5 indices
+172:                 selected_indices = random.sample(range(1, 20), 5)
+173: 
+174:                 for data in all_questions:
+175:                     if int(data["index"]) in selected_indices:
+176:                         question = {
+177:                             "question": data["question"],
+178:                             "options": [data[f"option{i}"] for i in range(1, 5)],
+179:                             "correct": data["correct"],
+180:                         }
+181:                         questions.append(question)
+182: 
+183:         except FileNotFoundError:
+184:             QMessageBox.critical(
+185:                 self, "File Not Found", f"Question file '{file_path}' not found."
+186:             )
+187:             self.reject()
+188: 
+189:         return questions
+190: 
+191:     def submit_answer(self):
+192:         selected_option = None
+193: 
+194:         correct_option = int(self.questions[self.current_question]["correct"])
+195: 
+196:         for i, button in enumerate(self.option_buttons):
+197:             if button.isChecked():
+198:                 selected_option = i + 1  # Options are 1-indexed
+199: 
+200:                 if selected_option == correct_option:
+201:                     self.score += 1
+202: 
+203:                 self.current_question += 1
+204: 
+205:                 if self.current_question < len(self.questions):
+206:                     self.update_question()
+207:                 else:
+208:                     self.show_result()
+209: 
+210:     def update_question(self):
+211:         self.question_label.setText(self.questions[self.current_question]["question"])
+212: 
+213:         for i, option in enumerate(self.questions[self.current_question]["options"]):
+214:             self.option_buttons[i].setText(option)
+215:             self.option_buttons[i].setChecked(False)
+216: 
+217:     def show_result(self):
+218:         QMessageBox.information(
+219:             self, "Quiz Result", f"You scored {self.score} out of {len(self.questions)}"
+220:         )
+221: 
+222:         if self.score <= 1:
+223:             result_message = "Study some more."
+224:         elif self.score <= 3:
+225:             result_message = "Good job!"
+226:         elif self.score == 4:
+227:             result_message = "Well done!"
+228:         else:
+229:             result_message = "Wow! A perfect score!"
+230: 
+231:         QMessageBox.information(self, "Result Message", result_message)
+232: 
+233:         self.accept()
+234: 
+235: 
+236: class AirQuiz(TestPage):
+237:     def __init__(self):
+238:         self.setWindowTitle("Air Pollution Quiz")
+239:         super().__init__("Air Pollution Quiz", "Text Files/air_quiz.csv")
+240: 
+241: 
+242: class WaterQuiz(TestPage):
+243:     def __init__(self):
+244:         self.setWindowTitle("Water Pollution Quiz")
+245:         super().__init__("Water Pollution Quiz", "Text Files/water_quiz.csv")
+246: 
+247: 
+248: class LandQuiz(TestPage):
+249:     def __init__(self):
+250:         self.setWindowTitle("Land Pollution Quiz")
+251:         super().__init__("Land Pollution Quiz", "Text Files/land_quiz.csv")
+252: 
+253: 
+254: class GlobalQuiz(TestPage):
+255:     def __init__(self):
+256:         self.setWindowTitle("Global Warming Quiz")
+257:         super().__init__("Global Warming Quiz", "Text Files/global_quiz.csv")
+258: 
+259: 
+260: # *********************************************************************************************
+261:
+

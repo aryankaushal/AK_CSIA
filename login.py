@@ -14,12 +14,6 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import pyqtSignal, Qt, QTimer
-
-import bcrypt
-
-# import time
-# import datetime
-import pyotp
 import re
 import learn, tests
 
@@ -99,7 +93,6 @@ class HomePage(QDialog):
         test_page = tests.TestPage()
         test_page.exec_()
 
-
 class RegistrationPage(QDialog):
 
     def __init__(self, database_conn):
@@ -112,7 +105,7 @@ class RegistrationPage(QDialog):
         self.reg_title.setFont(QFont("Arial", 40, QFont.Bold))
         self.reg_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
         self.reg_title.setStyleSheet("color: black;")
-
+  
         self.instruction_label = QLabel(
             "Enter your desired username and password to join us!"
         )
@@ -261,8 +254,6 @@ class RegistrationPage(QDialog):
             )
             return
 
-        hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
-
         # Check if the username already exists in the database
         cursor = self.database_conn.cursor()
         cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
@@ -346,10 +337,8 @@ class SignInPage(QDialog):
         user_data = cursor.fetchone()
 
         if user_data:
-            stored_password = user_data[1]
-            if bcrypt.checkpw(password.encode('utf-8'), stored_password):
-                print("Sign in successful!")
-                HomePage().show_home_page()
+            print("Sign in successful!")
+            HomePage().show_home_page()
         else:
             QMessageBox.warning(
                 self, "Invalid Credentials", "Invalid username and/or password."

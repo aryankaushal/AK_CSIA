@@ -18,15 +18,15 @@ class LearnPage(QDialog):
         self.learn_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
         self.learn_title.setStyleSheet("color: black;")
 
+        self.setGeometry(512, 100, 500, 900)
+        self.setStyleSheet("background-color: #F4B970;")
+
         self.learn_label = QLabel(
             "Welcome to the Climaware Learn page.\n\nThis is where you can \nstudy your climate change material.\n\nWhat do you want to learn about?"
         )
         self.learn_label.setFont(QFont("Arial", 25))
         self.learn_label.setAlignment(Qt.AlignHCenter)
         self.learn_label.setStyleSheet("color: #004894;")
-
-        self.setGeometry(512, 100, 500, 900)
-        self.setStyleSheet("background-color: #F4B970;")
 
         self.causes_button = QPushButton("Causes")
         self.effects_button = QPushButton("Effects")

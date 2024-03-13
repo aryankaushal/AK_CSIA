@@ -12,7 +12,6 @@ import login
 
 # **************************************** Main Window ****************************************
 class MainWindow(QWidget):
-    # Aryan_1711
     def __init__(self):
         super().__init__()
 
@@ -37,7 +36,6 @@ class MainWindow(QWidget):
         layout.addStretch(1)
         self.setLayout(layout)
     
-
     def show_registration_page(self):
         reg_page = login.RegistrationPage(self.database_conn)
         reg_page.exec_()

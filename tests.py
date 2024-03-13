@@ -14,7 +14,6 @@ import random
 import time, datetime
 import csv
 
-
 # *********************************** Test Page --> Quizzes ***********************************
 class TestPage(QDialog):
     def __init__(self):
@@ -94,6 +93,7 @@ class TestPage(QDialog):
     def initiate_test(self, topic, file_name):
         test_dialog = TestDialog(topic, file_name)
         result = test_dialog.exec_()
+
 
 class TestDialog(QDialog):
     def __init__(self, topic, file_name):
@@ -231,6 +231,7 @@ class TestDialog(QDialog):
         QMessageBox.information(self, "Result Message", result_message)
 
         self.accept()
+
 
 class AirQuiz(TestPage):
     def __init__(self):
