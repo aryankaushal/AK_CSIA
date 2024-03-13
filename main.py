@@ -34,9 +34,8 @@ class MainWindow(QWidget):
         self.registration_page = login.RegistrationPage(self.database_conn)
         self.sign_in_page = login.SignInPage(self.database_conn)
 
-        print("bef sk call")
         self.show_registration_page()
-        print("aft sk call")
+    
 
         # self.registration_page.registration_successful.connect(
         #     self.show_registration_success_message,
@@ -86,7 +85,8 @@ class MainWindow(QWidget):
             """CREATE TABLE IF NOT EXISTS users
                           (id INTEGER PRIMARY KEY AUTOINCREMENT,
                            username TEXT NOT NULL,
-                           password TEXT NOT NULL)"""
+                           password TEXT NOT NULL,
+                           points INTEGER DEFAULT 0)"""
         )
         cursor.execute(
             """CREATE TABLE IF NOT EXISTS scores

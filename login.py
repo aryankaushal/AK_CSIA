@@ -10,11 +10,12 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QDialog,
     QMessageBox,
-    QStackedWidget
+    QStackedWidget,
 )
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import pyqtSignal, Qt, QTimer
 from random import randint, sample
+
 # import time
 # import datetime
 import pyotp
@@ -85,16 +86,15 @@ class HomePage(QDialog):
         # layout.addWidget(self.points_label)
 
         self.setLayout(layout)
-    
+
     def show_home_page(self):
-        print("in show hp")
         home_page = HomePage()
         home_page.exec_()
         # self.home_page = HomePage()
         # self.stacked_widget.addWidget(self.home_page)
         # self.stacked_widget.setCurrentWidget(self.home_page)
         # self.close() # Close the main window ie sign in page?
-    
+
     def show_learn_page(self):
         learn_page = learn.LearnPage()
         learn_page.exec_()
@@ -125,7 +125,6 @@ class RegistrationPage(QDialog):
         self.instruction_label.setStyleSheet("color: black;")
         self.instruction_label.setAlignment(Qt.AlignHCenter)
 
-        # print("INSIDE REG CLASS")
         self.database_conn = database_conn
         self.max_attempts = 3
         self.attempts = 0
@@ -294,7 +293,8 @@ class RegistrationPage(QDialog):
         # )
 
         # self.registration_successful.emit()
-        self.show_registration_success_message()
+        # self.show_registration_success_message()
+        HomePage().show_home_page()
         # Close the RegistrationPage
         self.accept()
 
