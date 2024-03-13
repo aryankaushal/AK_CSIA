@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QDialog,
     QMessageBox,
+    QStackedWidget
 )
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import pyqtSignal, Qt, QTimer
@@ -21,9 +22,94 @@ from random import randint, sample
 import pyotp
 import re
 
+import learn, tests
+
+
+# *************************************** Home Page ***************************************
+class HomePage(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.stacked_widget = QStackedWidget()
+
+        self.setWindowTitle("Climaware")
+        self.setGeometry(512, 100, 500, 900)
+
+        thisis_label = QLabel("This is")
+        thisis_label.setFont(QFont("Arial", 30))
+        thisis_label.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        thisis_label.setStyleSheet("color: grey;")
+
+        title_label = QLabel("Climaware")
+        title_label.setFont(QFont("Arial", 80, QFont.Bold))
+        title_label.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        title_label.setStyleSheet("color: black;")
+        title_label.contentsMargins()
+        # self.points_label = QLabel("Points: 0")
+
+        welcome_label = QLabel(
+            "\nWelcome to the best place to learn about climate change!\n\n\nWe are glad you're joining us!\n\n\n"
+        )
+        welcome_label.setFont(QFont("Arial", 25, QFont.Bold))
+        welcome_label.setStyleSheet("color: #15098A;")
+        welcome_label.setAlignment(Qt.AlignHCenter)
+
+        instruction_label = QLabel(
+            "Would you like to learn about climate change\nthrough some concise study material\nor test your understanding via short quizzes?\n\n"
+        )
+        instruction_label.setFont(QFont("Arial", 25))
+        instruction_label.setStyleSheet("color: black;")
+        instruction_label.setAlignment(Qt.AlignHCenter)
+
+        self.learn_button = QPushButton("Learn")
+        self.test_button = QPushButton("Test")
+        button_width = 20
+        button_height = 40
+        self.learn_button.setGeometry(50, 50, button_width, button_height)
+        self.learn_button.setStyleSheet(
+            "background-color: #EB711E; color: white; border-radius: 20px; font-size: 20px; min-width: 20; min-height: 50px;"
+        )
+        self.test_button.setGeometry(50, 50, button_width, button_height)
+        self.test_button.setStyleSheet(
+            "background-color: #972E6E; color: white; border-radius: 20px; font-size: 20px; min-width: 20; min-height: 50px;"
+        )
+
+        self.learn_button.clicked.connect(self.show_learn_page)
+        self.test_button.clicked.connect(self.show_test_page)
+
+        layout = QVBoxLayout(self)
+        layout.addWidget(thisis_label)
+        layout.addWidget(title_label)
+        layout.addWidget(welcome_label)
+        layout.addWidget(instruction_label)
+        layout.addWidget(self.learn_button)
+        layout.addWidget(self.test_button)
+        # layout.addWidget(self.points_label)
+
+        self.setLayout(layout)
+    
+    def show_home_page(self):
+        print("in show hp")
+        home_page = HomePage()
+        home_page.exec_()
+
+        # self.home_page = HomePage()
+        # self.stacked_widget.addWidget(self.home_page)
+        # self.stacked_widget.setCurrentWidget(self.home_page)
+        # self.close() # Close the main window ie sign in page?
+    
+    def show_learn_page(self):
+        learn_page = learn.LearnPage()
+        learn_page.exec_()
+
+    def show_test_page(self):
+        test_page = tests.TestPage()
+        test_page.exec_()
+
+
 
 class RegistrationPage(QDialog):
-    registration_successful = pyqtSignal()
+    # registration_successful = pyqtSignal()
 
     def __init__(self, database_conn):
         super().__init__()
@@ -116,6 +202,15 @@ class RegistrationPage(QDialog):
         page = SignInPage(self.database_conn)
         page.exec_()
 
+    def show_registration_success_message(self):
+        message_box = QMessageBox(self)
+        message_box.setStyleSheet("background-color: black;")
+        message_box.information(
+            self,
+            "Registration Successful",
+            "Congratulations!\nClose this, run the app again, and select the Sign In button.",
+        )
+
     def update_password_strength(self):
         password = self.password_input.text()
         strength = self.calculate_password_strength(password)
@@ -202,7 +297,8 @@ class RegistrationPage(QDialog):
             "Congratulations! Registration successful!\nClose this, run the app, and use the Sign In button",
         )
 
-        self.registration_successful.emit()
+        # self.registration_successful.emit()
+        self.show_registration_success_message()
         # Close the RegistrationPage
         self.accept()
 
@@ -212,7 +308,7 @@ class RegistrationPage(QDialog):
 
 
 class SignInPage(QDialog):
-    sign_in_successful = pyqtSignal()
+    # sign_in_successful = pyqtSignal()
 
     def __init__(self, database_conn):
         super().__init__()
@@ -277,10 +373,10 @@ class SignInPage(QDialog):
 
         if user_data:
             print("Sign in successful!")
-            self.sign_in_successful.emit()
-            # self.home_page = HomePage()
-            # self.home_page.show()
-            # self.hide()
+            # self.sign_in_successful.emit()
+            # home_page = Home
+            HomePage().show_home_page()
+
         else:
             QMessageBox.warning(
                 self, "Invalid Credentials", "Invalid username and/or password."
@@ -289,6 +385,8 @@ class SignInPage(QDialog):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    # home_page = HomePage()
+    # home_page.show()
     registration_page = RegistrationPage(None)
     registration_page.show()
     sys.exit(app.exec_())

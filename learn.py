@@ -42,7 +42,6 @@ class LearnPage(QDialog):
         self.learn_label.setStyleSheet("color: #004894;")
 
         self.setGeometry(512, 100, 500, 900)
-        # self.setStyleSheet("background-color: grey;")
         self.setStyleSheet("background-color: #F4B970;")
 
         self.causes_button = QPushButton("Causes")
@@ -73,19 +72,15 @@ class LearnPage(QDialog):
 
     def show_causes_page(self):
         page = CausePage()
-
         page.exec_()
-        # self.stacked_widget.setCurrentIndex(0)
 
     def show_effects_page(self):
         page = EffectsPage()
         page.exec_()
-        # self.stacked_widget.setCurrentIndex(1)
 
     def show_solutions_page(self):
         page = SolutionsPage()
         page.exec_()
-        # self.stacked_widget.setCurrentIndex(2)
 
 
 # ******************************* Learn Page --> Causes Pages *******************************
@@ -116,9 +111,6 @@ class CausePage(QDialog):
         self.landC_button = QPushButton("Land Pollution")
         self.globalC_button = QPushButton("Global Warming")
 
-        # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
-
         self.airC_button.setStyleSheet(
             "background-color: #A6AAAA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
         )
@@ -139,7 +131,6 @@ class CausePage(QDialog):
         layout.addWidget(self.waterC_button)
         layout.addWidget(self.landC_button)
         layout.addWidget(self.globalC_button)
-        # layout.addWidget(self.learn_label)
 
         self.airC_button.clicked.connect(self.show_airC)
         self.waterC_button.clicked.connect(self.show_waterC)
@@ -151,22 +142,18 @@ class CausePage(QDialog):
     def show_airC(self):
         page = AirCauses()
         page.exec_()
-        # self.stacked_widget.setCurrentIndex(0)
 
     def show_waterC(self):
         page = WaterCauses()
         page.exec_()
-        # self.stacked_widget.setCurrentIndex(1)
 
     def show_landC(self):
         page = LandCauses()
         page.exec_()
-        # self.stacked_widget.setCurrentIndex(0)
 
     def show_globalC(self):
         page = GlobalCauses()
         page.exec_()
-        # self.stacked_widget.setCurrentIndex(1)
 
     def go_back(self):
         self.close()
@@ -199,10 +186,6 @@ class AirCauses(QDialog):
         layout = QVBoxLayout()
         layout.addWidget(self.airC_title)
         layout.addWidget(self.info_label)
-        # layout.addWidget(self.test_button)
-
-        # self.test_button = QPushButton("Let's Test")
-        # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
 
@@ -233,10 +216,6 @@ class LandCauses(QDialog):
 
         layout = QVBoxLayout()
         layout.addWidget(self.info_label)
-        # layout.addWidget(self.test_button)
-
-        # self.test_button = QPushButton("Let's Test")
-        # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
 
@@ -269,10 +248,6 @@ class WaterCauses(QDialog):
 
         layout = QVBoxLayout()
         layout.addWidget(self.info_label)
-        # layout.addWidget(self.test_button)
-
-        # self.test_button = QPushButton("Let's Test")
-        # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
 
@@ -305,10 +280,6 @@ class GlobalCauses(QDialog):
 
         layout = QVBoxLayout()
         layout.addWidget(self.info_label)
-        # layout.addWidget(self.test_button)
-
-        # self.test_button = QPushButton("Let's Test")
-        # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
 
@@ -363,8 +334,6 @@ class EffectsPage(QDialog):
             "background-color: #B88E12; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
         )
         self.setGeometry(512, 100, 500, 900)
-        # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
 
         layout = QVBoxLayout()
         layout.addWidget(self.effect_title)
@@ -373,7 +342,6 @@ class EffectsPage(QDialog):
         layout.addWidget(self.waterE_button)
         layout.addWidget(self.landE_button)
         layout.addWidget(self.globalE_button)
-        # layout.addWidget(self.learn_label)
 
         self.airE_button.clicked.connect(self.show_airE)
         self.waterE_button.clicked.connect(self.show_waterE)
@@ -385,22 +353,18 @@ class EffectsPage(QDialog):
     def show_airE(self):
         page = AirEffects()
         page.exec_()
-        # self.stacked_widget.setCurrentIndex(0)
 
     def show_waterE(self):
         page = WaterEffects()
         page.exec_()
-        # self.stacked_widget.setCurrentIndex(1)
 
     def show_landE(self):
         page = LandEffects()
         page.exec_()
-        # self.stacked_widget.setCurrentIndex(0)
 
     def show_globalE(self):
         page = GlobalEffects()
         page.exec_()
-        # self.stacked_widget.setCurrentIndex(1)
 
     def go_back(self):
         self.close()
@@ -453,10 +417,6 @@ class LandEffects(QDialog):
 
         layout = QVBoxLayout()
         layout.addWidget(self.info_label)
-        # layout.addWidget(self.test_button)
-
-        # self.test_button = QPushButton("Let's Test")
-        # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
 
@@ -489,10 +449,6 @@ class WaterEffects(QDialog):
 
         layout = QVBoxLayout()
         layout.addWidget(self.info_label)
-        # layout.addWidget(self.test_button)
-
-        # self.test_button = QPushButton("Let's Test")
-        # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
 
@@ -525,10 +481,6 @@ class GlobalEffects(QDialog):
 
         layout = QVBoxLayout()
         layout.addWidget(self.info_label)
-        # layout.addWidget(self.test_button)
-
-        # self.test_button = QPushButton("Let's Test")
-        # self.test_button.clicked.connect(self.show_test_page)
 
         self.setLayout(layout)
 
@@ -583,8 +535,6 @@ class SolutionsPage(QDialog):
             "background-color: #B88E12; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
         )
         self.setGeometry(512, 100, 500, 900)
-        # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
 
         layout = QVBoxLayout()
         layout.addWidget(self.sol_title)
@@ -593,7 +543,6 @@ class SolutionsPage(QDialog):
         layout.addWidget(self.waterS_button)
         layout.addWidget(self.landS_button)
         layout.addWidget(self.globalS_button)
-        # layout.addWidget(self.learn_label)
 
         self.airS_button.clicked.connect(self.show_airS)
         self.waterS_button.clicked.connect(self.show_waterS)
@@ -605,22 +554,18 @@ class SolutionsPage(QDialog):
     def show_airS(self):
         page = AirSol()
         page.exec_()
-        # self.stacked_widget.setCurrentIndex(0)
 
     def show_waterS(self):
         page = WaterSol()
         page.exec_()
-        # self.stacked_widget.setCurrentIndex(1)
 
     def show_landS(self):
         page = LandSol()
         page.exec_()
-        # self.stacked_widget.setCurrentIndex(0)
 
     def show_globalS(self):
         page = GlobalSol()
         page.exec_()
-        # self.stacked_widget.setCurrentIndex(1)
 
     def go_back(self):
         self.close()

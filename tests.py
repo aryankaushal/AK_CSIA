@@ -98,8 +98,6 @@ class TestPage(QDialog):
         test_dialog = TestDialog(topic, file_name)
         result = test_dialog.exec_()
 
-        # Handle the result if needed
-
 
 class TestDialog(QDialog):
     def __init__(self, topic, file_name):
@@ -113,7 +111,6 @@ class TestDialog(QDialog):
 
         self.setGeometry(512, 100, 500, 900)
         self.setStyleSheet("background-color: #DFA528;")
-        # self.setFixedSize(500, 1000)
 
         self.questions = self.load_questions_from_file(file_name)
         self.current_question = 0
@@ -148,13 +145,6 @@ class TestDialog(QDialog):
         layout.addWidget(self.submit_button)
 
         self.setLayout(layout)
-        # self.update_question()?????
-
-        # def get_font(self, size, bold=False):
-        #     font = self.font()
-        #     font.setPointSize(size)
-        #     font.setBold(bold)
-        #     return font
 
     def load_questions_from_file(self, file_path):
         questions = []
