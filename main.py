@@ -13,6 +13,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 import learn, tests, login
+from login import RegistrationPage
 
 
 # *************************************** Home Page ***************************************
@@ -22,8 +23,6 @@ class HomePage(QWidget):
 
         self.setWindowTitle("Climaware")
         self.setGeometry(512, 100, 500, 900)
-        # self.setStyleSheet("background-color: grey;")
-        # self.setFixedSize(500, 1000)
 
         thisis_label = QLabel("This is")
         thisis_label.setFont(QFont("Arial", 30))
@@ -95,19 +94,19 @@ class MainWindow(QWidget):
         self.stacked_widget = QStackedWidget()
         self.stacked_widget.addWidget(self.home_page)
 
-        # self.registration_page = login.RegistrationPage(self.database_conn)
-        # self.stacked_widget = QStackedWidget()
-        # self.stacked_widget.addWidget(self.registration_page)
-        # self.home_page = HomePage()
-        # self.stacked_widget.addWidget(self.home_page)
+        self.registration_page = login.RegistrationPage(self.database_conn)
+        self.stacked_widget = QStackedWidget()
+        self.stacked_widget.addWidget(self.registration_page)
+        self.home_page = HomePage()
+        self.stacked_widget.addWidget(self.home_page)
 
-        # self.sign_in_page = login.SignInPage(self.database_conn)
+        self.sign_in_page = login.SignInPage(self.database_conn)
 
-        # self.registration_page.registration_successful.connect(
-        #     self.show_registration_success_message
-        # )
+        self.registration_page.registration_successful.connect(
+            self.show_registration_success_message
+        )
 
-        # self.sign_in_page.sign_in_successful.connect(self.show_home_page)
+        self.sign_in_page.sign_in_successful.connect(self.show_home_page)
 
         layout = QVBoxLayout()
         layout.addWidget(self.stacked_widget)
@@ -115,19 +114,22 @@ class MainWindow(QWidget):
         layout.addStretch(1)
         self.setLayout(layout)
 
-    # def show_registration_success_message(self):
-    #     message_box = QMessageBox(self)
-    #     message_box.setStyleSheet("background-color: black;")
-    #     message_box.information(
-    #         self,
-    #         "Registration Successful",
-    #         "Congratulations!\nClose this, run the app again, and select the Sign In button.",
-    #     )
+    def show_registration_success_message(self):
+        message_box = QMessageBox(self)
+        message_box.setStyleSheet("background-color: black;")
+        message_box.information(
+            self,
+            "Registration Successful",
+            "Congratulations!\nClose this, run the app again, and select the Sign In button.",
+        )
 
-    # def show_home_page(self):
-    #     home_page = HomePage()
-    #     home_page.show()
-    #     self.close() # Close the main window ie sign in page?
+    def show_home_page(self):
+        self.home_page = login.HomePage()
+        self.stacked_widget.addWidget(self.home_page)
+        self.stacked_widget.setCurrentWidget(self.home_page)
+        # home_page = HomePage()
+        # home_page.show()
+        # self.close() # Close the main window ie sign in page?
 
     def show_learn_page(self):
         learn_page = learn.LearnPage()
@@ -141,9 +143,9 @@ class MainWindow(QWidget):
         test_page.exec_()
         # self.stacked_widget.setCurrentIndex(3)
 
-    # def show_registration_page(self):
-    #     reg_page = login.RegistrationPage(self.database_conn)
-    #     reg_page.exec_()
+    def show_registration_page(self):
+        reg_page = login.RegistrationPage(self.database_conn)
+        reg_page.exec_()
 
     def create_tables(self):
         cursor = self.database_conn.cursor()
@@ -192,12 +194,11 @@ class MainWindow(QWidget):
             # self.database_conn.commit()
             # print("Default user created.")
 
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
-    # registration_page = RegistrationPage(window.database_conn)
-    # registration_page.switch_to_sign_in_page.connect(window.show_sign_in_page)
-    # registration_page.show()
+    registration_page = RegistrationPage(window.database_conn)
+    registration_page.show_sign_in_page.connect(window.show_sign_in_page)
+    registration_page.show()
     window.show()
     sys.exit(app.exec_())

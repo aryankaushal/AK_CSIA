@@ -1,104 +1,25 @@
 import sys
-import smtplib, ssl
 import sqlite3
 from PyQt5.QtWidgets import (
     QApplication,
     QWidget,
     QVBoxLayout,
     QPushButton,
-    QHBoxLayout,
     QLabel,
     QLineEdit,
     QPushButton,
     QDialog,
-
     QMessageBox,
 )
-from PyQt5.QtGui import QPixmap, QColor, QFont
+from PyQt5.QtGui import QFont
 from PyQt5.QtCore import pyqtSignal, Qt, QTimer
-from email.mime.text import MIMEText
 from random import randint, sample
-from main import HomePage
-# from UI import LearnUI, TestUI, HomeUI
+# from main import HomePage
+
 # import time
 # import datetime
 import pyotp
 import re
-
-
-class SignInPage(QDialog):
-    sign_in_successful = pyqtSignal()
-
-    def __init__(self, database_conn):
-        super().__init__()
-
-        self.setWindowTitle("Climaware Sign In")
-        self.setGeometry(512, 100, 500, 900)
-        self.setStyleSheet("background-color: #B5B5C8;")
-        self.reg_title = QLabel("\nWelcome back to\nClimaware!")
-        self.reg_title.setFont(QFont("Arial", 40, QFont.Bold))
-        self.reg_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
-        self.reg_title.setStyleSheet("color: black;")
-
-        self.instruction_label = QLabel("Enter your username and password to sign in!")
-        self.instruction_label.setFont(QFont("Arial", 25))
-        self.instruction_label.setStyleSheet("color: black;")
-        self.instruction_label.setAlignment(Qt.AlignHCenter)
-
-        self.database_conn = database_conn
-
-        self.username_label = QLabel("Username:")
-        self.username_input = QLineEdit()
-        self.username_input.setStyleSheet("background-color: #444444;")
-        self.username_label.setFont(QFont("Arial", 25, QFont.Bold))
-        self.username_label.setStyleSheet("color: #444444;")
-
-        self.password_label = QLabel("Password:")
-        self.password_input = QLineEdit()
-        self.password_input.setStyleSheet("background-color: #444444;")
-        self.password_input.setEchoMode(QLineEdit.Password)
-        self.password_label.setFont(QFont("Arial", 25, QFont.Bold))
-        self.password_label.setStyleSheet("color: #444444;")
-
-        self.sign_in_button = QPushButton("Sign In")
-        self.sign_in_button.clicked.connect(self.sign_in_user)
-        self.sign_in_button.setFont(QFont("Arial", 25, QFont.Bold))
-        self.sign_in_button.setStyleSheet(
-            "background-color: #1F94D3; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
-        )
-
-        layout = QVBoxLayout()
-        layout.addWidget(self.reg_title)
-        layout.addWidget(self.instruction_label)
-        layout.addWidget(self.username_label)
-        layout.addWidget(self.username_input)
-        layout.addWidget(self.password_label)
-        layout.addWidget(self.password_input)
-        layout.addWidget(self.sign_in_button)
-
-        self.setLayout(layout)
-
-    def sign_in_user(self):
-        username = self.username_input.text()
-        password = self.password_input.text()
-
-        # Check if the username and password match in the database
-        cursor = self.database_conn.cursor()
-        cursor.execute(
-            "SELECT * FROM users WHERE username = ? AND password = ?",
-            (username, password),
-        )
-        user_data = cursor.fetchone()
-
-        if user_data:
-            print("Sign in successful!")
-            self.home_page = HomePage()
-            self.home_page.show()
-            self.hide()
-        else:
-            QMessageBox.warning(
-                self, "Invalid Credentials", "Invalid username and/or password."
-            )
 
 
 class RegistrationPage(QDialog):
@@ -200,11 +121,11 @@ class RegistrationPage(QDialog):
         strength = self.calculate_password_strength(password)
 
         colors = {
-            "very_weak": "red",
-            "weak": "orange",
-            "slightly_weak": "yellow",
-            "slightly_strong": "lightgreen",
-            "strong": "green",
+            "Very Weak": "red",
+            "Weak": "orange",
+            "Slightly Weak": "yellow",
+            "Slightly Strong": "lightgreen",
+            "Strong": "green",
         }
 
         self.password_strength_label.setText(
@@ -235,15 +156,15 @@ class RegistrationPage(QDialog):
 
         # Determine strength based on the number of criteria met
         if criteria_met == 0:
-            return "very_weak"
+            return "Very Weak"
         elif criteria_met == 1:
-            return "weak"
+            return "Weak"
         elif criteria_met == 2:
-            return "slightly_weak"
+            return "Slightly Weak"
         elif criteria_met == 3:
-            return "slightly_strong"
+            return "Slightly Strong"
         else:
-            return "strong"
+            return "Strong"
 
     def register_user(self):
         username = self.username_input.text()
@@ -275,10 +196,11 @@ class RegistrationPage(QDialog):
         self.database_conn.commit()
         print("Registration successful!")
 
-        # QMessageBox.information(
-        #     self, "Registration Successful",
-        #     "Congratulations! Registration successful!\nClose this, run the app, and use the Sign In button"
-        # )
+        QMessageBox.information(
+            self,
+            "Registration Successful",
+            "Congratulations! Registration successful!\nClose this, run the app, and use the Sign In button",
+        )
 
         self.registration_successful.emit()
         # Close the RegistrationPage
@@ -287,6 +209,83 @@ class RegistrationPage(QDialog):
 
 # Placeholder for storing OTPs (Replace this with a secure storage mechanism)
 # OTP_STORE = {}
+
+
+class SignInPage(QDialog):
+    sign_in_successful = pyqtSignal()
+
+    def __init__(self, database_conn):
+        super().__init__()
+
+        self.setWindowTitle("Climaware Sign In")
+        self.setGeometry(512, 100, 500, 900)
+        self.setStyleSheet("background-color: #B5B5C8;")
+        self.reg_title = QLabel("\nWelcome back to\nClimaware!")
+        self.reg_title.setFont(QFont("Arial", 40, QFont.Bold))
+        self.reg_title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+        self.reg_title.setStyleSheet("color: black;")
+
+        self.instruction_label = QLabel("Enter your username and password to sign in!")
+        self.instruction_label.setFont(QFont("Arial", 25))
+        self.instruction_label.setStyleSheet("color: black;")
+        self.instruction_label.setAlignment(Qt.AlignHCenter)
+
+        self.database_conn = database_conn
+
+        self.username_label = QLabel("Username:")
+        self.username_input = QLineEdit()
+        self.username_input.setStyleSheet("background-color: #444444;")
+        self.username_label.setFont(QFont("Arial", 25, QFont.Bold))
+        self.username_label.setStyleSheet("color: #444444;")
+
+        self.password_label = QLabel("Password:")
+        self.password_input = QLineEdit()
+        self.password_input.setStyleSheet("background-color: #444444;")
+        self.password_input.setEchoMode(QLineEdit.Password)
+        self.password_label.setFont(QFont("Arial", 25, QFont.Bold))
+        self.password_label.setStyleSheet("color: #444444;")
+
+        self.sign_in_button = QPushButton("Sign In")
+        self.sign_in_button.clicked.connect(self.sign_in_user)
+        self.sign_in_button.setFont(QFont("Arial", 25, QFont.Bold))
+        self.sign_in_button.setStyleSheet(
+            "background-color: #1F94D3; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.reg_title)
+        layout.addWidget(self.instruction_label)
+        layout.addWidget(self.username_label)
+        layout.addWidget(self.username_input)
+        layout.addWidget(self.password_label)
+        layout.addWidget(self.password_input)
+        layout.addWidget(self.sign_in_button)
+
+        self.setLayout(layout)
+
+    def sign_in_user(self):
+        username = self.username_input.text()
+        password = self.password_input.text()
+
+        # Check if the username and password match in the database
+        cursor = self.database_conn.cursor()
+        cursor.execute(
+            "SELECT * FROM users WHERE username = ? AND password = ?",
+            (username, password),
+        )
+        user_data = cursor.fetchone()
+
+        if user_data:
+            print("Sign in successful!")
+            self.sign_in_successful.emit()
+            # self.home_page = HomePage()
+            # self.home_page.show()
+            # self.hide()
+        else:
+            QMessageBox.warning(
+                self, "Invalid Credentials", "Invalid username and/or password."
+            )
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

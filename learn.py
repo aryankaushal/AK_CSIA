@@ -21,7 +21,6 @@ from PyQt5.QtGui import QPixmap, QColor, QFont
 from PyQt5.QtCore import pyqtSignal, Qt
 from email.mime.text import MIMEText
 from random import randint, sample
-from UI import LearnUI, TestUI, HomeUI
 import time, datetime
 
 
