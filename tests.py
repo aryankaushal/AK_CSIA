@@ -1,25 +1,14 @@
-import sys
-import smtplib, ssl
-import sqlite3
 from PyQt5.QtWidgets import (
-    QApplication,
-    QWidget,
     QVBoxLayout,
     QPushButton,
-    QHBoxLayout,
     QLabel,
-    QLineEdit,
     QPushButton,
     QDialog,
-    QStackedWidget,
     QRadioButton,
-    QTextEdit,
-    QTextBrowser,
     QMessageBox,
-    QGraphicsDropShadowEffect,
 )
 from PyQt5.QtGui import QPixmap, QColor, QFont
-from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtCore import pyqtSignal, Qt, QTimer
 from email.mime.text import MIMEText
 import random
 import time, datetime
@@ -57,6 +46,7 @@ class TestPage(QDialog):
         self.water_button = QPushButton("Water Pollution")
         self.land_button = QPushButton("Land Pollution")
         self.global_button = QPushButton("Global Warming")
+        self.mixed_button = QPushButton("Mixed Timed Quiz")
 
         self.air_button.setStyleSheet(
             "background-color: #A6AAAA; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
@@ -70,6 +60,9 @@ class TestPage(QDialog):
         self.global_button.setStyleSheet(
             "background-color: #B88E12; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
         )
+        self.mixed_button.setStyleSheet(
+            "background-color: #FF6399; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
+        )
 
         layout = QVBoxLayout()
         layout.addWidget(self.test_title)
@@ -78,6 +71,7 @@ class TestPage(QDialog):
         layout.addWidget(self.water_button)
         layout.addWidget(self.land_button)
         layout.addWidget(self.global_button)
+        layout.addWidget(self.mixed_button)
 
         self.air_button.clicked.connect(
             lambda: self.initiate_test("Air Pollution", "Text Files/air_quiz.csv")
@@ -91,13 +85,15 @@ class TestPage(QDialog):
         self.global_button.clicked.connect(
             lambda: self.initiate_test("Global Warming", "Text Files/global_quiz.csv")
         )
+        self.mixed_button.clicked.connect(
+            lambda: self.initiate_test("Mixed", "Text Files/mixed_quiz.csv")
+        )
 
         self.setLayout(layout)
 
     def initiate_test(self, topic, file_name):
         test_dialog = TestDialog(topic, file_name)
         result = test_dialog.exec_()
-
 
 class TestDialog(QDialog):
     def __init__(self, topic, file_name):
@@ -115,6 +111,24 @@ class TestDialog(QDialog):
         self.questions = self.load_questions_from_file(file_name)
         self.current_question = 0
         self.score = 0
+
+        self.mixed_bag_mode = topic == "Mixed Bag Test"
+        if self.mixed_bag_mode:
+            self.initialize_mixed_bag_test()
+        else:
+            self.initialize_regular_test()
+
+    def initialize_mixed_bag_test(self):
+        self.setWindowTitle("Mixed Bag Test")
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.timeout_handler)
+        self.timer_interval = 180000  # 3 minutes
+        self.timer.start(self.timer_interval)
+
+        self.question_queue = self.load_questions_from_file("mixed_bag_quiz.csv")
+        random.shuffle(self.question_queue)
+
+        self.update_question()
 
         self.question_label = QLabel(self.questions[self.current_question]["question"])
         self.question_label.setFont(QFont("Arial", 20, QFont.Bold))

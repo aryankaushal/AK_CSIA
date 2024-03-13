@@ -14,7 +14,8 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import pyqtSignal, Qt, QTimer
-from random import randint, sample
+
+import bcrypt
 
 # import time
 # import datetime
@@ -83,17 +84,12 @@ class HomePage(QDialog):
         layout.addWidget(instruction_label)
         layout.addWidget(self.learn_button)
         layout.addWidget(self.test_button)
-        # layout.addWidget(self.points_label)
 
         self.setLayout(layout)
 
     def show_home_page(self):
         home_page = HomePage()
         home_page.exec_()
-        # self.home_page = HomePage()
-        # self.stacked_widget.addWidget(self.home_page)
-        # self.stacked_widget.setCurrentWidget(self.home_page)
-        # self.close() # Close the main window ie sign in page?
 
     def show_learn_page(self):
         learn_page = learn.LearnPage()
@@ -105,7 +101,6 @@ class HomePage(QDialog):
 
 
 class RegistrationPage(QDialog):
-    # registration_successful = pyqtSignal()
 
     def __init__(self, database_conn):
         super().__init__()
@@ -172,8 +167,6 @@ class RegistrationPage(QDialog):
         self.sign_in_button.setStyleSheet(
             "background-color: #1F94D3; color: black; border-radius: 20px; font-size: 30px; min-width: 30; min-height: 50px;"
         )
-
-        # switch_to_sign_in_page = pyqtSignal()
 
         layout = QVBoxLayout()
         layout.addWidget(self.reg_title)
@@ -268,6 +261,8 @@ class RegistrationPage(QDialog):
             )
             return
 
+        hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+
         # Check if the username already exists in the database
         cursor = self.database_conn.cursor()
         cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
@@ -279,32 +274,16 @@ class RegistrationPage(QDialog):
             )
             return
 
-        # Registration successful
         cursor.execute(
             "INSERT INTO users (username, password) VALUES (?, ?)", (username, password)
         )
         self.database_conn.commit()
         print("Registration successful!")
-
-        # QMessageBox.information(
-        #     self,
-        #     "Registration Successful",
-        #     "Congratulations! Registration successful!\nClose this, run the app, and use the Sign In button",
-        # )
-
-        # self.registration_successful.emit()
-        # self.show_registration_success_message()
         HomePage().show_home_page()
-        # Close the RegistrationPage
         self.accept()
 
 
-# Placeholder for storing OTPs (Replace this with a secure storage mechanism)
-# OTP_STORE = {}
-
-
 class SignInPage(QDialog):
-    # sign_in_successful = pyqtSignal()
 
     def __init__(self, database_conn):
         super().__init__()
@@ -359,7 +338,6 @@ class SignInPage(QDialog):
         username = self.username_input.text()
         password = self.password_input.text()
 
-        # Check if the username and password match in the database
         cursor = self.database_conn.cursor()
         cursor.execute(
             "SELECT * FROM users WHERE username = ? AND password = ?",
@@ -368,11 +346,10 @@ class SignInPage(QDialog):
         user_data = cursor.fetchone()
 
         if user_data:
-            print("Sign in successful!")
-            # self.sign_in_successful.emit()
-            # home_page = Home
-            HomePage().show_home_page()
-
+            stored_password = user_data[1]
+            if bcrypt.checkpw(password.encode('utf-8'), stored_password):
+                print("Sign in successful!")
+                HomePage().show_home_page()
         else:
             QMessageBox.warning(
                 self, "Invalid Credentials", "Invalid username and/or password."
@@ -381,8 +358,6 @@ class SignInPage(QDialog):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    # home_page = HomePage()
-    # home_page.show()
     database_conn = sqlite3.connect("user_data.db")
     registration_page = RegistrationPage(database_conn)
     registration_page.show()

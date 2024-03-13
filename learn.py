@@ -1,28 +1,12 @@
-import sys
-import smtplib, ssl
-import sqlite3
 from PyQt5.QtWidgets import (
-    QApplication,
-    QWidget,
     QVBoxLayout,
     QPushButton,
-    QHBoxLayout,
     QLabel,
-    QLineEdit,
     QPushButton,
     QDialog,
-    QStackedWidget,
-    QRadioButton,
-    QTextEdit,
-    QTextBrowser,
-    QMessageBox,
 )
-from PyQt5.QtGui import QPixmap, QColor, QFont
-from PyQt5.QtCore import pyqtSignal, Qt
-from email.mime.text import MIMEText
-from random import randint, sample
-import time, datetime
-
+from PyQt5.QtGui import QFont
+from PyQt5.QtCore import Qt
 
 # *************************************** Learn Page ***************************************
 class LearnPage(QDialog):

@@ -4,16 +4,11 @@ from PyQt5.QtWidgets import (
     QApplication,
     QWidget,
     QVBoxLayout,
-    QPushButton,
-    QLabel,
-    QPushButton,
     QStackedWidget,
-    QMessageBox
 )
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
-import learn, tests, login
-
+import login
 
 # **************************************** Main Window ****************************************
 class MainWindow(QWidget):
@@ -35,37 +30,6 @@ class MainWindow(QWidget):
         self.sign_in_page = login.SignInPage(self.database_conn)
 
         self.show_registration_page()
-    
-
-        # self.registration_page.registration_successful.connect(
-        #     self.show_registration_success_message,
-        #     self.show_home_page()
-        # )
-        # print("after reg succ call")
-        # self.sign_in_page.sign_in_successful.connect(
-        #     self.show_home_page()
-        # )
-        # print("after sign in succ call")
-
-
-        # self.home_page = HomePage()
-        # self.stacked_widget = QStackedWidget()
-        # self.stacked_widget.addWidget(self.home_page)
-
-        # self.registration_page = login.RegistrationPage(self.database_conn)
-        # self.stacked_widget = QStackedWidget()
-        # self.stacked_widget.addWidget(self.registration_page)
-
-        # self.sign_in_page = login.SignInPage(self.database_conn)
-
-        # print("befre suc reg")
-        # self.registration_page.registration_successful.connect(
-        #     self.show_registration_success_message
-        # )
-        # print("befre show home")
-
-        # self.sign_in_page.sign_in_successful.connect(self.show_home_page)
-        # print("after show home")
 
         layout = QVBoxLayout()
         layout.addWidget(self.stacked_widget)
